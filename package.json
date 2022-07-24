@@ -1,0 +1,95 @@
+{
+  "name": "vscode-syrm-syntax",
+  "displayName": "vscode-syrm-syntax",
+  "description": "Syntax highlighting for syrm(style + stratum) notation",
+  "publisher": "tetracalibers",
+  "author": {
+    "name": "tomixy",
+    "url": "https://tetracalibers.notion.site/tetracalibers/tomixy-TetraCalibers-30b94fb9fc054d4da667539ef35f42c6"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tetracalibers/vscode-syrm-syntax"
+  },
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.69.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "icon": "https://github.com/tetracalibers/vscode-syrm-support/blob/main/icons/syrm.png",
+  "contributes": {
+    "configurationDefaults": {
+      "[syrm]": {
+        "editor.bracketPairColorization.enabled": true,
+        "editor.guides.bracketPairs": true
+      }
+    },
+    "languages": [
+      {
+        "id": "syrm",
+        "aliases": [
+          "styratum"
+        ],
+        "extensions": [
+          ".syrm"
+        ],
+        "configuration": "./configuration/jsx-tag-language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "syrm",
+        "scopeName": "source.syrm",
+        "path": "./syntaxes/syrm.tmLanguage.json",
+        "embeddedLanguages": {
+          "meta.embedded.js.jsx": "jsx-tags",
+          "meta.tag.block.jsx": "jsx-tags",
+          "meta.tag-content.jsx": "javascript",
+          "meta.embnedded.line.js": "javascript",
+          "jsx-embedded-js": "javascript",
+          "meta.embedded.css": "css"
+        }
+      },
+      {
+        "path": "./syntaxes/injection/css/func.props.injectionTo.css.json",
+        "scopeName": "func-props.to-css.injection",
+        "injectTo": [
+          "source.syrm"
+        ]
+      },
+      {
+        "path": "./syntaxes/injection/css/selector.ampersand.injectionTo.css.json",
+        "scopeName": "selector-ampersand.to-css.injection",
+        "injectTo": [
+          "source.syrm"
+        ]
+      },
+      {
+        "path": "./syntaxes/injection/css/keyword.control.conditional.injectionTo.css.json",
+        "scopeName": "keyword.control.conditional.to-css.injection",
+        "injectTo": [
+          "source.syrm"
+        ]
+      },
+      {
+        "path": "./syntaxes/injection/jsx/keyword.control.loop.injectionTo.jsx.json",
+        "scopeName": "keyword.control.loop.to-jsx.injection",
+        "injectTo": [
+          "source.syrm"
+        ]
+      },
+      {
+        "path": "./syntaxes/injection/css/use-vocabulary.injectionTo.syrm.cascade.json",
+        "scopeName": "use-vocabulary.to-cascade.injection",
+        "injectTo": [
+          "source.syrm"
+        ]
+      }
+    ]
+  },
+  "devDependencies": {
+    "prettier": "^2.7.1"
+  }
+}

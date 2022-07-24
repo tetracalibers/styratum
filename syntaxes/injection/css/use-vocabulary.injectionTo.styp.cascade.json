@@ -1,0 +1,33 @@
+{
+  "scopeName": "use-vocabulary.to-cascade.injection",
+  "injectionSelector": "L:meta.block.cascade.styp meta.embedded.css meta.property-list.css",
+  "patterns": [
+    {
+      "include": "#styp-cascade-use-vocabulary-keyword"
+    },
+    {
+      "include": "#styp-cascade-use-vocabulary-value"
+    }
+  ],
+  "repository": {
+    "styp-cascade-use-vocabulary-keyword": {
+      "match": "(@)(vocabulary)",
+      "captures": {
+        "1": {
+          "name": "punctuation.definition.keyword.styp"
+        },
+        "2": {
+          "name": "keyword.control.conditional.truthy.styp"
+        },
+        "3": {
+          "name": "meta.property-value.css"
+        }
+      },
+      "name": "keyword.control.import.vocabulary.styp"
+    },
+    "styp-cascade-use-vocabulary-value": {
+      "match": "[A-Z][a-zA-Z0-9:]+",
+      "name": "entity.name.tag.vocabulary.styp"
+    }
+  }
+}

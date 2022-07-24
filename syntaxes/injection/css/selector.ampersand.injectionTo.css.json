@@ -1,0 +1,15 @@
+{
+  "scopeName": "selector-ampersand.to-css.injection",
+  "injectionSelector": "L:meta.embedded.css",
+  "patterns": [
+    {
+      "include": "#styp-ampersand-selector"
+    }
+  ],
+  "repository": {
+    "styp-ampersand-selector": {
+      "match": "&",
+      "name": "entity.name.tag.root.styp"
+    }
+  }
+}

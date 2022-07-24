@@ -1,0 +1,4 @@
+{
+  "auto-close-tag.activationOnLanguage": ["*"],
+  "auto-rename-tag.activationOnLanguage": ["*"]
+}

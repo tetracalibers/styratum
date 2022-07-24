@@ -1,0 +1,37 @@
+{
+  "scopeName": "keyword.control.loop.to-jsx.injection",
+  "injectionSelector": "L:meta.embedded.js.jsx",
+  "patterns": [
+    {
+      "include": "#styp-structure-loop"
+    }
+  ],
+  "repository": {
+    "styp-structure-loop": {
+      "begin": "(@)(loop)",
+      "end": "(@)(endloop)",
+      "beginCaptures": {
+        "1": {
+          "name": "punctuation.definition.annotation"
+        },
+        "2": {
+          "name": "keyword.control.loop.begin.styp"
+        }
+      },
+      "endCaptures": {
+        "1": {
+          "name": "punctuation.definition.annotation"
+        },
+        "2": {
+          "name": "keyword.control.loop.end.styp"
+        }
+      },
+      "name": "meta.embedded.js.jsx",
+      "patterns": [
+        {
+          "include": "source.js.jsx"
+        }
+      ]
+    }
+  }
+}

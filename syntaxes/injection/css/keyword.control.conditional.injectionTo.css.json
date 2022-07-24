@@ -1,0 +1,92 @@
+{
+  "scopeName": "keyword.control.conditional.to-css.injection",
+  "injectionSelector": "L:meta.embedded.css",
+  "patterns": [
+    {
+      "include": "#styp-cascade-truthy"
+    },
+    {
+      "include": "#styp-cascade-falsy"
+    },
+    {
+      "include": "#styp-cascade-exist"
+    },
+    {
+      "include": "#styp-cascade-else"
+    }
+  ],
+  "repository": {
+    "styp-cascade-truthy": {
+      "begin": "(@)(truthy)(\\()",
+      "end": "(\\))",
+      "beginCaptures": {
+        "1": {
+          "name": "punctuation.definition.keyword.styp"
+        },
+        "2": {
+          "name": "keyword.control.conditional.truthy.styp"
+        },
+        "3": {
+          "name": "punctuation.section.parens.begin"
+        }
+      },
+      "endCaptures": {
+        "1": {
+          "name": "punctuation.section.parens.end"
+        }
+      },
+      "name": "variable.other.constant.styp"
+    },
+    "styp-cascade-falsy": {
+      "begin": "(@)(falsy)(\\()",
+      "end": "(\\))",
+      "beginCaptures": {
+        "1": {
+          "name": "punctuation.definition.keyword.styp"
+        },
+        "2": {
+          "name": "keyword.control.conditional.falsy.styp"
+        },
+        "3": {
+          "name": "punctuation.section.parens.begin"
+        }
+      },
+      "endCaptures": {
+        "1": {
+          "name": "punctuation.section.parens.end"
+        }
+      },
+      "name": "variable.other.constant.styp"
+    },
+    "styp-cascade-exist": {
+      "begin": "(@)(exist)(\\()",
+      "end": "(\\))",
+      "beginCaptures": {
+        "1": {
+          "name": "punctuation.definition.keyword.styp"
+        },
+        "2": {
+          "name": "keyword.control.conditional.exist.styp"
+        },
+        "3": {
+          "name": "punctuation.section.parens.begin"
+        }
+      },
+      "endCaptures": {
+        "1": {
+          "name": "punctuation.section.parens.end"
+        }
+      },
+      "name": "variable.other.constant.styp"
+    },
+    "styp-cascade-else": {
+      "match": "(@)(else)",
+      "captures": {
+        "1": {
+          "name": "punctuation.definition.keyword.styp"
+        }
+      },
+      "name": "keyword.control.conditional.else.styp"
+    }
+  }
+}
