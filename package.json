@@ -1,5 +1,5 @@
 {
-  "name": "syrm",
+  "name": "styratum",
   "description": "syrm(style + stratum) notation",
   "publisher": "tetracalibers",
   "author": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/tetracalibers/vscode-syrm-support"
+    "url": "https://github.com/tetracalibers/styratum"
   },
   "version": "0.0.1",
   "private": true,

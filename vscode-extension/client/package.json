@@ -6,14 +6,14 @@
     "name": "tomixy",
     "url": "https://tetracalibers.notion.site/tetracalibers/tomixy-TetraCalibers-30b94fb9fc054d4da667539ef35f42c6"
   },
-  "homepage": "https://github.com/tetracalibers/vscode-syrm-syntax#readme",
+  "homepage": "https://github.com/tetracalibers/styratum#readme",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tetracalibers/vscode-syrm-syntax.git"
+    "url": "https://github.com/tetracalibers/styratum"
   },
   "bugs": {
-    "url": "https://github.com/tetracalibers/vscode-syrm-syntax/issues"
+    "url": "https://github.com/tetracalibers/styratum/issues"
   },
   "main": "src/index.ts",
   "type": "module",

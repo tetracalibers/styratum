@@ -9,12 +9,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tetracalibers/vscode-syrm-syntax.git"
+    "url": "https://github.com/tetracalibers/styratum"
   },
   "bugs": {
-    "url": "https://github.com/tetracalibers/vscode-syrm-syntax/issues"
+    "url": "https://github.com/tetracalibers/styratum/issues"
   },
-  "homepage": "https://github.com/tetracalibers/vscode-syrm-syntax#readme",
+  "homepage": "https://github.com/tetracalibers/styratum#readme",
   "main": "src/index.ts",
   "type": "module",
   "private": true,
