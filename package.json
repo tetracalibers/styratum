@@ -1,7 +1,7 @@
 {
-  "name": "vscode-syrm-syntax",
-  "displayName": "vscode-syrm-syntax",
-  "description": "Syntax highlighting for syrm(style + stratum) notation",
+  "name": "vscode-syrm-support",
+  "displayName": "vscode-syrm-support",
+  "description": "Syntax highlighting & language server for syrm(style + stratum) notation",
   "publisher": "tetracalibers",
   "author": {
     "name": "tomixy",
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/tetracalibers/vscode-syrm-syntax"
+    "url": "https://github.com/tetracalibers/vscode-syrm-support"
   },
   "version": "0.0.1",
   "engines": {
