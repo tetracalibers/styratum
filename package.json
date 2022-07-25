@@ -19,6 +19,9 @@
     "Programming Languages"
   ],
   "icon": "./icons/syrm04.png",
+  "activationEvents": [
+    "onLanguage:syrm"
+  ],
   "contributes": {
     "configurationDefaults": {
       "[syrm]": {
