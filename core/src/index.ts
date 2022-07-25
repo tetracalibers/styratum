@@ -1,5 +1,5 @@
 import { flashError } from './util/error'
-import type { CssInJs } from 'classified-csstypes'
+import type { CssInJs } from '@syrm-dev/css-helper'
 import _ from 'lodash'
 import * as AryDiff from 'fast-array-diff'
 import * as dot from 'dot-prop'

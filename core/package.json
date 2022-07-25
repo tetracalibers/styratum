@@ -66,6 +66,7 @@
     "ts-pattern": "^4.0.4",
     "typescript": "^4.7.4",
     "xml-formatter": "^2.6.1",
-    "xml-js": "^1.6.11"
+    "xml-js": "^1.6.11",
+    "@syrm-dev/css-helper": "*"
   }
 }
