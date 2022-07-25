@@ -1,0 +1,93 @@
+{
+  "BEGIN_tag": [
+    {
+      "token": ["<"],
+      "state": "tag"
+    },
+    {
+      "token": "alphabet",
+      "state": "tag.name"
+    },
+    {
+      "token": {
+        "stop": [">"]
+      },
+      "state": "pending"
+    }
+  ],
+  "BEGIN_css": [
+    {
+      "token": ["{"],
+      "state": "pending"
+    },
+    {
+      "token": ["{"],
+      "state": "css"
+    }
+  ],
+  "CSS_property": [
+    {
+      "token": "allowHyphen",
+      "state": "css.statement"
+    },
+    {
+      "token": [":"],
+      "state": "css.statement"
+    }
+  ],
+  "CSS_value": [
+    {
+      "token": {
+        "stop": [",", "}"]
+      },
+      "state": "css.statement.value"
+    }
+  ],
+  "CSS_BEGIN_nesting": [
+    {
+      "token": {
+        "regexp": "^[_:@&]+[a-zA-Z_]+$"
+      }
+    },
+    {
+      "token": [":"]
+    },
+    {
+      "token": ["{"]
+    }
+  ],
+  "CSS_END_nesting": [
+    {
+      "token": ["}"]
+    }
+  ],
+  "END_css": [
+    {
+      "token": {
+        "stop": ["}"]
+      },
+      "state": "css"
+    },
+    {
+      "token": ["}"],
+      "state": "pending"
+    }
+  ],
+  "END_tag": [
+    {
+      "token": ["<"]
+    },
+    {
+      "token": ["/"],
+      "state": "tag"
+    },
+    {
+      "token": "alphabet",
+      "state": "tag"
+    },
+    {
+      "token": [">"],
+      "state": "pending"
+    }
+  ]
+}
