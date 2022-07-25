@@ -16,7 +16,8 @@
     "packages": [
       "vscode-extension/client",
       "vscode-extension/server",
-      "core"
+      "core",
+      "helper/*"
     ]
   },
   "devDependencies": {

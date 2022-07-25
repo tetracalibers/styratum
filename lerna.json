@@ -1,5 +1,10 @@
 {
-  "packages": ["vscode-extension/client", "vscode-extension/server", "core"],
+  "packages": [
+    "vscode-extension/client",
+    "vscode-extension/server",
+    "core",
+    "helper/*"
+  ],
   "useNx": true,
   "version": "0.0.0",
   "useWorkspaces": true,
