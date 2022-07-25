@@ -1,11 +1,8 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "lib": ["DOM", "ESNext"],
-    "types": ["node"],
-    "jsx": "react-jsx",
-    "module": "esnext",
-    "moduleResolution": "node",
+    "lib": ["ESNext"],
+    "module": "commonjs",
     "allowJs": true,
     "sourceMap": true,
     "esModuleInterop": true,
@@ -23,6 +20,6 @@
     "outDir": "./out",
     "resolveJsonModule": true
   },
-  "include": ["./**/*"],
-  "exclude": ["node_modules", "./out/*"]
+  "include": ["./src"],
+  "exclude": ["node_modules", ".vscode-test"]
 }

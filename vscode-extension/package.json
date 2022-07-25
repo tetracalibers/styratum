@@ -21,7 +21,7 @@
   "activationEvents": [
     "onLanguage:syrm"
   ],
-  "main": "./client/out/extension.cjs",
+  "main": "./client/out/extension",
   "contributes": {
     "configurationDefaults": {
       "[syrm]": {
@@ -32,9 +32,6 @@
     "languages": [
       {
         "id": "syrm",
-        "aliases": [
-          "styratum"
-        ],
         "extensions": [
           ".syrm"
         ],

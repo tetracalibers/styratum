@@ -1,5 +1,5 @@
 import * as path from 'path'
-import { workspace, ExtensionContext } from 'vscode'
+import { workspace, ExtensionContext, window } from 'vscode'
 
 import {
   LanguageClient,
@@ -42,13 +42,12 @@ export function activate(context: ExtensionContext) {
 
   // Create the language client and start the client.
   client = new LanguageClient(
-    'languageServerExample',
-    'Language Server Example',
+    'syrmLanguageServer',
+    'styratum(syrm) Language Server',
     serverOptions,
     clientOptions
   )
 
-  // Start the client. This will also launch the server
   client.start()
 }
 

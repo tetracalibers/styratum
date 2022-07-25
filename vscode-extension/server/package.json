@@ -15,32 +15,26 @@
     "url": "https://github.com/tetracalibers/styratum/issues"
   },
   "homepage": "https://github.com/tetracalibers/styratum#readme",
-  "main": "src/extension.ts",
-  "type": "module",
+  "ts-standard": {
+    "files": [
+      "./src/**/*.ts"
+    ],
+    "envs": [
+      "node"
+    ]
+  },
   "private": true,
-  "exports": {
-    "import": "./out/extension.es.js",
-    "require": "./out/extension.cjs",
-    "node": "./out/extension.es.js",
-    "default": "./out/extension.cjs"
+  "engines": {
+    "node": "*"
   },
   "scripts": {
     "test": "echo \"Error: run tests from root\" && exit 1",
     "type:check": "tsc --noEmit",
-    "prebuild": "yarn type:check && rimraf out",
-    "build": "rollup -c --watch",
-    "start": "yarn build && node lib/extension.es.js"
+    "prebuild": "rimraf out",
+    "build": "tsc -b tsconfig.json"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^22.0.1",
-    "@rollup/plugin-json": "^4.1.0",
-    "@rollup/plugin-node-resolve": "^13.3.0",
-    "@rollup/plugin-typescript": "^8.3.3",
-    "case": "^1.6.3",
-    "esbuild": "^0.14.48",
     "rimraf": "^3.0.2",
-    "rollup": "^2.75.7",
-    "rollup-plugin-esbuild": "^4.9.1",
     "typescript": "^4.7.4"
   },
   "dependencies": {
