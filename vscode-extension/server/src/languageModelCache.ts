@@ -1,9 +1,14 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
 import { TextDocument } from 'vscode-languageserver-textdocument'
 
 export interface LanguageModelCache<T> {
-  get: (document: TextDocument) => T
-  onDocumentRemoved: (document: TextDocument) => void
-  dispose: () => void
+  get(document: TextDocument): T
+  onDocumentRemoved(document: TextDocument): void
+  dispose(): void
 }
 
 export function getLanguageModelCache<T>(
@@ -21,7 +26,7 @@ export function getLanguageModelCache<T>(
   } = {}
   let nModels = 0
 
-  let cleanupInterval: NodeJS.Timer | undefined
+  let cleanupInterval: NodeJS.Timer | undefined = undefined
   if (cleanupIntervalTimeInSec > 0) {
     cleanupInterval = setInterval(() => {
       const cutoffTime = Date.now() - cleanupIntervalTimeInSec * 1000
@@ -29,7 +34,6 @@ export function getLanguageModelCache<T>(
       for (const uri of uris) {
         const languageModelInfo = languageModels[uri]
         if (languageModelInfo.cTime < cutoffTime) {
-          // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
           delete languageModels[uri]
           nModels--
         }
@@ -43,7 +47,7 @@ export function getLanguageModelCache<T>(
       const languageId = document.languageId
       const languageModelInfo = languageModels[document.uri]
       if (
-        languageModelInfo != null &&
+        languageModelInfo &&
         languageModelInfo.version === version &&
         languageModelInfo.languageId === languageId
       ) {
@@ -57,7 +61,7 @@ export function getLanguageModelCache<T>(
         languageId,
         cTime: Date.now(),
       }
-      if (languageModelInfo == null) {
+      if (!languageModelInfo) {
         nModels++
       }
 
@@ -71,8 +75,7 @@ export function getLanguageModelCache<T>(
             oldestTime = languageModelInfo.cTime
           }
         }
-        if (oldestUri != null) {
-          // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+        if (oldestUri) {
           delete languageModels[oldestUri]
           nModels--
         }
@@ -81,8 +84,7 @@ export function getLanguageModelCache<T>(
     },
     onDocumentRemoved(document: TextDocument) {
       const uri = document.uri
-      if (languageModels[uri] != null) {
-        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+      if (languageModels[uri]) {
         delete languageModels[uri]
         nModels--
       }
