@@ -15,32 +15,37 @@
     "url": "https://github.com/tetracalibers/styratum/issues"
   },
   "homepage": "https://github.com/tetracalibers/styratum#readme",
-  "main": "src/index.ts",
+  "main": "src/extension.ts",
   "type": "module",
   "private": true,
   "exports": {
-    "import": "./lib/bundle.es.js",
-    "require": "./lib/bundle.cjs",
-    "node": "./lib/bundle.es.js",
-    "default": "./lib/bundle.cjs"
+    "import": "./out/extension.es.js",
+    "require": "./out/extension.cjs",
+    "node": "./out/extension.es.js",
+    "default": "./out/extension.cjs"
   },
   "scripts": {
     "test": "echo \"Error: run tests from root\" && exit 1",
     "type:check": "tsc --noEmit",
-    "prebuild": "yarn type:check && rimraf lib",
+    "prebuild": "yarn type:check && rimraf out",
     "build": "rollup -c --watch",
-    "start": "yarn build && node lib/bundle.es.js"
+    "start": "yarn build && node lib/extension.es.js"
   },
   "devDependencies": {
-    "case": "^1.6.3",
     "@rollup/plugin-commonjs": "^22.0.1",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^13.3.0",
     "@rollup/plugin-typescript": "^8.3.3",
+    "case": "^1.6.3",
     "esbuild": "^0.14.48",
     "rimraf": "^3.0.2",
     "rollup": "^2.75.7",
     "rollup-plugin-esbuild": "^4.9.1",
     "typescript": "^4.7.4"
+  },
+  "dependencies": {
+    "vscode-css-languageservice": "^6.0.1",
+    "vscode-languageserver": "^8.0.2",
+    "vscode-languageserver-textdocument": "^1.0.5"
   }
 }
