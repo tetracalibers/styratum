@@ -18,7 +18,7 @@
   "categories": [
     "Programming Languages"
   ],
-  "icon": "https://github.com/tetracalibers/vscode-syrm-support/blob/main/icons/syrm.png",
+  "icon": "https://github.com/tetracalibers/vscode-syrm-syntax/blob/main/icons/syrm04.png?raw=true",
   "contributes": {
     "configurationDefaults": {
       "[syrm]": {
