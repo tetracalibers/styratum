@@ -20,29 +20,29 @@ const banner = `/*!
 
 const config = [
   {
-    input: 'src/index.ts',
+    input: 'src/extension.ts',
     output: [
       {
-        file: 'dist/bundle.cjs',
+        file: 'out/extension.cjs',
         format: 'cjs',
         sourcemap: 'file',
         banner,
       },
       {
-        file: 'dist/bundle.es.js',
+        file: 'out/extension.es.js',
         format: 'es',
         sourcemap: 'file',
         banner,
       },
       /** for script tag */
       // {
-      //  file: 'lib/bundle-web.js',
+      //  file: 'lib/extension-web.js',
       //  format: 'iife',
       //  name: 'StylingPatch',
       // },
       /** for universal */
       // {
-      //  file: 'lib/bundle.umd.js',
+      //  file: 'lib/extension.umd.js',
       //  format: 'umd',
       //  name: 'StylingPatch',
       // },

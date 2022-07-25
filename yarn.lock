@@ -1182,6 +1182,11 @@
   dependencies:
     "@types/node" "*"
 
+"@types/vscode@^1.69.0":
+  version "1.69.0"
+  resolved "https://registry.yarnpkg.com/@types/vscode/-/vscode-1.69.0.tgz#a472011af392fbcf82cbb82f60b4c239c21b921c"
+  integrity sha512-RlzDAnGqUoo9wS6d4tthNyAdZLxOIddLiX3djMoWk29jFfSA1yJbIwr0epBYqqYarWB6s2Z+4VaZCQ80Jaa3kA==
+
 "@typescript-eslint/eslint-plugin@^5.29.0":
   version "5.30.7"
   resolved "https://registry.npmjs.org/@typescript-eslint/eslint-plugin/-/eslint-plugin-5.30.7.tgz"

@@ -23,13 +23,13 @@ const config = [
     input: 'src/index.ts',
     output: [
       {
-        file: 'dist/bundle.cjs',
+        file: 'out/bundle.cjs',
         format: 'cjs',
         sourcemap: 'file',
         banner,
       },
       {
-        file: 'dist/bundle.es.js',
+        file: 'out/bundle.es.js',
         format: 'es',
         sourcemap: 'file',
         banner,

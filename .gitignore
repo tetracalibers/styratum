@@ -4,3 +4,4 @@ node_modules
 _*.*
 *.log
 .DS_Store
+out
