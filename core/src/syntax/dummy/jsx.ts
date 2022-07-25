@@ -1,4 +1,4 @@
-import ComponentFile from '../../class/ComponentFile.1'
+import ComponentFile from '../../class/ComponentFile'
 
 const componentRootPath =
   '/Users/tomixy/MyNpmPackage/React-Polyhedron-UI/Repository/React-polyhexUI/core/mock/src/components/atoms/Balloon/Balloon.tsx'

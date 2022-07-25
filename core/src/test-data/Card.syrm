@@ -1,0 +1,27 @@
+<Cascade>
+  & {
+    padding: props(padding);
+    border: props(borderWidth) solid;
+    outline: props(borderWidth) solid transparent;
+    outline-offset: calc(-1 * props(borderWidth));
+  }
+  
+  & * {
+    color: inherit;
+  }
+  
+  @falsy(onDarkmode)
+  & {
+    color: props(darkColor);
+    background-color: props(lightColor);
+  }
+  @else
+  & {
+    color: props(lightColor);
+    background-color: props(lightColor);
+  }
+</Cascade>
+
+<Structure>
+  <span {...spanProps}>{children}</span>
+</Structure>

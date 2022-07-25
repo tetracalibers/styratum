@@ -16,9 +16,9 @@ interface AbstComponentFile {
 
 class ComponentFile implements AbstComponentFile {
   constructor(path: string) {
-    this._path = path
-    this._extension = extname(this._path)
-    this._name = basename(this._path)
+    this.path = path
+    this.extension = extname(this.path)
+    this.name = basename(this.path)
   }
 
   path: string
@@ -27,15 +27,15 @@ class ComponentFile implements AbstComponentFile {
 
   isStyled?: 0 | undefined
   get src(): string {
-    if (test('-e', this._path)) {
-      return cat(this._path).toString().replace(/\r?\n/g, '')
+    if (test('-e', this.path)) {
+      return cat(this.path).toString().replace(/\r?\n/g, '')
     } else {
       return ''
     }
   }
 
   set subExtension(__: string | undefined) {
-    this.subExtension = _.chain(_.split(this._name, '.'))
+    this.subExtension = _.chain(_.split(this.name, '.'))
       .dropRight()
       .last()
       .value()
