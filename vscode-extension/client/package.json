@@ -1,0 +1,46 @@
+{
+  "name": "@syrm/vscode-syrm-languageclient",
+  "version": "0.0.0",
+  "description": "vscode language client for syrm(style + stratum) notation",
+  "author": {
+    "name": "tomixy",
+    "url": "https://tetracalibers.notion.site/tetracalibers/tomixy-TetraCalibers-30b94fb9fc054d4da667539ef35f42c6"
+  },
+  "homepage": "https://github.com/tetracalibers/vscode-syrm-syntax#readme",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tetracalibers/vscode-syrm-syntax.git"
+  },
+  "bugs": {
+    "url": "https://github.com/tetracalibers/vscode-syrm-syntax/issues"
+  },
+  "main": "src/index.ts",
+  "type": "module",
+  "private": true,
+  "exports": {
+    "import": "./lib/bundle.es.js",
+    "require": "./lib/bundle.cjs",
+    "node": "./lib/bundle.es.js",
+    "default": "./lib/bundle.cjs"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1",
+    "type:check": "tsc --noEmit",
+    "prebuild": "yarn type:check && rimraf lib",
+    "build": "rollup -c",
+    "start": "yarn build && node lib/bundle.es.js"
+  },
+  "devDependencies": {
+    "case": "^1.6.3",
+    "@rollup/plugin-commonjs": "^22.0.1",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^13.3.0",
+    "@rollup/plugin-typescript": "^8.3.3",
+    "esbuild": "^0.14.48",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.75.7",
+    "rollup-plugin-esbuild": "^4.9.1",
+    "typescript": "^4.7.4"
+  }
+}

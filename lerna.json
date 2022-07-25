@@ -1,0 +1,7 @@
+{
+  "packages": ["vscode-extension/client", "vscode-extension/server", "core"],
+  "useNx": true,
+  "version": "0.0.0",
+  "useWorkspaces": true,
+  "npmClient": "yarn"
+}
