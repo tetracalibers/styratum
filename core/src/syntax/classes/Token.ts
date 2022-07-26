@@ -1,8 +1,5 @@
-import E from 'fp-ts/Either'
-import A from 'fp-ts/Array'
 import { Address } from './Address'
 import _ from 'lodash'
-import { isNewlineChar } from '../../util/regexp'
 
 export type Token = {
   kind: string
