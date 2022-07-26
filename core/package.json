@@ -59,6 +59,7 @@
     "nano-css": "^5.3.5",
     "nanoid": "^4.0.0",
     "nanoid-dictionary": "^4.3.0",
+    "parser-ts": "^0.6.16",
     "pkg-dir": "^6.0.1",
     "rimraf": "^3.0.2",
     "rollup": "^2.75.7",
