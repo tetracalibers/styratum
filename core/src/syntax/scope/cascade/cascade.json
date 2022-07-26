@@ -1,0 +1,36 @@
+{
+  "selector": [
+    {
+      "token": ["&", "*"],
+      "tokenType": ["capitalCase", "lowerCase", "preudo"]
+    },
+    {
+      "token": {
+        "stop": ["{"]
+      }
+    }
+  ],
+  "BEGIN_declarations": [
+    {
+      "token": ["{"]
+    }
+  ],
+  "END_declarations": [
+    {
+      "token": ["}"]
+    }
+  ],
+  "controlStatement": [
+    {
+      "token": ["@"]
+    },
+    {
+      "tokenType": ["lowerCase"]
+    },
+    {
+      "token": {
+        "stop": ["\n"]
+      }
+    }
+  ]
+}

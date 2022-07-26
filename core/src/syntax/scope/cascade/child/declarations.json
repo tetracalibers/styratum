@@ -1,0 +1,16 @@
+{
+  "declaration": [
+    {
+      "tokenType": ["cssPropertyName"]
+    },
+    {
+      "token": [":"]
+    },
+    {
+      "tokenType": ["cssPropertyValue", "syrmFunction"]
+    },
+    {
+      "token": [";"]
+    }
+  ]
+}

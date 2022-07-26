@@ -1,0 +1,77 @@
+{
+  "BEGIN_cascade": [
+    {
+      "token": ["<"]
+    },
+    {
+      "token": ["Cascade"]
+    },
+    {
+      "token": [">"]
+    }
+  ],
+  "END_cascade": [
+    {
+      "token": ["<"]
+    },
+    {
+      "token": ["/"]
+    },
+    {
+      "token": ["Cascade"]
+    },
+    {
+      "token": [">"]
+    }
+  ],
+  "BEGIN_structure": [
+    {
+      "token": ["<"]
+    },
+    {
+      "token": ["Structure"]
+    },
+    {
+      "token": [">"]
+    }
+  ],
+  "END_structure": [
+    {
+      "token": ["<"]
+    },
+    {
+      "token": ["/"]
+    },
+    {
+      "token": ["Structure"]
+    },
+    {
+      "token": [">"]
+    }
+  ],
+  "BEGIN_inject": [
+    {
+      "token": ["<"]
+    },
+    {
+      "token": ["Inject"]
+    },
+    {
+      "token": [">"]
+    }
+  ],
+  "END_inject": [
+    {
+      "token": ["<"]
+    },
+    {
+      "token": ["/"]
+    },
+    {
+      "token": ["Inject"]
+    },
+    {
+      "token": [">"]
+    }
+  ]
+}

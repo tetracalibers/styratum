@@ -1,0 +1,16 @@
+{
+  "propsCall": [
+    {
+      "token": ["prop"]
+    },
+    {
+      "token": ["("]
+    },
+    {
+      "tokenType": ["props"]
+    },
+    {
+      "token": [")"]
+    }
+  ]
+}
