@@ -10,13 +10,11 @@ interface CharAddress {
 
 export class DocumentStream {
   private _buffer: string[]
-  private _line: number
-  private _posInline: number
+  private _address: Address
 
   constructor(text: string) {
     this._buffer = [...text]
-    this._line = 0
-    this._posInline = 0
+    this._address = new Address()
   }
 
   public peek() {
@@ -37,22 +35,22 @@ export class DocumentStream {
     this._buffer = rest
     return match(char)
       .with('\r', () => {
+        this._address.sameLineNext()
         return this.takeAndSkip()
       })
       .with('\n', () => {
-        ++this._line
-        this._posInline = 0
+        this._address.newLineNext()
         return this.takeAndSkip()
       })
       .with(P.union(' ', '\t'), () => {
-        ++this._posInline
+        this._address.sameLineNext()
         return this.takeAndSkip()
       })
       .otherwise(() => {
-        ++this._posInline
+        this._address.sameLineNext()
         return {
           char,
-          address: E.right(new Address(this._line, this._posInline)),
+          address: E.right(this._address),
         }
       })
   }

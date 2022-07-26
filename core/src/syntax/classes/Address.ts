@@ -17,11 +17,19 @@ export class Address {
     this._character = character
   }
 
-  next(nextChar: string) {
-    if (isNewlineChar(nextChar)) {
-      return new Address(this._line + 1, 0)
-    }
-    return new Address(this._line, this._character + 1)
+  getNext(nextChar: string) {
+    return isNewlineChar(nextChar)
+      ? new Address(this._line + 1, 0)
+      : new Address(this._line, this._character + 1)
+  }
+
+  sameLineNext() {
+    ++this._character
+  }
+
+  newLineNext() {
+    ++this._line
+    this._character = 0
   }
 }
 

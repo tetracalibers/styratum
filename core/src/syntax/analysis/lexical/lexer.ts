@@ -1,9 +1,9 @@
 import E from 'fp-ts/Either'
 import { pipe } from 'fp-ts/lib/function'
-import { match } from 'ts-pattern'
+import { match, P } from 'ts-pattern'
 import { isBoundaryChar, peelOffWrapString } from '../../../util/regexp'
 import { Address } from '../../classes/Address'
-import { Token } from '../../classes/Token'
+import { Token, TokenDefinition } from '../../classes/Token'
 import { DocumentStream } from './DocumentStream'
 
 class Recorder {}
@@ -18,56 +18,34 @@ abstract class Tokenizer {
     this.uri = uri
     this.accumulator = []
   }
-
-  protected tokenBuilder =
-    (start: Address) =>
-    (kind: string, text: string, end: Address): Token => {
-      return {
-        kind,
-        text,
-        location: {
-          uri: this.uri,
-          range: {
-            start,
-            end,
-          },
-        },
-      }
-    }
-
-  //tokenBuilder () {
-  //  const { char, address } = this._stream.take()
-  //
-  //  return match(char)
-  //    .with('<', () => {
-  //
-  //    })
-  //}
 }
 
 class SyrmTokenizer extends Tokenizer {
   private openAngleBracket(startAddress: Address) {
-    const builder = this.tokenBuilder(startAddress)
+    const builder = TokenDefinition.Builder.uri(this.uri)
+      .firstLetter('<')
+      .start(startAddress)
     const nextCharE = this.stream.peek()
 
-    const onRight = (nextCharE: E.Right<string>) => {
-      const nextChar = peelOffWrapString(nextCharE)
-      if (isBoundaryChar(nextChar)) {
-        return builder('operator', '<', startAddress)
-      }
-      return match(nextChar).with('/', () => {
-        return builder(
-          'punctuation.closeTagBegin',
-          '</',
-          startAddress.next(nextChar)
-        )
+    if (E.isLeft(nextCharE)) {
+      return builder.kind('operator').build()
+    }
+
+    const nextChar = nextCharE.right
+    // prettier-ignore
+    return match(nextChar)
+      .with(P.when(c => isBoundaryChar(c as string)),() => {
+        return builder.kind('operator').build()
       })
-    }
-
-    const onLeft = () => {
-      return builder('operator', '<', startAddress)
-    }
-
-    return E.isRight(nextCharE) ? onRight(nextCharE) : onLeft()
+      .with('/', () => {
+        this.stream.takeAndSkip()
+        return builder
+          .kind('punctuation.closeTagBegin')
+          .appendChar(nextChar)
+          .build()
+      })
+      .otherwise(() => {
+        return builder.kind('punctuation.openTagBegin').build()
+      })
   }
 }

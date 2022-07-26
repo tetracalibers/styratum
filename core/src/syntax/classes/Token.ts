@@ -2,6 +2,7 @@ import E from 'fp-ts/Either'
 import A from 'fp-ts/Array'
 import { Address } from './Address'
 import _ from 'lodash'
+import { isNewlineChar } from '../../util/regexp'
 
 export type Token = {
   kind: string
@@ -15,6 +16,12 @@ export type Token = {
   }
 }
 
+/*
+
+@usage
+  new People.Builder("Tom", 12).hobby("BaseBall").build().hello();
+
+*/
 export class TokenDefinition {
   protected _kind: string | undefined
   protected _firstLetter: string | undefined
@@ -23,42 +30,46 @@ export class TokenDefinition {
   protected _start: Address | undefined
   protected _end: Address | undefined
 
-  static Builder = class extends TokenDefinition {
-    constructor(uri: string) {
+  private static _Builder = class extends TokenDefinition {
+    constructor() {
       super()
+    }
+
+    uri(uri: string) {
       this._uri = uri
+      return this
     }
 
     kind(kind: string) {
       this._kind = kind
+      return this
     }
 
     firstLetter(char: string) {
       this._firstLetter = char
       this.appendChar(char)
+      this._end = this._start
+      return this
     }
 
     appendChar(char: string) {
-      if (this._firstLetter === undefined) {
+      if (_.isUndefined(this._firstLetter)) {
         this._firstLetter = char
       }
+      if (!_.isUndefined(this._start)) {
+        this._end = this._start.getNext(char)
+      }
       this._text.push(char)
+      return this
     }
 
-    address = (start: Address) => {
-      this._start = start
-      return (end: Address | ((start: Address) => Address)) => {
-        const _start = this._start as Address
-        this._end = typeof end === 'function' ? end(_start) : end
-      }
+    start(address: Address) {
+      this._start = address
+      return this
     }
 
-    build(): E.Either<string, Token> {
-      const allMember = [this._kind, this._firstLetter, this._start, this._end]
-      if (A.exists(_.isUndefined)(allMember)) {
-        return E.left('Incomplete value setting')
-      }
-      return E.right({
+    build(): Token {
+      return {
         kind: this._kind as string,
         text: this._text.join(''),
         location: {
@@ -68,7 +79,9 @@ export class TokenDefinition {
             end: this._end as Address,
           },
         },
-      })
+      }
     }
   }
+
+  static Builder = new this._Builder()
 }

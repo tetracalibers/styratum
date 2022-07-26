@@ -13,5 +13,5 @@ export const isBoundaryChar = (charE: stringE) => {
 
 export const isNewlineChar = (charE: string | E.Right<string>) => {
   const char = peelOffWrapString(charE)
-  return /[\r\n]/.test(char)
+  return char === '\n'
 }
