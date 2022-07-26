@@ -1,6 +1,6 @@
 import * as ARRAY from 'fp-ts/Array'
-import { tokenValidator } from './TokenValidator'
-import { TokenSeqTraverser } from './TokenSeqTraverser'
+import { tokenValidator } from './tokenValidator'
+import { TokenSeqTraverser } from './tokenSeqTraverser'
 import { flashError } from '../../util/error'
 
 const checkerIterationUnit =

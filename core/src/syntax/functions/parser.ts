@@ -1,5 +1,5 @@
-import { TokenSeqTraverser } from './TokenSeqTraverser'
-import { syntaxCheckerGenerator } from './SyntaxChecker'
+import { TokenSeqTraverser } from './tokenSeqTraverser'
+import { syntaxCheckerGenerator } from './syntaxChecker'
 import { flashError } from '../../util/error'
 import * as EITHER from 'fp-ts/Either'
 import _ from 'lodash'
