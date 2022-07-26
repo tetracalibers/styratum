@@ -1,6 +1,7 @@
 import E from 'fp-ts/Either'
 import { match, P } from 'ts-pattern'
-import { AddressE } from '../../interfaces/Token'
+import { isInvalid } from '../../../util/conditions'
+import { Address, AddressE } from '../../classes/Address'
 
 interface CharAddress {
   char: string
@@ -9,63 +10,49 @@ interface CharAddress {
 
 export class DocumentStream {
   private _buffer: string[]
-  private _uri: string
   private _line: number
   private _posInline: number
 
-  constructor(text: string, uri: string) {
+  constructor(text: string) {
     this._buffer = [...text]
     this._line = 0
     this._posInline = 0
-    this._uri = uri
   }
 
-  public get buffer(): string[] {
-    return this._buffer
+  public peek() {
+    const [, nextChar] = this._buffer
+    return isInvalid(nextChar)
+      ? E.left('EOF already reached')
+      : E.right(nextChar)
   }
 
-  public get uri(): string {
-    return this._uri
-  }
-
-  public get line(): number {
-    return this._line
-  }
-
-  public get posInline(): number {
-    return this._posInline
-  }
-
-  public take(): CharAddress {
+  public takeAndSkip(): CharAddress {
     if (this._buffer.length === 0) {
       return {
         char: '',
-        address: E.left('beyond the EOF.'),
+        address: E.left('EOF already reached'),
       }
     }
     const [char, ...rest] = this._buffer
     this._buffer = rest
     return match(char)
       .with('\r', () => {
-        return this.take()
+        return this.takeAndSkip()
       })
       .with('\n', () => {
         ++this._line
         this._posInline = 0
-        return this.take()
+        return this.takeAndSkip()
       })
       .with(P.union(' ', '\t'), () => {
         ++this._posInline
-        return this.take()
+        return this.takeAndSkip()
       })
       .otherwise(() => {
         ++this._posInline
         return {
           char,
-          address: E.right({
-            line: this._line,
-            character: this._posInline,
-          }),
+          address: E.right(new Address(this._line, this._posInline)),
         }
       })
   }
