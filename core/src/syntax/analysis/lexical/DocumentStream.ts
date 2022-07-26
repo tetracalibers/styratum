@@ -54,7 +54,7 @@ export class DocumentStream {
         this._posInline = 0
         return this.take()
       })
-      .with(P.union('s', '\t'), () => {
+      .with(P.union(' ', '\t'), () => {
         ++this._posInline
         return this.take()
       })
