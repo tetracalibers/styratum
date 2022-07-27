@@ -69,12 +69,12 @@
   @invert;
 </Cascade>
 
-<Supplement>
+<SetProps>
   & > Block {
-    margin-top: auto;
-    margin-bottom: auto;
+    marginTop: auto;
+    marginBottom: auto;
   }
-</Supplement>
+</SetProps>
 
 <Structure>
   import Block from './styratum'

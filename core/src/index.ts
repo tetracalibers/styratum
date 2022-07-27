@@ -1,7 +1,7 @@
 import { tokenize, compile } from 'stylis'
 
 const testData = `
-   & {
+  & {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
