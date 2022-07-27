@@ -32,10 +32,12 @@
     "start": "yarn build && node dist/bundle.es.js"
   },
   "dependencies": {
+    "ohm-js": "^16.3.4",
     "pretty-error": "^4.0.0",
     "stylis": "^4.1.1"
   },
   "devDependencies": {
+    "@ohm-js/cli": "^1.1.0",
     "@rollup/plugin-commonjs": "^22.0.1",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^13.3.0",
