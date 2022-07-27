@@ -1,12 +1,30 @@
-import { lexer } from './syntax/lexer/common/Lexer'
-import shell from 'shelljs'
-import { dumpJson } from './util/json'
-import jsTokens from 'js-tokens'
+import { tokenize, compile } from 'stylis'
 
-const { cat } = shell
+const testData = `
+   & {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  & > * {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  
+  @truthy(recursive);
+  & * + * {
+    margin-top: props(space);
+  }
+  @else;
+  & > * + * {
+    margin-top: props(space);
+  }
+  
+  @exist(separateFrom);
+  & > :nth-child(props(separateFrom)) {
+    margin-bottom: auto;
+  }
+`
 
-const source = cat('./src/test-data/Card.syrm').toString()
-const tokens = Array.from(jsTokens(source, { jsx: true }))
-console.log('🚀 ~ file: index.ts ~ line 10 ~ tokens', tokens)
-
-dumpJson(tokens)('tmp/card-syrm.json')
+const tokens = tokenize(testData)
+console.log('🚀 ~ file: index.ts ~ line 22 ~ tokens', tokens)
