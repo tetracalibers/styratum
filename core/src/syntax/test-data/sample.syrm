@@ -77,16 +77,16 @@
 </SetProps>
 
 <Structure>
-  import Block from './styratum'
+  import Block from './Block'
   
   <Block>
-    <Block {isList ?? role="list"}>
-      <Block {isList ?? role="listitem"}>
+    <Block {propss(isList) ?? role="list"}>
+      <Block {props(isList) ?? role="listitem"}>
         <span {...spanProps}>{children}</span>
       </Block>
     </Block>
-    <Block {isList ?? role="list"}>
-      <Block {isList ?? role="listitem"}>
+    <Block {props(isList) ?? role="list"}>
+      <Block {props(isList) ?? role="listitem"}>
         <span {...spanProps}>{children}</span>
       </Block>
     </Block>
