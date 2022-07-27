@@ -1,0 +1,94 @@
+<Collection>
+  <Side>
+    & {
+      flex-basis: 20rem;
+      flex-grow: 1;
+    }
+    
+    @exist(sideWidth);
+    & {
+      max-width: props(sideWidth);
+    }
+  </Side>
+  <Main>
+    & {
+      flex-basis: 0;
+      flex-grow: 999;
+      min-width: calc(1% * props(contentMin));
+    }
+  </Main>
+</Collection>
+
+<Cascade>
+  & {
+    display: flex;
+    flex-wrap: wrap;
+    gap: props(space);
+    padding: props(padding);
+    border: props(borderWidth) solid;
+    outline: props(borderWidth) solid transparent;
+    outline-offset: calc(-1 * props(borderWidth));
+  }
+  
+  & > * {
+    margin-top: props(space);
+    margin-bottom: props(space);
+  }
+  
+  & > :first-child:not(ToPlaceCenter) {
+    margin-top: 0;
+  }
+  
+  & > :nth-last-child(n+props(limit)),
+  & > :nth-last-child(n+props(limit)) ~ * {
+    flex-basis: 100%;
+  }
+  
+  @truthy(recursive);
+  & * + * {
+    margin-top: props(space);
+  }
+  @else;
+  & > * + * {
+    margin-top: props(space);
+  }
+  
+  @exist(separateFrom);
+  & > :nth-child(props(separateFrom)) {
+    margin-bottom: auto;
+  }
+  
+  @truthy(noStretch);
+  & {
+    align-items: flex-start;
+  }
+  
+  @falsy(sideRight)
+  & > :first-child { @collection: Side; }
+  & > :last-child { @collection: Main; }
+  @invert;
+</Cascade>
+
+<Supplement>
+  & > Block {
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+</Supplement>
+
+<Structure>
+  import Block from './styratum'
+  
+  <Block>
+    <Block {isList ?? role="list"}>
+      <Block {isList ?? role="listitem"}>
+        <span {...spanProps}>{children}</span>
+      </Block>
+    </Block>
+    <Block {isList ?? role="list"}>
+      <Block {isList ?? role="listitem"}>
+        <span {...spanProps}>{children}</span>
+      </Block>
+    </Block>
+  </Block>
+</Structure>
