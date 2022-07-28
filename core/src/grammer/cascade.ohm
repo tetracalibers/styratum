@@ -105,12 +105,12 @@ SyrmCascade {
   /* math */
   Formula = 
     | numeral -- number
-    | atomicFormula -- simple
+    | AtomicFormula -- simple
     | FormulaElements (mathOperator FormulaElements)+ -- recursive
   FormulaElements = 
     | numeral -- number
-    | "(" atomicFormula ")" -- expression
-  atomicFormula = numeral (mathOperator numeral)+
+    | "(" AtomicFormula ")" -- expression
+  AtomicFormula = numeral (mathOperator numeral)+
   numeral = numeralOnly | numeralWithUnit
   numeralOnly = 
     | "-" digit+ -- negative
