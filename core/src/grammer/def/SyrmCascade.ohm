@@ -1,9 +1,6 @@
-SyrmCascade {
-  /* override */
-  space := whitespace | lineTerminator | comment
-  
+SyrmCascade <: Base {
   /* root */
-  Root = "<Cascade>" space* Block* space* "</Cascade>"
+  Root := "<Cascade>" space* Block* space* "</Cascade>"
   
   /* -------------------------------------------------------------------------- */
   /* block                                                                      */
@@ -25,7 +22,6 @@ SyrmCascade {
   syrmBetweenAnnotation = elseKeyword
   syrmSuffixAnnotation = invertKeyword
   
-  propsFunc = "props" "(" jsIdentifier ")"
   truthyKeyword = "@" "truthy" "(" jsIdentifier ")"
   falsyKeyword = "@" "falsy" "(" jsIdentifier")"
   existKeyword = "@" "exist" "(" jsIdentifier ")"
@@ -107,49 +103,4 @@ SyrmCascade {
   generalSiblijngCombinator = "~"
   childCombinator = ">"
   columnCombinator = "||"
-  
-  /* -------------------------------------------------------------------------- */
-  /* util                                                                       */
-  /* -------------------------------------------------------------------------- */
-  
-  /* math */
-  Formula = FormulaElements (mathOperator FormulaElements)* -- recursive
-  FormulaElements = 
-    | numeral -- number
-    | "(" AtomicFormula ")" -- expression
-  AtomicFormula = numeral (mathOperator numeral)+
-  numeral = numeralWithUnit | numeralOnly | propsFunc
-  numeralOnly = 
-    | "-" digit+ -- negative
-    | digit+ -- positive
-  numeralWithUnit = numeral unit
-  unit = lowerCase | "%"
-  mathOperator = "-" | "+" | "*" | "**" | "/"
-  
-  /* string */
-  lowerCase = lower+
-  kebabCase = lower ("-" | lower)*
-  pascalCase = (upper (lower | digit)*)+
-  camelCase = lower (letter | digit)*
-  jsIdentifier = letter (letter | digit | "_")*
-  
-  /* comment */
-  comment = multiLineComment | singleLineComment
-
-  multiLineComment = "/*" (~"*/" any)* "*/"
-  singleLineComment = "//" (~lineTerminator any)*
-  
-  /* special character */
-  whitespace = "\t"
-             | "\x0B"    -- verticalTab
-             | "\x0C"    -- formFeed
-             | " "
-             | "\u00A0"  -- noBreakSpace
-             | "\uFEFF"  -- byteOrderMark
-             | unicodeSpaceSeparator
-
-  lineTerminator = "\n" | "\r" | "\u2028" | "\u2029"
-  lineTerminatorSequence = "\n" | "\r" ~"\n" | "\u2028" | "\u2029" | "\r\n"
-  
-  unicodeSpaceSeparator = "\u2000".."\u200B" | "\u3000"
 }
