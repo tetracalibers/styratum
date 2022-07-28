@@ -1,16 +1,20 @@
 SyrmCascade {
-  cascade = &"<Cascade>" block* &"</Cascade>"
+  /* override */
+  space := whitespace | lineTerminator
+  
+  /* root */
+  Cascade = "<Cascade>" space* Block* space* "</Cascade>"
   
   /* -------------------------------------------------------------------------- */
   /* block                                                                      */
   /* -------------------------------------------------------------------------- */
   
-  block = 
-    | declarationsBlock -- basic
-    | declarationsBlockWithPrefix -- prefixed
-    | declarationsBlockWithPrefix syrmSuffixAnnotation -- surrounded
-  declarationsBlockWithPrefix = syrmPrefixAnnotation declarationsBlock
-  declarationsBlock = selectorList "{" declarationList "}"
+  Block = 
+    | DeclarationsBlock -- basic
+    | DeclarationsBlockWithPrefix -- prefixed
+    | DeclarationsBlockWithPrefix syrmSuffixAnnotation -- surrounded
+  DeclarationsBlockWithPrefix = syrmPrefixAnnotation DeclarationsBlock
+  DeclarationsBlock = SelectorList "{" DeclarationList "}"
   
   /* -------------------------------------------------------------------------- */
   /* syrm support                                                               */
@@ -31,7 +35,7 @@ SyrmCascade {
   /* declaration                                                                */
   /* -------------------------------------------------------------------------- */
   
-  declarationList = declaration ("," declaration)*
+  DeclarationList = declaration ("," declaration)*
   declaration = propertyName ":" propertyValue ";"
   
   /* -------------------------------------------------------------------------- */
@@ -52,7 +56,7 @@ SyrmCascade {
   /* -------------------------------------------------------------------------- */
   
   /* selector list */
-  selectorList = selector ("," selector)*
+  SelectorList = selector ("," selector)*
   
   /* selector */
   selector = basicSelector | compositeSelector | pseudoSelector
@@ -121,10 +125,17 @@ SyrmCascade {
   pascalCase = (upper (lower | digit)+)+
   jsIdentifier = letter (letter | digit | "_")*
   
-  /* atomic */
-  openBrace = "{"
-  closeBrace = "}"
-  openBracket = "["
-  closeBracket = "]"
-  semicolon = ";"
+  /* special character */
+  whitespace = "\t"
+             | "\x0B"    -- verticalTab
+             | "\x0C"    -- formFeed
+             | " "
+             | "\u00A0"  -- noBreakSpace
+             | "\uFEFF"  -- byteOrderMark
+             | unicodeSpaceSeparator
+
+  lineTerminator = "\n" | "\r" | "\u2028" | "\u2029"
+  lineTerminatorSequence = "\n" | "\r" ~"\n" | "\u2028" | "\u2029" | "\r\n"
+  
+  unicodeSpaceSeparator = "\u2000".."\u200B" | "\u3000"
 }
