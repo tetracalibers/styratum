@@ -35,8 +35,8 @@ SyrmCascade {
   /* declaration                                                                */
   /* -------------------------------------------------------------------------- */
   
-  DeclarationList = declaration ("," declaration)*
-  declaration = propertyName ":" propertyValue ";"
+  DeclarationList = declaration+
+  declaration = propertyName space* ":" space* propertyValue ";"
   
   /* -------------------------------------------------------------------------- */
   /* property name                                                              */
@@ -48,7 +48,7 @@ SyrmCascade {
   /* property Value                                                             */
   /* -------------------------------------------------------------------------- */
   
-  propertyValue = (kebabCase | propsFunc | pascalCase | formula | propertyValueFunc)+
+  propertyValue = (kebabCase | pascalCase | formula | propertyValueFunc | propsFunc)+
   propertyValueFunc = kebabCase "(" formula ("," formula)* ")"
   
   /* -------------------------------------------------------------------------- */
@@ -121,7 +121,7 @@ SyrmCascade {
   
   /* string */
   lowerCase = lower+
-  kebabCase = lower ("-" | letter)* lower
+  kebabCase = lower+ ("-" lower+)*
   pascalCase = (upper (lower | digit)+)+
   jsIdentifier = letter (letter | digit | "_")*
   
