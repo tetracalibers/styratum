@@ -5,7 +5,7 @@
       flex-grow: 1;
     }
     
-    @exist(sideWidth);
+    @exist(sideWidth)
     & {
       max-width: props(sideWidth);
     }
@@ -44,21 +44,21 @@
     flex-basis: 100%;
   }
   
-  @truthy(recursive);
+  @truthy(recursive)
   & * + * {
     margin-top: props(space);
   }
-  @else;
+  @else
   & > * + * {
     margin-top: props(space);
   }
   
-  @exist(separateFrom);
+  @exist(separateFrom)
   & > :nth-child(props(separateFrom)) {
     margin-bottom: auto;
   }
   
-  @truthy(noStretch);
+  @truthy(noStretch)
   & {
     align-items: flex-start;
   }
@@ -66,7 +66,7 @@
   @falsy(sideRight)
   & > :first-child { @collection: Side; }
   & > :last-child { @collection: Main; }
-  @invert;
+  @invert
 </Cascade>
 
 <SetProps>
