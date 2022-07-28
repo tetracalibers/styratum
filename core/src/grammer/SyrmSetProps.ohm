@@ -1,12 +1,6 @@
 SyrmCollection <: SyrmCascade {
   /* root */
-  Root := "<Collection>" Def<pascalCase>* "</Collection>"
-  
-  /* -------------------------------------------------------------------------- */
-  /* def                                                                        */
-  /* -------------------------------------------------------------------------- */
-  
-  Def<TagName> = "<" TagName ">" space* Block* space* "</" TagName ">"
+  Root := "<SetProps>" Def<pascalCase>* "</SetProps>"
   
   /* -------------------------------------------------------------------------- */
   /* block                                                                      */
@@ -28,8 +22,9 @@ SyrmCollection <: SyrmCascade {
   /* 
     @diff
       - Collection calls are not allowed
+      - Kebab case not Pascal case
   */
-  propertyName := kebabCase
+  propertyName := pascalCase
   
   /* -------------------------------------------------------------------------- */
   /* property Value                                                             */
@@ -38,6 +33,7 @@ SyrmCollection <: SyrmCascade {
   /*
     @diff
       - Collection keywords are not available.
+      - Kebab case not Pascal case
   */
-  PropertyValue := propsFunc | PropertyValueFunc | kebabCase | Formula
+  PropertyValue := propsFunc | PropertyValueFunc | pascalCase | Formula
 }
