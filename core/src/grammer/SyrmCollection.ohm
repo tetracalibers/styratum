@@ -1,9 +1,9 @@
-SyrmCollection {
+SyrmCollection <: SyrmCascade {
   /* override */
   space := whitespace | lineTerminator
   
   /* root */
-  Collection = "<Collection>" Def<pascalCase>* "</Collection>"
+  Root := "<Collection>" Def<pascalCase>* "</Collection>"
   
   /* -------------------------------------------------------------------------- */
   /* def                                                                        */
@@ -11,149 +11,15 @@ SyrmCollection {
   
   Def<TagName> = "<" TagName ">" space* Block* space* "</" TagName ">"
   
- /* 
-  ┌─────────────────────────────────────────────────────────────────────────────┐
-  │   same as SYRM_CASCADE below.                                                │
-  └─────────────────────────────────────────────────────────────────────────────┘
- */
-  
-  /* -------------------------------------------------------------------------- */
-  /* block                                                                      */
-  /* -------------------------------------------------------------------------- */
-  
-  Block = 
-    | DeclarationsBlockWithPrefix DeclarationsBlock* syrmSuffixAnnotation -- surrounded
-    | DeclarationsBlockWithPrefix syrmBetweenAnnotation DeclarationsBlock -- between
-    | DeclarationsBlockWithPrefix -- prefixed
-    | DeclarationsBlock -- basic
-  DeclarationsBlockWithPrefix = syrmPrefixAnnotation DeclarationsBlock
-  DeclarationsBlock = SelectorList "{" DeclarationList "}"
-  
-  /* -------------------------------------------------------------------------- */
-  /* syrm support                                                               */
-  /* -------------------------------------------------------------------------- */
-
-  syrmPrefixAnnotation = truthyKeyword | falsyKeyword | existKeyword
-  syrmBetweenAnnotation = elseKeyword
-  syrmSuffixAnnotation = invertKeyword
-  
-  propsFunc = "props" "(" jsIdentifier ")"
-  truthyKeyword = "@" "truthy" "(" jsIdentifier ")"
-  falsyKeyword = "@" "falsy" "(" jsIdentifier")"
-  existKeyword = "@" "exist" "(" jsIdentifier ")"
-  elseKeyword = "@" "else"
-  invertKeyword = "@" "invert"
-  collectionKeyword = "@" "collection"
-  
-  /* -------------------------------------------------------------------------- */
-  /* Declaration                                                                */
-  /* -------------------------------------------------------------------------- */
-  
-  DeclarationList = Declaration+
-  Declaration = propertyName ":" PropertyValue+ ";"
-  
   /* -------------------------------------------------------------------------- */
   /* property name                                                              */
   /* -------------------------------------------------------------------------- */
   
-  propertyName = kebabCase | collectionKeyword
+  propertyName := kebabCase
   
   /* -------------------------------------------------------------------------- */
   /* property Value                                                             */
   /* -------------------------------------------------------------------------- */
   
-  PropertyValue = propsFunc | PropertyValueFunc | kebabCase | pascalCase | Formula
-  PropertyValueFunc = kebabCase "(" Formula ("," Formula)* ")"
-  
-  /* -------------------------------------------------------------------------- */
-  /* Selector                                                                   */
-  /* -------------------------------------------------------------------------- */
-  
-  /* Selector list */
-  SelectorList = Selector ("," Selector)*
-  
-  /* Selector */
-  Selector = AtomicSelector SelectorElem*
-  SelectorElem = 
-    | combinator ~"&" AtomicSelector -- edge
-    | ~"&" AtomicSelector -- node
-  AtomicSelector = 
-    | basicSelector PseudoSelector -- composite
-    | basicSelector -- basic
-    | PseudoSelector -- omission
-  
-  /* Pseudo Selector */
-  PseudoSelector = 
-    | Pseudo -- atom
-    | ~PseudoFunc Pseudo Pseudo* -- molecule
-  
-  /* Pseudo */
-  Pseudo = PseudoFunc | PseudoElement | PseudoClass
-  PseudoFunc = 
-    | PseudoElement "(" PseudoArg ")" -- element
-    | PseudoClass "(" PseudoArg ")" -- class
-  PseudoElement = "::" kebabCase
-  PseudoClass = ":" kebabCase
-  PseudoArg = nth | propsFunc | Selector | letter+ | digit+ 
-  nth = 
-    | "n" "+" digit+ -- basic
-    | "n" "+" propsFunc -- inject
-  
-  /* whole Selector */
-  basicSelector = attributeSelector | htmlTagSelector | rootSelector | universalSelector
-
-  /* named Selector */
-  attributeSelector = "[" kebabCase "=" lowerCase "]"
-  htmlTagSelector = lower (digit | lower)*
-  
-  /* atomic Selector */
-  rootSelector = "&"
-  universalSelector = "*"
-  
-  /* whole combinator */
-  combinator = adjacentSiblijngCombinator | generalSiblijngCombinator | childCombinator | columnCombinator
-  
-  /* atomic combinator */
-  adjacentSiblijngCombinator = "+"
-  generalSiblijngCombinator = "~"
-  childCombinator = ">"
-  columnCombinator = "||"
-  
-  /* -------------------------------------------------------------------------- */
-  /* util                                                                       */
-  /* -------------------------------------------------------------------------- */
-  
-  /* math */
-  Formula = FormulaElements (mathOperator FormulaElements)* -- recursive
-  FormulaElements = 
-    | numeral -- number
-    | "(" AtomicFormula ")" -- expression
-  AtomicFormula = numeral (mathOperator numeral)+
-  numeral = numeralWithUnit | numeralOnly | propsFunc
-  numeralOnly = 
-    | "-" digit+ -- negative
-    | digit+ -- positive
-  numeralWithUnit = numeral unit
-  unit = lowerCase | "%"
-  mathOperator = "-" | "+" | "*" | "**" | "/"
-  
-  /* string */
-  lowerCase = lower+
-  kebabCase = lower ("-" | lower)*
-  pascalCase = (upper (lower | digit)*)+
-  jsIdentifier = letter (letter | digit | "_")*
-  
-  /* special character */
-  whitespace = "\t"
-             | "\x0B"    -- verticalTab
-             | "\x0C"    -- formFeed
-             | " "
-             | "\u00A0"  -- noBreakSpace
-             | "\uFEFF"  -- byteOrderMark
-             | unicodeSpaceSeparator
-
-  lineTerminator = "\n" | "\r" | "\u2028" | "\u2029"
-  lineTerminatorSequence = "\n" | "\r" ~"\n" | "\u2028" | "\u2029" | "\r\n"
-  
-  unicodeSpaceSeparator = "\u2000".."\u200B" | "\u3000"
+  PropertyValue := propsFunc | PropertyValueFunc | kebabCase | Formula
 }

@@ -3,7 +3,7 @@ SyrmCascade {
   space := whitespace | lineTerminator
   
   /* root */
-  Cascade = "<Cascade>" space* Block* space* "</Cascade>"
+  Root = "<Cascade>" space* Block* space* "</Cascade>"
   
   /* -------------------------------------------------------------------------- */
   /* block                                                                      */
