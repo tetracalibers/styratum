@@ -104,6 +104,7 @@ SyrmCascade {
   
   /* math */
   Formula = 
+    | numeral -- number
     | atomicFormula -- simple
     | FormulaElements (mathOperator FormulaElements)+ -- recursive
   FormulaElements = 
