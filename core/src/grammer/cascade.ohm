@@ -32,11 +32,11 @@ SyrmCascade {
   collectionKeyword = "@" "collection"
   
   /* -------------------------------------------------------------------------- */
-  /* declaration                                                                */
+  /* Declaration                                                                */
   /* -------------------------------------------------------------------------- */
   
-  DeclarationList = declaration+
-  declaration = propertyName space* ":" space* propertyValue (space+ propertyValue)* ";"
+  DeclarationList = Declaration+
+  Declaration = propertyName space* ":" space* PropertyValue (space+ PropertyValue)* ";"
   
   /* -------------------------------------------------------------------------- */
   /* property name                                                              */
@@ -48,8 +48,8 @@ SyrmCascade {
   /* property Value                                                             */
   /* -------------------------------------------------------------------------- */
   
-  propertyValue = propsFunc | propertyValueFunc | kebabCase | pascalCase | formula
-  propertyValueFunc = kebabCase "(" formula ("," formula)* ")"
+  PropertyValue = propsFunc | PropertyValueFunc | kebabCase | pascalCase | Formula
+  PropertyValueFunc = kebabCase "(" Formula ("," Formula)* ")"
   
   /* -------------------------------------------------------------------------- */
   /* selector                                                                   */
@@ -103,10 +103,10 @@ SyrmCascade {
   /* -------------------------------------------------------------------------- */
   
   /* math */
-  formula = 
+  Formula = 
     | atomicFormula -- simple
-    | formulaElements (mathOperator formulaElements)+ -- recursive
-  formulaElements = 
+    | FormulaElements (mathOperator FormulaElements)+ -- recursive
+  FormulaElements = 
     | numeral -- number
     | "(" atomicFormula ")" -- expression
   atomicFormula = numeral (mathOperator numeral)+
