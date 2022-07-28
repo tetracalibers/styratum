@@ -74,8 +74,10 @@ SyrmCascade {
     | PseudoClass "(" PseudoArg ")" -- class
   PseudoElement = "::" kebabCase
   PseudoClass = ":" kebabCase
-  PseudoArg = Selector | letter+ | digit+ | nth | propsFunc
-  nth = "n" "+" (digit+ | propsFunc)
+  PseudoArg = nth | propsFunc | Selector | letter+ | digit+ 
+  nth = 
+    | "n" "+" digit+ -- basic
+    | "n" "+" propsFunc -- inject
   
   /* whole Selector */
   basicSelector = rootSelector | universalSelector | attributeSelector | htmlTagSelector | jsxTagSelector
