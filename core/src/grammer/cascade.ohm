@@ -10,9 +10,10 @@ SyrmCascade {
   /* -------------------------------------------------------------------------- */
   
   Block = 
-    | DeclarationsBlock -- basic
+    | DeclarationsBlockWithPrefix DeclarationsBlock* syrmSuffixAnnotation -- surrounded
+    | DeclarationsBlockWithPrefix syrmBetweenAnnotation DeclarationsBlock -- between
     | DeclarationsBlockWithPrefix -- prefixed
-    | DeclarationsBlockWithPrefix syrmSuffixAnnotation -- surrounded
+    | DeclarationsBlock -- basic
   DeclarationsBlockWithPrefix = syrmPrefixAnnotation DeclarationsBlock
   DeclarationsBlock = SelectorList "{" DeclarationList "}"
   
@@ -21,6 +22,7 @@ SyrmCascade {
   /* -------------------------------------------------------------------------- */
 
   syrmPrefixAnnotation = truthyKeyword | falsyKeyword | existKeyword
+  syrmBetweenAnnotation = elseKeyword
   syrmSuffixAnnotation = invertKeyword
   
   propsFunc = "props" "(" jsIdentifier ")"
