@@ -103,19 +103,15 @@ SyrmCascade {
   /* -------------------------------------------------------------------------- */
   
   /* math */
-  Formula = 
-    | numeral -- number
-    | AtomicFormula -- simple
-    | FormulaElements (mathOperator FormulaElements)+ -- recursive
+  Formula = FormulaElements (mathOperator FormulaElements)* -- recursive
   FormulaElements = 
     | numeral -- number
     | "(" AtomicFormula ")" -- expression
   AtomicFormula = numeral (mathOperator numeral)+
-  numeral = numeralOnly | numeralWithUnit
+  numeral = numeralOnly | numeralWithUnit | propsFunc
   numeralOnly = 
     | "-" digit+ -- negative
     | digit+ -- positive
-    | propsFunc -- injected
   numeralWithUnit = numeral unit
   unit = lowerCase
   mathOperator = "-" | "+" | "*" | "**" | "/"
