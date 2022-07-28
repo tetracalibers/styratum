@@ -110,12 +110,12 @@ SyrmCascade {
     | numeral -- number
     | "(" AtomicFormula ")" -- expression
   AtomicFormula = numeral (mathOperator numeral)+
-  numeral = numeralOnly | numeralWithUnit | propsFunc
+  numeral = numeralWithUnit | numeralOnly | propsFunc
   numeralOnly = 
     | "-" digit+ -- negative
     | digit+ -- positive
   numeralWithUnit = numeral unit
-  unit = lowerCase
+  unit = lowerCase | "%"
   mathOperator = "-" | "+" | "*" | "**" | "/"
   
   /* string */
