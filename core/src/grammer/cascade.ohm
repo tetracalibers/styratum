@@ -5,7 +5,10 @@ SyrmCascade {
   /* block                                                                      */
   /* -------------------------------------------------------------------------- */
   
-  block = declarationsBlock | declarationsBlockWithPrefix | (declarationsBlockWithPrefix syrmSuffixAnnotation)
+  block = 
+    | declarationsBlock -- basic
+    | declarationsBlockWithPrefix -- prefixed
+    | declarationsBlockWithPrefix syrmSuffixAnnotation -- surrounded
   declarationsBlockWithPrefix = syrmPrefixAnnotation declarationsBlock
   declarationsBlock = selectorList "{" declarationList "}"
   
@@ -55,7 +58,9 @@ SyrmCascade {
   selector = basicSelector | compositeSelector | pseudoSelector
   
   /* pseudo selector */
-  pseudoSelector = (basicSelector pseudo) | pseudo
+  pseudoSelector = 
+    | basicSelector pseudo -- basic
+    | pseudo -- abbreviated
   
   /* pseudo */
   pseudo = pseudoElement | pseudoClass | pseudoFunc
@@ -94,8 +99,18 @@ SyrmCascade {
   /* -------------------------------------------------------------------------- */
   
   /* math */
-  formula = ((numeral | numeralWithUnit) | ("(" mathFormula ")")) (mathOperator ((numeral | numeralWithUnit) | ("(" mathOperator ")")))*
-  numeral = ("-" digit+) | digit+ | propsFunc
+  formula = 
+    | atomicFormula -- simple
+    | formulaElements (mathOperator formulaElements)+ -- recursive
+  formulaElements = 
+    | numeral -- number
+    | "(" atomicFormula ")" -- expression
+  atomicFormula = numeral (mathOperator numeral)+
+  numeral = numeralOnly | numeralWithUnit
+  numeralOnly = 
+    | "-" digit+ -- negative
+    | digit+ -- positive
+    | propsFunc -- injected
   numeralWithUnit = numeral unit
   unit = lowerCase
   mathOperator = "-" | "+" | "*" | "**" | "/"
