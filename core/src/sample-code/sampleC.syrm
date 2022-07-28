@@ -76,27 +76,3 @@
   & > :last-child { @collection: Main; }
   @invert
 </Cascade>
-
-<SetProps>
-  & > Block {
-    marginTop: auto;
-    marginBottom: auto;
-  }
-</SetProps>
-
-<Structure>
-  import Block from './Block'
-  
-  <Block>
-    <Block {propss(isList) ?? role="list"}>
-      <Block {props(isList) ?? role="listitem"}>
-        <span {...spanProps}>{children}</span>
-      </Block>
-    </Block>
-    <Block {props(isList) ?? role="list"}>
-      <Block {props(isList) ?? role="listitem"}>
-        <span {...spanProps}>{children}</span>
-      </Block>
-    </Block>
-  </Block>
-</Structure>
