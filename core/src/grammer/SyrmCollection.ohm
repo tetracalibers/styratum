@@ -14,7 +14,7 @@ SyrmCollection <: SyrmCascade {
   
   /* 
     @diff
-      - No suffix block defined 
+      - DeclarationsBlockWithPrefix DeclarationsBlock* syrmSuffixAnnotation
   */
   Block := 
     | DeclarationsBlockWithPrefix syrmBetweenAnnotation DeclarationsBlock -- between
@@ -27,7 +27,7 @@ SyrmCollection <: SyrmCascade {
   
   /* 
     @diff
-      - Collection calls are not allowed
+      - collectionKeyword
   */
   propertyName := kebabCase
   
@@ -37,7 +37,7 @@ SyrmCollection <: SyrmCascade {
   
   /*
     @diff
-      - Collection keywords are not available.
+      - pascalCase
   */
   PropertyValue := propsFunc | PropertyValueFunc | kebabCase | Formula
 }

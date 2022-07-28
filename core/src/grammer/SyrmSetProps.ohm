@@ -8,7 +8,7 @@ SyrmSetProps <: SyrmCascade {
   
   /* 
     @diff
-      - surrounded
+      - DeclarationsBlockWithPrefix DeclarationsBlock* syrmSuffixAnnotation 
   */
   Block := 
     | DeclarationsBlockWithPrefix syrmBetweenAnnotation DeclarationsBlock -- between
