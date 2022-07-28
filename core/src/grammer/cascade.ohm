@@ -59,13 +59,19 @@ SyrmCascade {
   SelectorList = Selector ("," Selector)*
   
   /* Selector */
-  Selector = AtomicSelector (combinator AtomicSelector)*
-  AtomicSelector = basicSelector | PseudoSelector
+  Selector = AtomicSelector SelectorElem*
+  SelectorElem = 
+    | combinator ~"&" AtomicSelector -- edge
+    | ~"&" AtomicSelector -- node
+  AtomicSelector = 
+    | basicSelector PseudoSelector -- composite
+    | basicSelector -- basic
+    | PseudoSelector -- omission
   
   /* Pseudo Selector */
   PseudoSelector = 
-    | basicSelector ListOf<Pseudo, ""> -- basic
-    | ListOf<Pseudo, ""> -- abbreviated
+    | Pseudo -- atom
+    | ~PseudoFunc Pseudo Pseudo* -- molecule
   
   /* Pseudo */
   Pseudo = PseudoFunc | PseudoElement | PseudoClass
@@ -80,12 +86,11 @@ SyrmCascade {
     | "n" "+" propsFunc -- inject
   
   /* whole Selector */
-  basicSelector = rootSelector | universalSelector | attributeSelector | htmlTagSelector | jsxTagSelector
+  basicSelector = attributeSelector | htmlTagSelector | rootSelector | universalSelector
 
   /* named Selector */
   attributeSelector = "[" kebabCase "=" lowerCase "]"
-  htmlTagSelector = lowerCase digit* lowerCase*
-  jsxTagSelector = pascalCase
+  htmlTagSelector = lower (digit | lower)*
   
   /* atomic Selector */
   rootSelector = "&"
@@ -120,8 +125,8 @@ SyrmCascade {
   
   /* string */
   lowerCase = lower+
-  kebabCase = lower+ ("-" lower+)*
-  pascalCase = (upper (lower | digit)+)+
+  kebabCase = lower ("-" | lower)*
+  pascalCase = (upper (lower | digit)*)+
   jsIdentifier = letter (letter | digit | "_")*
   
   /* special character */
