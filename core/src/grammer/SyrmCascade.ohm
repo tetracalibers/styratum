@@ -1,3 +1,5 @@
+// TODO comment
+
 SyrmCascade {
   /* override */
   space := whitespace | lineTerminator
@@ -93,6 +95,7 @@ SyrmCascade {
   /* named Selector */
   attributeSelector = "[" kebabCase "=" lowerCase "]"
   htmlTagSelector = lower (digit | lower)*
+  jsxTagSelector = pascalCase
   
   /* atomic Selector */
   rootSelector = "&"
@@ -129,6 +132,7 @@ SyrmCascade {
   lowerCase = lower+
   kebabCase = lower ("-" | lower)*
   pascalCase = (upper (lower | digit)*)+
+  camelCase = lower (letter | digit)*
   jsIdentifier = letter (letter | digit | "_")*
   
   /* special character */

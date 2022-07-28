@@ -1,6 +1,6 @@
-SyrmCollection <: SyrmCascade {
+SyrmSetProps <: SyrmCascade {
   /* root */
-  Root := "<SetProps>" Def<pascalCase>* "</SetProps>"
+  Root := "<SetProps>" space* Block* space* "</SetProps>"
   
   /* -------------------------------------------------------------------------- */
   /* block                                                                      */
@@ -8,7 +8,7 @@ SyrmCollection <: SyrmCascade {
   
   /* 
     @diff
-      - No suffix block defined 
+      - surrounded
   */
   Block := 
     | DeclarationsBlockWithPrefix syrmBetweenAnnotation DeclarationsBlock -- between
@@ -21,10 +21,11 @@ SyrmCollection <: SyrmCascade {
   
   /* 
     @diff
-      - Collection calls are not allowed
-      - Kebab case not Pascal case
+      - collectionKeyword
+      - kebabCase
+      + camelCase
   */
-  propertyName := pascalCase
+  propertyName := camelCase 
   
   /* -------------------------------------------------------------------------- */
   /* property Value                                                             */
@@ -32,8 +33,29 @@ SyrmCollection <: SyrmCascade {
   
   /*
     @diff
-      - Collection keywords are not available.
-      - Kebab case not Pascal case
+      - pascalCase
+      - kebabCase
+      + camelCase
+      - PropertyValueFunc
   */
-  PropertyValue := propsFunc | PropertyValueFunc | pascalCase | Formula
+  PropertyValue := propsFunc | camelCase | Formula
+  
+  /* -------------------------------------------------------------------------- */
+  /* Selector                                                                   */
+  /* -------------------------------------------------------------------------- */
+  
+  /*
+    @diff
+      - basicSelector PseudoSelector
+      - PseudoSelector
+  */
+  AtomicSelector := basicSelector
+  
+  /* 
+    @diff
+      - attributeSelector
+      - htmlTagSelector
+      + jsxTagSelector
+  */
+  basicSelector := jsxTagSelector | rootSelector | universalSelector
 }
