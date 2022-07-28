@@ -52,40 +52,38 @@ SyrmCascade {
   PropertyValueFunc = kebabCase "(" Formula ("," Formula)* ")"
   
   /* -------------------------------------------------------------------------- */
-  /* selector                                                                   */
+  /* Selector                                                                   */
   /* -------------------------------------------------------------------------- */
   
-  /* selector list */
-  SelectorList = selector ("," selector)*
+  /* Selector list */
+  SelectorList = Selector ("," Selector)*
   
-  /* selector */
-  selector = basicSelector | compositeSelector | pseudoSelector
+  /* Selector */
+  Selector = AtomicSelector (combinator AtomicSelector)*
+  AtomicSelector = basicSelector | PseudoSelector
   
-  /* pseudo selector */
-  pseudoSelector = 
-    | basicSelector pseudo -- basic
-    | pseudo -- abbreviated
+  /* Pseudo Selector */
+  PseudoSelector = 
+    | basicSelector Pseudo -- basic
+    | Pseudo -- abbreviated
   
-  /* pseudo */
-  pseudo = pseudoElement | pseudoClass | pseudoFunc
-  pseudoFunc = (pseudoElement pseudoArg) | (pseudoClass pseudoArg)
-  pseudoElement = "::" kebabCase
-  pseudoClass = ":" kebabCase
-  pseudoArg = "(" (selector | letter+ | digit+ | nth | propsFunc) ")"
+  /* Pseudo */
+  Pseudo = PseudoElement | PseudoClass | PseudoFunc
+  PseudoFunc = (PseudoElement PseudoArg) | (PseudoClass PseudoArg)
+  PseudoElement = "::" kebabCase
+  PseudoClass = ":" kebabCase
+  PseudoArg = "(" (Selector | letter+ | digit+ | nth | propsFunc) ")"
   nth = "n" "+" (digit+ | propsFunc)
   
-  /* composite selector */
-  compositeSelector = selector combinator selector (combinator selector)*
-  
-  /* whole selector */
+  /* whole Selector */
   basicSelector = rootSelector | universalSelector | attributeSelector | htmlTagSelector | jsxTagSelector
 
-  /* named selector */
+  /* named Selector */
   attributeSelector = "[" kebabCase "=" lowerCase "]"
   htmlTagSelector = lowerCase digit* lowerCase*
   jsxTagSelector = pascalCase
   
-  /* atomic selector */
+  /* atomic Selector */
   rootSelector = "&"
   universalSelector = "*"
   
