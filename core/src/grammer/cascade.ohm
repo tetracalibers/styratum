@@ -48,7 +48,7 @@ SyrmCascade {
   /* property Value                                                             */
   /* -------------------------------------------------------------------------- */
   
-  propertyValue = (kebabCase | pascalCase | formula | propertyValueFunc | propsFunc)+
+  propertyValue = (propsFunc | propertyValueFunc | kebabCase | pascalCase | formula)+
   propertyValueFunc = kebabCase "(" formula ("," formula)* ")"
   
   /* -------------------------------------------------------------------------- */
