@@ -64,15 +64,17 @@ SyrmCascade {
   
   /* Pseudo Selector */
   PseudoSelector = 
-    | basicSelector Pseudo -- basic
-    | Pseudo -- abbreviated
+    | basicSelector ListOf<Pseudo, ""> -- basic
+    | ListOf<Pseudo, ""> -- abbreviated
   
   /* Pseudo */
-  Pseudo = PseudoElement | PseudoClass | PseudoFunc
-  PseudoFunc = (PseudoElement PseudoArg) | (PseudoClass PseudoArg)
+  Pseudo = PseudoElement | PseudoClass
+  PseudoFunc = 
+    | PseudoElement "(" PseudoArg ")" -- element
+    | PseudoClass "(" PseudoArg ")" -- class
   PseudoElement = "::" kebabCase
   PseudoClass = ":" kebabCase
-  PseudoArg = "(" (Selector | letter+ | digit+ | nth | propsFunc) ")"
+  PseudoArg = Selector | letter+ | digit+ | nth | propsFunc
   nth = "n" "+" (digit+ | propsFunc)
   
   /* whole Selector */
