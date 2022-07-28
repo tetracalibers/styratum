@@ -68,7 +68,7 @@ SyrmCascade {
     | ListOf<Pseudo, ""> -- abbreviated
   
   /* Pseudo */
-  Pseudo = PseudoElement | PseudoClass
+  Pseudo = PseudoFunc | PseudoElement | PseudoClass
   PseudoFunc = 
     | PseudoElement "(" PseudoArg ")" -- element
     | PseudoClass "(" PseudoArg ")" -- class
