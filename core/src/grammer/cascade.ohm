@@ -1,0 +1,115 @@
+SyrmCascade {
+  cascade = &"<Cascade>" block* &"</Cascade>"
+  
+  /* -------------------------------------------------------------------------- */
+  /* block                                                                      */
+  /* -------------------------------------------------------------------------- */
+  
+  block = declarationsBlock | declarationsBlockWithPrefix | (declarationsBlockWithPrefix syrmSuffixAnnotation)
+  declarationsBlockWithPrefix = syrmPrefixAnnotation declarationsBlock
+  declarationsBlock = selectorList "{" declarationList "}"
+  
+  /* -------------------------------------------------------------------------- */
+  /* syrm support                                                               */
+  /* -------------------------------------------------------------------------- */
+
+  syrmPrefixAnnotation = truthyKeyword | falsyKeyword | existKeyword
+  syrmSuffixAnnotation = invertKeyword
+  
+  propsFunc = "props" "(" jsIdentifier ")"
+  truthyKeyword = "@" "truthy" "(" jsIdentifier ")"
+  falsyKeyword = "@" "falsy" "(" jsIdentifier")"
+  existKeyword = "@" "exist" "(" jsIdentifier ")"
+  elseKeyword = "@" "else"
+  invertKeyword = "@" "invert"
+  collectionKeyword = "@" "collection"
+  
+  /* -------------------------------------------------------------------------- */
+  /* declaration                                                                */
+  /* -------------------------------------------------------------------------- */
+  
+  declarationList = declaration ("," declaration)*
+  declaration = propertyName ":" propertyValue ";"
+  
+  /* -------------------------------------------------------------------------- */
+  /* property name                                                              */
+  /* -------------------------------------------------------------------------- */
+  
+  propertyName = kebabCase | collectionKeyword
+  
+  /* -------------------------------------------------------------------------- */
+  /* property Value                                                             */
+  /* -------------------------------------------------------------------------- */
+  
+  propertyValue = (kebabCase | propsFunc | pascalCase | formula | propertyValueFunc)+
+  propertyValueFunc = kebabCase "(" formula ("," formula)* ")"
+  
+  /* -------------------------------------------------------------------------- */
+  /* selector                                                                   */
+  /* -------------------------------------------------------------------------- */
+  
+  /* selector list */
+  selectorList = selector ("," selector)*
+  
+  /* selector */
+  selector = basicSelector | compositeSelector | pseudoSelector
+  
+  /* pseudo selector */
+  pseudoSelector = (basicSelector pseudo) | pseudo
+  
+  /* pseudo */
+  pseudo = pseudoElement | pseudoClass | pseudoFunc
+  pseudoFunc = (pseudoElement pseudoArg) | (pseudoClass pseudoArg)
+  pseudoElement = "::" kebabCase
+  pseudoClass = ":" kebabCase
+  pseudoArg = "(" (selector | letter+ | digit+ | nth | propsFunc) ")"
+  nth = "n" "+" (digit+ | propsFunc)
+  
+  /* composite selector */
+  compositeSelector = selector combinator selector (combinator selector)*
+  
+  /* whole selector */
+  basicSelector = rootSelector | universalSelector | attributeSelector | htmlTagSelector | jsxTagSelector
+
+  /* named selector */
+  attributeSelector = "[" kebabCase "=" lowerCase "]"
+  htmlTagSelector = lowerCase digit* lowerCase*
+  jsxTagSelector = pascalCase
+  
+  /* atomic selector */
+  rootSelector = "&"
+  universalSelector = "*"
+  
+  /* whole combinator */
+  combinator = adjacentSiblijngCombinator | generalSiblijngCombinator | childCombinator | columnCombinator
+  
+  /* atomic combinator */
+  adjacentSiblijngCombinator = "+"
+  generalSiblijngCombinator = "~"
+  childCombinator = ">"
+  columnCombinator = "||"
+  
+  /* -------------------------------------------------------------------------- */
+  /* util                                                                       */
+  /* -------------------------------------------------------------------------- */
+  
+  /* math */
+  formula = ((numeral | numeralWithUnit) | ("(" mathFormula ")")) (mathOperator ((numeral | numeralWithUnit) | ("(" mathOperator ")")))*
+  numeral = ("-" digit+) | digit+ | propsFunc
+  numeralWithUnit = numeral unit
+  unit = lowerCase
+  mathOperator = "-" | "+" | "*" | "**" | "/"
+  
+  /* string */
+  lowerCase = lower+
+  kebabCase = lower ("-" | letter)* lower
+  pascalCase = (upper (lower | digit)+)+
+  jsIdentifier = letter (letter | digit | "_")*
+  
+  /* atomic */
+  openBrace = "{"
+  closeBrace = "}"
+  openBracket = "["
+  closeBracket = "]"
+  semicolon = ";"
+}

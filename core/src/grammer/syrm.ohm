@@ -1,3 +1,11 @@
-SYRM {
-  
+Syrm {
+  Syrm = block (eol ~end block)* eol?
+  block = collection | cascade | setprops | structure
+  collection = &"<Collection>" (~block any)* &"</Collection>"
+  cascade = &"<Cascade>" (~block any)* &"</Cascade>"
+  setprops = &"<SetProps>" (~block any)* &"</SetProps>"
+  structure = &"<Structure>" (~block any)* &"</Structure>"
+  eol = "\r"? "\n"
+  openTag = "<"..">"
+  closeTag = "</"..">"
 }
