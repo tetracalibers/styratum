@@ -30,12 +30,20 @@
     outline-offset: calc(-1 * props(borderWidth));
   }
   
+  // inline comment
   & > * {
+    // inline comment
     margin-top: props(space);
     margin-bottom: props(space);
   }
   
+  /*
+    block comment
+  */
   & > :first-child:not(ToPlaceCenter) {
+    /*
+      block comment
+    */
     margin-top: 0;
   }
   

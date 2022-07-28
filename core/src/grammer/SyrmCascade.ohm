@@ -1,8 +1,6 @@
-// TODO comment
-
 SyrmCascade {
   /* override */
-  space := whitespace | lineTerminator
+  space := whitespace | lineTerminator | comment
   
   /* root */
   Root = "<Cascade>" space* Block* space* "</Cascade>"
@@ -134,6 +132,12 @@ SyrmCascade {
   pascalCase = (upper (lower | digit)*)+
   camelCase = lower (letter | digit)*
   jsIdentifier = letter (letter | digit | "_")*
+  
+  /* comment */
+  comment = multiLineComment | singleLineComment
+
+  multiLineComment = "/*" (~"*/" any)* "*/"
+  singleLineComment = "//" (~lineTerminator any)*
   
   /* special character */
   whitespace = "\t"
