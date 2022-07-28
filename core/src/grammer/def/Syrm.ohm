@@ -1,4 +1,13 @@
-Syrm <: SyrmCollection {
-  Root := ListOf<SyrmBlocks, "">
-  SyrmBlocks = Collection | Cascade
+Syrm <: Base {
+  Root := Region*
+  
+  Region = Cascade | Collection | Region
+  
+  Cascade = "<Cascade>" space* (~CascadeInnerOther inner)* space* "</Cascade>"
+  CascadeInnerOther = "</Cascade>" | "<Collection>"
+  
+  Collection = "<Collection>" space* (~CollectionInnerOther inner)* space* "</Collection>"
+  CollectionInnerOther = "</Collection>" | "<Cascade>"
+  
+  inner = any | space
 }

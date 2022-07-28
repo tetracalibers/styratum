@@ -1,9 +1,7 @@
 SyrmCollection <: SyrmedCss {
   /* root */
-  Root := Collection
-  
-  Collection = "<Collection>" Def<pascalCase>* "</Collection>"
-  
+  Root := Def<pascalCase>*
+    
   Def<TagName> = "<" TagName ">" space* Block* space* "</" TagName ">"
   
   /* -------------------------------------------------------------------------- */

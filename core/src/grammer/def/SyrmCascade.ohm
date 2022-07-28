@@ -1,8 +1,6 @@
 SyrmCascade <: SyrmedCss {
   /* root */
-  Root := Cascade
-  
-  Cascade = "<Cascade>" space* Block* space* "</Cascade>"
+  Root := Block*
   
   /* -------------------------------------------------------------------------- */
   /* block                                                                      */
