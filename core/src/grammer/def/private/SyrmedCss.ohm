@@ -1,0 +1,50 @@
+SyrmedCss <: Base {
+  /* -------------------------------------------------------------------------- */
+  /* syrm support                                                               */
+  /* -------------------------------------------------------------------------- */
+
+  syrmPrefixAnnotation = truthyKeyword | falsyKeyword | existKeyword
+  syrmBetweenAnnotation = elseKeyword
+  syrmSuffixAnnotation = invertKeyword
+    
+  truthyKeyword = "@" "truthy" "(" jsIdentifier ")"
+  falsyKeyword = "@" "falsy" "(" jsIdentifier")"
+  existKeyword = "@" "exist" "(" jsIdentifier ")"
+  elseKeyword = "@" "else"
+  invertKeyword = "@" "invert"
+  collectionKeyword = "@" "collection"
+  
+  /* -------------------------------------------------------------------------- */
+  /* css base                                                                   */
+  /* -------------------------------------------------------------------------- */
+  
+  /* property value */
+  PropertyValueBase = propsFunc | PropertyValueFunc | Formula
+  PropertyValueFunc = kebabCase "(" Formula ("," Formula)* ")"
+  
+  /* selector */
+  constantSelector = rootSelector | universalSelector
+  
+  /* pseudo helper */
+  nth = 
+    | "n" "+" digit+ -- basic
+    | "n" "+" propsFunc -- inject
+  
+  /* named Selector */
+  attributeSelector = "[" kebabCase "=" lowerCase "]"
+  htmlTagSelector = lower (digit | lower)*
+  jsxTagSelector = pascalCase
+  
+  /* atomic Selector */
+  rootSelector = "&"
+  universalSelector = "*"
+  
+  /* whole combinator */
+  combinator = adjacentSiblijngCombinator | generalSiblijngCombinator | childCombinator | columnCombinator
+  
+  /* atomic combinator */
+  adjacentSiblijngCombinator = "+"
+  generalSiblijngCombinator = "~"
+  childCombinator = ">"
+  columnCombinator = "||"
+}

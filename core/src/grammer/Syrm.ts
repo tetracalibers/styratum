@@ -10,3 +10,5 @@ const CollectionOhm = fs.readFileSync(
   path.join(__dirname, 'def/Collection.ohm'),
   'utf-8'
 )
+
+const parseSyrmBlocks = (_str: string) => {}

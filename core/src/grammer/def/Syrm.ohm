@@ -1,3 +1,4 @@
-Syrm <: Base {
-  Root := 
+Syrm <: SyrmCollection {
+  Root := ListOf<SyrmBlocks, "">
+  SyrmBlocks = Collection | Cascade
 }

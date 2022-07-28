@@ -1,10 +1,8 @@
-SyrmCollection <: SyrmCascade {
+SyrmCollection <: SyrmedCss {
   /* root */
-  Root := "<Collection>" Def<pascalCase>* "</Collection>"
+  Root := Collection
   
-  /* -------------------------------------------------------------------------- */
-  /* def                                                                        */
-  /* -------------------------------------------------------------------------- */
+  Collection = "<Collection>" Def<pascalCase>* "</Collection>"
   
   Def<TagName> = "<" TagName ">" space* Block* space* "</" TagName ">"
   
@@ -12,14 +10,19 @@ SyrmCollection <: SyrmCascade {
   /* block                                                                      */
   /* -------------------------------------------------------------------------- */
   
-  /* 
-    @diff
-      - DeclarationsBlockWithPrefix DeclarationsBlock* syrmSuffixAnnotation
-  */
-  Block := 
+  Block = 
     | DeclarationsBlockWithPrefix syrmBetweenAnnotation DeclarationsBlock -- between
     | DeclarationsBlockWithPrefix -- prefixed
     | DeclarationsBlock -- basic
+  DeclarationsBlockWithPrefix = syrmPrefixAnnotation DeclarationsBlock
+  DeclarationsBlock = SelectorList "{" DeclarationList "}"
+  
+  /* -------------------------------------------------------------------------- */
+  /* Declaration                                                                */
+  /* -------------------------------------------------------------------------- */
+  
+  DeclarationList = Declaration+
+  Declaration = propertyName ":" PropertyValue+ ";"
   
   /* -------------------------------------------------------------------------- */
   /* property name                                                              */
@@ -29,15 +32,45 @@ SyrmCollection <: SyrmCascade {
     @diff
       - collectionKeyword
   */
-  propertyName := kebabCase
+  propertyName = kebabCase
   
   /* -------------------------------------------------------------------------- */
   /* property Value                                                             */
   /* -------------------------------------------------------------------------- */
   
-  /*
-    @diff
-      - pascalCase
-  */
-  PropertyValue := propsFunc | PropertyValueFunc | kebabCase | Formula
+  PropertyValue = PropertyValueBase | kebabCase
+  
+  /* -------------------------------------------------------------------------- */
+  /* Selector                                                                   */
+  /* -------------------------------------------------------------------------- */
+  
+  /* Selector list */
+  SelectorList = Selector ("," Selector)*
+  
+  /* Selector */
+  Selector = AtomicSelector SelectorElem*
+  SelectorElem = 
+    | combinator ~"&" AtomicSelector -- edge
+    | ~"&" AtomicSelector -- node
+  AtomicSelector = 
+    | basicSelector PseudoSelector -- composite
+    | basicSelector -- basic
+    | PseudoSelector -- omission
+  
+  /* whole Selector */
+  basicSelector = attributeSelector | htmlTagSelector | constantSelector
+  
+  /* Pseudo Selector */
+  PseudoSelector = 
+    | Pseudo -- atom
+    | ~PseudoFunc Pseudo Pseudo* -- molecule
+  
+  /* Pseudo */
+  Pseudo = PseudoFunc | PseudoElement | PseudoClass
+  PseudoFunc = 
+    | PseudoElement "(" PseudoArg ")" -- element
+    | PseudoClass "(" PseudoArg ")" -- class
+  PseudoElement = "::" kebabCase
+  PseudoClass = ":" kebabCase
+  PseudoArg = nth | propsFunc | Selector | letter+ | digit+ 
 }

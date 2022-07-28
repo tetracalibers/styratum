@@ -1,6 +1,8 @@
-SyrmCascade <: Base {
+SyrmCascade <: SyrmedCss {
   /* root */
-  Root := "<Cascade>" space* Block* space* "</Cascade>"
+  Root := Cascade
+  
+  Cascade = "<Cascade>" space* Block* space* "</Cascade>"
   
   /* -------------------------------------------------------------------------- */
   /* block                                                                      */
@@ -13,21 +15,6 @@ SyrmCascade <: Base {
     | DeclarationsBlock -- basic
   DeclarationsBlockWithPrefix = syrmPrefixAnnotation DeclarationsBlock
   DeclarationsBlock = SelectorList "{" DeclarationList "}"
-  
-  /* -------------------------------------------------------------------------- */
-  /* syrm support                                                               */
-  /* -------------------------------------------------------------------------- */
-
-  syrmPrefixAnnotation = truthyKeyword | falsyKeyword | existKeyword
-  syrmBetweenAnnotation = elseKeyword
-  syrmSuffixAnnotation = invertKeyword
-  
-  truthyKeyword = "@" "truthy" "(" jsIdentifier ")"
-  falsyKeyword = "@" "falsy" "(" jsIdentifier")"
-  existKeyword = "@" "exist" "(" jsIdentifier ")"
-  elseKeyword = "@" "else"
-  invertKeyword = "@" "invert"
-  collectionKeyword = "@" "collection"
   
   /* -------------------------------------------------------------------------- */
   /* Declaration                                                                */
@@ -46,8 +33,7 @@ SyrmCascade <: Base {
   /* property Value                                                             */
   /* -------------------------------------------------------------------------- */
   
-  PropertyValue = propsFunc | PropertyValueFunc | kebabCase | pascalCase | Formula
-  PropertyValueFunc = kebabCase "(" Formula ("," Formula)* ")"
+  PropertyValue = PropertyValueBase | kebabCase | pascalCase
   
   /* -------------------------------------------------------------------------- */
   /* Selector                                                                   */
@@ -66,6 +52,9 @@ SyrmCascade <: Base {
     | basicSelector -- basic
     | PseudoSelector -- omission
   
+  /* whole Selector */
+  basicSelector = attributeSelector | htmlTagSelector | constantSelector
+  
   /* Pseudo Selector */
   PseudoSelector = 
     | Pseudo -- atom
@@ -79,28 +68,4 @@ SyrmCascade <: Base {
   PseudoElement = "::" kebabCase
   PseudoClass = ":" kebabCase
   PseudoArg = nth | propsFunc | Selector | letter+ | digit+ 
-  nth = 
-    | "n" "+" digit+ -- basic
-    | "n" "+" propsFunc -- inject
-  
-  /* whole Selector */
-  basicSelector = attributeSelector | htmlTagSelector | rootSelector | universalSelector
-
-  /* named Selector */
-  attributeSelector = "[" kebabCase "=" lowerCase "]"
-  htmlTagSelector = lower (digit | lower)*
-  jsxTagSelector = pascalCase
-  
-  /* atomic Selector */
-  rootSelector = "&"
-  universalSelector = "*"
-  
-  /* whole combinator */
-  combinator = adjacentSiblijngCombinator | generalSiblijngCombinator | childCombinator | columnCombinator
-  
-  /* atomic combinator */
-  adjacentSiblijngCombinator = "+"
-  generalSiblijngCombinator = "~"
-  childCombinator = ">"
-  columnCombinator = "||"
 }
