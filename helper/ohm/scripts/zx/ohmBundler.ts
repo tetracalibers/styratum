@@ -1,58 +1,59 @@
 import 'zx/globals'
+
+const isRejected = (
+  input: PromiseSettledResult<unknown>
+): input is PromiseRejectedResult => input.status === 'rejected'
+
+const isFulfilled = <T>(
+  input: PromiseSettledResult<T>
+): input is PromiseFulfilledResult<T> => input.status === 'fulfilled'
+
 ;(async () => {
-  class AutoMerger {
-    public static autoMerger: AutoMerger
-    private currentBranch: string
+  const thisFilePath = process.argv[1]
+  const configFilePath = path.resolve(
+    thisFilePath,
+    '../../../config/syrmOhmFiles.json'
+  )
 
-    private constructor() {
-      this.currentBranch = ''
-    }
+  const config = await fs.readJson(configFilePath, 'utf8')
+  cd(`../../${config.dir}`)
 
-    public static get Instance(): AutoMerger {
-      return this.autoMerger || (this.autoMerger = new this())
-    }
+  const syrmOhmTree = config.files
 
-    private async setCurrentBranch(): Promise<boolean> {
-      const showResult = await $`git branch --show-current`
-      this.currentBranch = showResult.toString().replace(/\r?\n/g, '')
-      return true
-    }
+  const fileContents = await Promise.allSettled(
+    syrmOhmTree.map(async (fileName: string) => {
+      let isExist = true
 
-    private async yesOrNo(): Promise<string> {
-      return await question('> (y = yes | q = cancel)：')
-    }
-
-    private async execMerge(): Promise<boolean> {
-      await $`git push origin ${this.currentBranch}`
-      await $`git checkout main`
-      await $`git merge ${this.currentBranch}`
-      await $`git push origin main`
-      await $`git checkout ${this.currentBranch}`
-      return true
-    }
-
-    private async wantToMerge(): Promise<boolean> {
-      const willingnessToMerge = await this.yesOrNo()
-      switch (willingnessToMerge) {
-        case 'y' || 'yes':
-          return true
-        case 'q' || 'cancel':
-          return false
-        default:
-          console.log('yかqで答えてください')
-          return this.wantToMerge()
+      try {
+        await $`test -e ${fileName}.ohm`
+      } catch (error) {
+        isExist = false
+        console.log(`[ERROR] ${fileName}.ohmは存在しません。`)
       }
-    }
 
-    public async boot(): Promise<boolean> {
-      await this.setCurrentBranch()
-      console.log(
-        `現在のブランチは${this.currentBranch}です。mainにマージしますか？`
-      )
-      const merge = await this.wantToMerge()
-      return merge ? await this.execMerge() : false
+      if (!isExist) return Promise.reject(false)
+
+      const def = await fs.readFile(`${fileName}.ohm`, 'utf8')
+
+      return Promise.resolve(def)
+    })
+  )
+
+  const storage: string[] = []
+
+  const merge = (array: PromiseSettledResult<string>[]): boolean => {
+    const [first, ...rest] = array
+    if (isFulfilled(first)) {
+      storage.push(first.value)
+      return rest.length === 0 ? true : merge(rest)
     }
+    console.log(`[FIXME] ${configFilePath}`)
+    return false
   }
 
-  await AutoMerger.Instance.boot()
+  if (!merge(fileContents)) return
+
+  const bundleFilePath = 'build/Syrm.ohm'
+  await fs.outputFile(bundleFilePath, storage.join('\n\n'))
+  await $`ohm generateBundles --withTypes ${bundleFilePath}`
 })()

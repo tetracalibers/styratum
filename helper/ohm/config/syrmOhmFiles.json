@@ -1,0 +1,10 @@
+{
+  "dir": "core/src/grammer/def",
+  "files": [
+    "private/Base",
+    "private/SyrmedCss",
+    "SyrmCascade",
+    "SyrmCollection",
+    "Syrm"
+  ]
+}
