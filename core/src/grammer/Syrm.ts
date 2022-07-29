@@ -1,5 +1,6 @@
 import { SyrmGrammar, SyrmSemantics } from './def/build/Syrm.ohm-bundle'
 import * as NS from './def/build/Syrm.ohm-bundle'
+import { Region } from './helper/Region'
 
 const parseSyrmRegions = (code: string) => {
   type Parser = {
@@ -13,17 +14,34 @@ const parseSyrmRegions = (code: string) => {
     Root: rs => rs.children.map(child => child.regions()),
     inner: rs => rs.children.map(child => child.inner()),
     Cascade: (_, __, inner, ___, ____) => {
-      console.log(inner)
       return inner.children.map(child => {
-        return { region: 'CASCADE', type: child.type, children: child.children }
+        const { startIdx, endIdx } = child.source
+        const region = new Region(code, startIdx, endIdx)
+        return {
+          region: 'CASCADE',
+          text: region.source,
+          type: child.type,
+          children: child.children,
+          location: {
+            uri: '',
+            range: region.position,
+          },
+        }
       })
     },
     Collection: (_, __, inner, ___, ____) =>
       inner.children.map(child => {
+        const { startIdx, endIdx } = child.source
+        const region = new Region(code, startIdx, endIdx)
         return {
           region: 'COLLECTION',
+          text: region.source,
           type: child.type,
           children: child.children,
+          location: {
+            uri: '',
+            range: region.position,
+          },
         }
       }),
   })

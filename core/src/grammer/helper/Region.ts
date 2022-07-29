@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import A from 'fp-ts/Array'
+import * as A from 'fp-ts/Array'
 import { Offset } from './Offset'
 import { Position } from './Position'
 import { globalCache } from './cache'
@@ -13,12 +13,14 @@ export class Region {
   private uri: string | undefined
 
   constructor(
-    data: { source: string; startIdx: number; endIdx: number },
-    uri: string | undefined
+    source: string,
+    startIdx: number,
+    endIdx: number,
+    uri?: string | undefined
   ) {
-    this.fullSource = data.source
-    this.startIdx = data.startIdx
-    this.endIdx = data.endIdx
+    this.fullSource = source
+    this.startIdx = startIdx
+    this.endIdx = endIdx
     this.uri = uri
   }
 
@@ -47,6 +49,6 @@ export class Region {
   }
 
   get source() {
-    return this.fullSource.slice(this.startIdx, this.endIdx)
+    return this.fullSource.substring(this.startIdx, this.endIdx)
   }
 }

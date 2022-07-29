@@ -6,4 +6,4 @@ const { cat } = shell
 const sampleCode = cat('src/sample-code/sampleC.syrm').toString()
 
 const parseResult = parseSyrm(sampleCode)
-console.log('🚀 ~ file: index.ts ~ line 7 ~ parseResult', parseResult)
+console.log('🚀 ~ file: index.ts ~ line 9 ~ parseResult', parseResult)
