@@ -1,3 +1,4 @@
+import { dumpJson } from '../util/json'
 import * as NS from './def/build/Syrm.ohm-bundle'
 import { Offset } from './helper/Offset'
 import { Region } from './helper/Region'
@@ -22,36 +23,40 @@ const parseSyrmRegions = (code: string) => {
   parser.semantics = parser.grammar.createSemantics()
   parser.semantics.addOperation('regions', {
     Root: rs => rs.children.map(child => child.regions()),
-    inner: rs => rs.children.map(child => child.inner()),
-    Cascade: (_, __, inner, ___, ____) => {
-      return inner.children.map(child => {
-        const { startIdx, endIdx } = child.source
-        const region = new Region(code, startIdx, endIdx)
-        return {
+    Cascade: (open, __, _inner, ___, close) => {
+      const region = new Region(
+        code,
+        open.source.endIdx + 1,
+        close.source.startIdx - 1
+      )
+      return [
+        {
           type: 'CASCADE',
           text: region.source,
-          children: child.children,
           location: {
             uri: '',
             range: region.position,
           },
-        }
-      })
+        },
+      ]
     },
-    Collection: (_, __, inner, ___, ____) =>
-      inner.children.map(child => {
-        const { startIdx, endIdx } = child.source
-        const region = new Region(code, startIdx, endIdx)
-        return {
+    Collection: (open, __, _inner, ___, close) => {
+      const region = new Region(
+        code,
+        open.source.endIdx + 1,
+        close.source.startIdx - 1
+      )
+      return [
+        {
           type: 'COLLECTION',
           text: region.source,
-          children: child.children,
           location: {
             uri: '',
             range: region.position,
           },
-        }
-      }),
+        },
+      ]
+    },
   })
   const match = parser.grammar.match(code)
   return parser.semantics(match).regions()
@@ -72,6 +77,7 @@ const parseSyrmCascadeInner = (code: string) => {
 
 export const parseSyrm = (raw_syrm: string) => {
   const regions = parseSyrmRegions(raw_syrm)
+  dumpJson(regions)('tmp/syrmRegions.json')
   return regions.map((region: Token) => {
     if (region.type === 'CASCADE') return parseSyrmCascadeInner(region.text)
     return region
