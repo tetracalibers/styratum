@@ -1,30 +1,9 @@
-import { tokenize, compile } from 'stylis'
+import shell from 'shelljs'
+import { parseSyrm } from './grammer/Syrm'
 
-const testData = `
-  & {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-  }
-  & > * {
-    margin-top: 0;
-    margin-bottom: 0;
-  }
-  
-  @truthy(recursive);
-  & * + * {
-    margin-top: props(space);
-  }
-  @else;
-  & > * + * {
-    margin-top: props(space);
-  }
-  
-  @exist(separateFrom);
-  & > :nth-child(props(separateFrom)) {
-    margin-bottom: auto;
-  }
-`
+const { cat } = shell
 
-const tokens = tokenize(testData)
-console.log('🚀 ~ file: index.ts ~ line 22 ~ tokens', tokens)
+const sampleCode = cat('src/sample-code/sampleC.syrm').toString()
+
+const parseResult = parseSyrm(sampleCode)
+console.log('🚀 ~ file: index.ts ~ line 7 ~ parseResult', parseResult)

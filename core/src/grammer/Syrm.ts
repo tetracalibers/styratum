@@ -1,14 +1,37 @@
-import ohm from 'ohm-js'
-import * as fs from 'fs'
-import * as path from 'path'
+import { SyrmGrammar, SyrmSemantics } from './def/build/Syrm.ohm-bundle'
+import * as NS from './def/build/Syrm.ohm-bundle'
 
-const cascadeOhm = fs.readFileSync(
-  path.join(__dirname, 'def/SyrmCascade.ohm'),
-  'utf-8'
-)
-const collectionOhm = fs.readFileSync(
-  path.join(__dirname, 'def/Collection.ohm'),
-  'utf-8'
-)
+const parseSyrmRegions = (code: string) => {
+  type Parser = {
+    grammar: SyrmGrammar
+    semantics: SyrmSemantics
+  }
+  const parser = {} as Parser
+  parser.grammar = NS.default.Syrm
+  parser.semantics = parser.grammar.createSemantics()
+  parser.semantics.addOperation('regions', {
+    Root: rs => rs.children.map(child => child.regions()),
+    inner: rs => rs.children.map(child => child.inner()),
+    Cascade: (_, __, inner, ___, ____) => {
+      console.log(inner)
+      return inner.children.map(child => {
+        return { region: 'CASCADE', type: child.type, children: child.children }
+      })
+    },
+    Collection: (_, __, inner, ___, ____) =>
+      inner.children.map(child => {
+        return {
+          region: 'COLLECTION',
+          type: child.type,
+          children: child.children,
+        }
+      }),
+  })
+  const match = parser.grammar.match(code)
+  return parser.semantics(match).regions()
+}
 
-const parseSyrmBlocks = (_str: string) => {}
+export const parseSyrm = (raw_syrm: string) => {
+  const regions = parseSyrmRegions(raw_syrm)
+  return regions
+}
