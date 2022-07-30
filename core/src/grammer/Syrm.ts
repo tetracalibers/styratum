@@ -56,6 +56,10 @@ export const parseSyrm = (raw_syrm: string) => {
         },
       }
     },
+    SelectorList(first, _, rest) {
+      const children = [first, rest]
+      return children.map(child => child.ast)
+    },
     _iter(...children) {
       return children.map(child => child.ast)
     },
