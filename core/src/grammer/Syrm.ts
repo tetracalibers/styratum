@@ -96,11 +96,23 @@ export const parseSyrm = (raw_syrm: string) => {
     Formula(first, ope, rest) {
       return listToAst([first, ope, rest])
     },
-    _iter(...children) {
-      return listToAst(children)
+    numeralWithUnit(num, unit) {
+      const { startIdx, endIdx } = this.source
+      return {
+        type: this.ctorName,
+        number: num.ast,
+        unit: unit.source.contents,
+        location: {
+          uri: '',
+          range: getLocation(startIdx, endIdx).range,
+        },
+      }
     },
     kebabCase(_, __) {
       return atomToAst(this)
+    },
+    _iter(...children) {
+      return listToAst(children)
     },
     _terminal() {
       return atomToAst(this)
