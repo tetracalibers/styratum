@@ -1,5 +1,5 @@
 PropertyValue <: Primitive {
   PropertyValue = PropertyValueBase | kebabCase | pascalCase
-  PropertyValueBase = propsFunc | PropertyValueFunc | Formula
+  PropertyValueBase = props | PropertyValueFunc | Formula
   PropertyValueFunc = kebabCase "(" Formula ("," Formula)* ")"
 }

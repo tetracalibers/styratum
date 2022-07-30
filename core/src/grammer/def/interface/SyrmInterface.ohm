@@ -1,0 +1,14 @@
+SyrmInterface <: Primitive {
+  Root = ""
+  
+  CascadeRegion = ""
+  CollectionRegion = ""
+  
+  SyrmedCss = ""
+  DeclarationStatement = ""
+  RuleSet = ""
+  SelectorList = ""
+  DeclarationBlock = ""
+  PropertyName = ""
+  PropertyValue = ""
+}

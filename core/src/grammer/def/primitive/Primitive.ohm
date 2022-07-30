@@ -1,14 +1,11 @@
 // Combination of Atomic and Molecule
 
-Primitive <: Molecule {
-  Primitive = organism | molecule | wrapAtomic | atomic
-  
-  organism = formula
-  
+Primitive <: Atomic {
   formula = formulaElements (mathOperator formulaElements)*
   formulaElements = 
     | numeral -- number
     | "(" atomicFormula ")" -- expression
   atomicFormula = numeral (mathOperator numeral)+
-  numeral = numeralWithUnit | number | propsFunc
+  numeral = numeralWithUnit | number | props
+  numeralWithUnit = numeral unit
 }
