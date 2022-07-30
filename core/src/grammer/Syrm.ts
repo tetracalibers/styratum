@@ -213,6 +213,9 @@ export const parseSyrm = (raw_syrm: string) => {
     truthy(_at, _truthy, _, variable, __) {
       return ifToAst(this, variable)
     },
+    falsy(_at, _falsy, _, variable, __) {
+      return ifToAst(this, variable)
+    },
     number_negative(_, __) {
       return atomToAst(this)
     },
