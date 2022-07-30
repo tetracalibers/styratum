@@ -27,7 +27,6 @@ const BlockToAst = (
   return [
     {
       type: type ? type : inner.ctorName,
-      text: range.source,
       location: {
         uri: '',
         range: range.position,
@@ -55,6 +54,21 @@ export const parseSyrm = (raw_syrm: string) => {
     },
     Namespace: (___, _tagName, open, _, inner, __, close, __tagName, ____) => {
       return BlockToAst(raw_syrm, open, inner, close)
+    },
+    RuleSet(slist, dblock) {
+      const { startIdx, endIdx } = this.source
+      const range = new Region(raw_syrm, startIdx, endIdx)
+      return [
+        {
+          type: this.ctorName,
+          selector: slist.ast,
+          declarations: dblock.ast,
+          location: {
+            uri: '',
+            range: range.position,
+          },
+        },
+      ]
     },
     _iter(...children) {
       return children.map(child => child.ast)
