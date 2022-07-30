@@ -1,4 +1,3 @@
-RuleSet <: Primitive {
-  // TODO:
-  RuleSet = SelectorList DeclarationsBlock
+RuleSet <: SyrmInterface {
+  RuleSet = SelectorList DeclarationBlock
 }

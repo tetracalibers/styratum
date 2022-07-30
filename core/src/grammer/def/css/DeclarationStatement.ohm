@@ -1,4 +1,4 @@
-DeclarationStatement <: DeclarationBlock {
+DeclarationStatement <: SyrmInterface {
   pureAtomic += else | invert
   addedAtomic += truthy | falsy | exist
   
@@ -6,7 +6,7 @@ DeclarationStatement <: DeclarationBlock {
   /* declaration statement                                                      */
   /* -------------------------------------------------------------------------- */
   
-  DeclarationStatement = 
+  DeclarationStatement := 
     | DeclarationsBlockWithPrefix DeclarationsBlock* syrmSuffixAnnotation -- surrounded
     | DeclarationsBlockWithPrefix syrmBetweenAnnotation DeclarationsBlock -- between
     | DeclarationsBlockWithPrefix -- prefixed

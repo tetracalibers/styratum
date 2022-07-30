@@ -1,5 +1,5 @@
-CollectionRegion <: SyrmedCss {
-  Collection = Namespace<pascalCase>*
+CollectionRegion <: SyrmInterface {
+  CollectionRegion := Namespace<pascalCase>*
     
   Namespace<TagName> = "<" TagName ">" space* SyrmedCss space* "</" TagName ">"
 }

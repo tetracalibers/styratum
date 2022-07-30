@@ -1,4 +1,4 @@
-Selectors <: Primitive {
+SelectorList <: SyrmInterface {
   pureAtomic += combinator | constantSelector
   addedAtomic += nthConst | tagSelector
   
@@ -6,7 +6,7 @@ Selectors <: Primitive {
   /* selector list                                                              */
   /* -------------------------------------------------------------------------- */
   
-  SelectorList = Selector ("," Selector)*
+  SelectorList := Selector ("," Selector)*
   
   /* -------------------------------------------------------------------------- */
   /* selector                                                                   */

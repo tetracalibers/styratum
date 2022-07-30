@@ -1,13 +1,8 @@
-Syrm <: SkipToken {
-  Root := Region*
+Syrm <: SyrmInterface {
+  Syrm := Block*
   
-  Region = Cascade | Collection | Region
+  Block = CascadeBlock | CollectionBlock | Block
   
-  Cascade = "<Cascade>" space* (~CascadeInnerOther inner)* space* "</Cascade>"
-  CascadeInnerOther = "</Cascade>" | "<Collection>"
-  
-  Collection = "<Collection>" space* (~CollectionInnerOther inner)* space* "</Collection>"
-  CollectionInnerOther = "</Collection>" | "<Cascade>"
-  
-  inner = any | space
+  CascadeBlock = "<Cascade>" space* CascadeRegion space* "</Cascade>"
+  CollectionBlock = "<Collection>" space* CollectionRegion space* "</Collection>"
 }

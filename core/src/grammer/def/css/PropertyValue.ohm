@@ -1,5 +1,5 @@
-PropertyValue <: Primitive {
-  PropertyValue = PropertyValueBase | kebabCase | pascalCase
+PropertyValue <: SyrmInterface {
+  PropertyValue := PropertyValueBase | kebabCase | pascalCase
   PropertyValueBase = props | PropertyValueFunc | Formula
   PropertyValueFunc = kebabCase "(" Formula ("," Formula)* ")"
 }

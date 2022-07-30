@@ -1,8 +1,6 @@
-Declarations <: Primitive {
-  DeclarationBlock = "{" DeclarationList "}"
+DeclarationBlock <: SyrmInterface {
+  DeclarationBlock := "{" DeclarationList "}"
   
   DeclarationList = Declaration+
-  
-  // TODO: 後で書き換え
-  Declaration = propertyName ":" PropertyValue+ ";"
+  Declaration = PropertyName ":" PropertyValue+ ";"
 }
