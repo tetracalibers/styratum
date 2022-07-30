@@ -12,28 +12,8 @@ import {
   TerminalNode
 } from 'ohm-js';
 
-export interface BaseActionDict<T> extends ActionDict<T> {
+export interface SkipTokenActionDict<T> extends ActionDict<T> {
   space?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  Root?: (this: NonterminalNode, arg0: TerminalNode) => T;
-  propsFunc?: (this: NonterminalNode, arg0: TerminalNode, arg1: TerminalNode, arg2: NonterminalNode, arg3: TerminalNode) => T;
-  Formula_recursive?: (this: NonterminalNode, arg0: NonterminalNode, arg1: IterationNode, arg2: IterationNode) => T;
-  Formula?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  FormulaElements_number?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  FormulaElements_expression?: (this: NonterminalNode, arg0: TerminalNode, arg1: NonterminalNode, arg2: TerminalNode) => T;
-  FormulaElements?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  AtomicFormula?: (this: NonterminalNode, arg0: NonterminalNode, arg1: IterationNode, arg2: IterationNode) => T;
-  numeral?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  numeralOnly_negative?: (this: NonterminalNode, arg0: TerminalNode, arg1: IterationNode) => T;
-  numeralOnly_positive?: (this: NonterminalNode, arg0: IterationNode) => T;
-  numeralOnly?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  numeralWithUnit?: (this: NonterminalNode, arg0: NonterminalNode, arg1: NonterminalNode) => T;
-  unit?: (this: NonterminalNode, arg0: NonterminalNode | TerminalNode) => T;
-  mathOperator?: (this: NonterminalNode, arg0: TerminalNode) => T;
-  lowerCase?: (this: NonterminalNode, arg0: IterationNode) => T;
-  kebabCase?: (this: NonterminalNode, arg0: NonterminalNode, arg1: IterationNode) => T;
-  pascalCase?: (this: NonterminalNode, arg0: IterationNode, arg1: IterationNode) => T;
-  camelCase?: (this: NonterminalNode, arg0: NonterminalNode, arg1: IterationNode) => T;
-  jsIdentifier?: (this: NonterminalNode, arg0: NonterminalNode, arg1: IterationNode) => T;
   comment?: (this: NonterminalNode, arg0: NonterminalNode) => T;
   multiLineComment?: (this: NonterminalNode, arg0: TerminalNode, arg1: IterationNode, arg2: TerminalNode) => T;
   singleLineComment?: (this: NonterminalNode, arg0: TerminalNode, arg1: IterationNode) => T;
@@ -47,44 +27,194 @@ export interface BaseActionDict<T> extends ActionDict<T> {
   unicodeSpaceSeparator?: (this: NonterminalNode, arg0: TerminalNode) => T;
 }
 
-export interface BaseSemantics extends Semantics {
-  addOperation<T>(name: string, actionDict: BaseActionDict<T>): this;
-  extendOperation<T>(name: string, actionDict: BaseActionDict<T>): this;
-  addAttribute<T>(name: string, actionDict: BaseActionDict<T>): this;
-  extendAttribute<T>(name: string, actionDict: BaseActionDict<T>): this;
+export interface SkipTokenSemantics extends Semantics {
+  addOperation<T>(name: string, actionDict: SkipTokenActionDict<T>): this;
+  extendOperation<T>(name: string, actionDict: SkipTokenActionDict<T>): this;
+  addAttribute<T>(name: string, actionDict: SkipTokenActionDict<T>): this;
+  extendAttribute<T>(name: string, actionDict: SkipTokenActionDict<T>): this;
 }
 
-export interface BaseGrammar extends Grammar {
-  createSemantics(): BaseSemantics;
-  extendSemantics(superSemantics: BaseSemantics): BaseSemantics;
+export interface SkipTokenGrammar extends Grammar {
+  createSemantics(): SkipTokenSemantics;
+  extendSemantics(superSemantics: SkipTokenSemantics): SkipTokenSemantics;
 }
 
-export interface SyrmedCssActionDict<T> extends BaseActionDict<T> {
-  syrmPrefixAnnotation?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  syrmBetweenAnnotation?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  syrmSuffixAnnotation?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  truthyKeyword?: (this: NonterminalNode, arg0: TerminalNode, arg1: TerminalNode, arg2: TerminalNode, arg3: NonterminalNode, arg4: TerminalNode) => T;
-  falsyKeyword?: (this: NonterminalNode, arg0: TerminalNode, arg1: TerminalNode, arg2: TerminalNode, arg3: NonterminalNode, arg4: TerminalNode) => T;
-  existKeyword?: (this: NonterminalNode, arg0: TerminalNode, arg1: TerminalNode, arg2: TerminalNode, arg3: NonterminalNode, arg4: TerminalNode) => T;
-  elseKeyword?: (this: NonterminalNode, arg0: TerminalNode, arg1: TerminalNode) => T;
-  invertKeyword?: (this: NonterminalNode, arg0: TerminalNode, arg1: TerminalNode) => T;
-  collectionKeyword?: (this: NonterminalNode, arg0: TerminalNode, arg1: TerminalNode) => T;
-  PropertyValueBase?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  PropertyValueFunc?: (this: NonterminalNode, arg0: NonterminalNode, arg1: TerminalNode, arg2: NonterminalNode, arg3: IterationNode, arg4: IterationNode, arg5: TerminalNode) => T;
-  constantSelector?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  nth_basic?: (this: NonterminalNode, arg0: TerminalNode, arg1: TerminalNode, arg2: IterationNode) => T;
-  nth_inject?: (this: NonterminalNode, arg0: TerminalNode, arg1: TerminalNode, arg2: NonterminalNode) => T;
-  nth?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+export interface AtomicActionDict<T> extends SkipTokenActionDict<T> {
+  atomic?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  pureAtomic?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  addedAtomic?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  generatedNumber?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  props?: (this: NonterminalNode, arg0: TerminalNode, arg1: TerminalNode, arg2: NonterminalNode, arg3: TerminalNode) => T;
+  number_negative?: (this: NonterminalNode, arg0: TerminalNode, arg1: IterationNode) => T;
+  number_positive?: (this: NonterminalNode, arg0: IterationNode) => T;
+  number?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  unit?: (this: NonterminalNode, arg0: NonterminalNode | TerminalNode) => T;
+  operator?: (this: NonterminalNode, arg0: TerminalNode) => T;
+  string?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  lowerCase?: (this: NonterminalNode, arg0: IterationNode) => T;
+  kebabCase?: (this: NonterminalNode, arg0: NonterminalNode, arg1: IterationNode) => T;
+  pascalCase?: (this: NonterminalNode, arg0: IterationNode, arg1: IterationNode) => T;
+  camelCase?: (this: NonterminalNode, arg0: NonterminalNode, arg1: IterationNode) => T;
+  jsIdentifier?: (this: NonterminalNode, arg0: NonterminalNode, arg1: IterationNode) => T;
+}
+
+export interface AtomicSemantics extends Semantics {
+  addOperation<T>(name: string, actionDict: AtomicActionDict<T>): this;
+  extendOperation<T>(name: string, actionDict: AtomicActionDict<T>): this;
+  addAttribute<T>(name: string, actionDict: AtomicActionDict<T>): this;
+  extendAttribute<T>(name: string, actionDict: AtomicActionDict<T>): this;
+}
+
+export interface AtomicGrammar extends Grammar {
+  createSemantics(): AtomicSemantics;
+  extendSemantics(superSemantics: AtomicSemantics): AtomicSemantics;
+}
+
+export interface PrimitiveActionDict<T> extends AtomicActionDict<T> {
+  Formula?: (this: NonterminalNode, arg0: NonterminalNode, arg1: IterationNode, arg2: IterationNode) => T;
+  FormulaElements_number?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  FormulaElements_expression?: (this: NonterminalNode, arg0: TerminalNode, arg1: NonterminalNode, arg2: TerminalNode) => T;
+  FormulaElements?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  AtomicFormula?: (this: NonterminalNode, arg0: NonterminalNode, arg1: IterationNode, arg2: IterationNode) => T;
+  numeral?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  numeralWithUnit?: (this: NonterminalNode, arg0: NonterminalNode, arg1: NonterminalNode) => T;
+}
+
+export interface PrimitiveSemantics extends Semantics {
+  addOperation<T>(name: string, actionDict: PrimitiveActionDict<T>): this;
+  extendOperation<T>(name: string, actionDict: PrimitiveActionDict<T>): this;
+  addAttribute<T>(name: string, actionDict: PrimitiveActionDict<T>): this;
+  extendAttribute<T>(name: string, actionDict: PrimitiveActionDict<T>): this;
+}
+
+export interface PrimitiveGrammar extends Grammar {
+  createSemantics(): PrimitiveSemantics;
+  extendSemantics(superSemantics: PrimitiveSemantics): PrimitiveSemantics;
+}
+
+export interface SyrmedCssInterfaceActionDict<T> extends PrimitiveActionDict<T> {
+  pureAtomic?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  addedAtomic?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  SelectorList?: (this: NonterminalNode, arg0: NonterminalNode, arg1: IterationNode, arg2: IterationNode) => T;
+  Selector?: (this: NonterminalNode, arg0: NonterminalNode, arg1: IterationNode) => T;
+  SelectorElem_edge?: (this: NonterminalNode, arg0: NonterminalNode, arg1: NonterminalNode) => T;
+  SelectorElem_node?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  SelectorElem?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  AtomicSelector_composite?: (this: NonterminalNode, arg0: NonterminalNode, arg1: NonterminalNode) => T;
+  AtomicSelector_basic?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  AtomicSelector_omission?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  AtomicSelector?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  basicSelector?: (this: NonterminalNode, arg0: NonterminalNode) => T;
   attributeSelector?: (this: NonterminalNode, arg0: TerminalNode, arg1: NonterminalNode, arg2: TerminalNode, arg3: NonterminalNode, arg4: TerminalNode) => T;
+  tagSelector?: (this: NonterminalNode, arg0: NonterminalNode) => T;
   htmlTagSelector?: (this: NonterminalNode, arg0: NonterminalNode, arg1: IterationNode) => T;
   jsxTagSelector?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  constantSelector?: (this: NonterminalNode, arg0: NonterminalNode) => T;
   rootSelector?: (this: NonterminalNode, arg0: TerminalNode) => T;
   universalSelector?: (this: NonterminalNode, arg0: TerminalNode) => T;
+  PseudoSelector_atom?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  PseudoSelector_molecule?: (this: NonterminalNode, arg0: NonterminalNode, arg1: IterationNode) => T;
+  PseudoSelector?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  Pseudo?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  PseudoFunc_element?: (this: NonterminalNode, arg0: NonterminalNode, arg1: TerminalNode, arg2: NonterminalNode, arg3: TerminalNode) => T;
+  PseudoFunc_class?: (this: NonterminalNode, arg0: NonterminalNode, arg1: TerminalNode, arg2: NonterminalNode, arg3: TerminalNode) => T;
+  PseudoFunc?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  PseudoElement?: (this: NonterminalNode, arg0: TerminalNode, arg1: NonterminalNode) => T;
+  PseudoClass?: (this: NonterminalNode, arg0: TerminalNode, arg1: NonterminalNode) => T;
+  PseudoArg?: (this: NonterminalNode, arg0: IterationNode | NonterminalNode) => T;
+  nth?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  nthConst?: (this: NonterminalNode, arg0: TerminalNode, arg1: TerminalNode, arg2: IterationNode) => T;
+  nthInject?: (this: NonterminalNode, arg0: TerminalNode, arg1: TerminalNode, arg2: NonterminalNode) => T;
   combinator?: (this: NonterminalNode, arg0: NonterminalNode) => T;
   adjacentSiblijngCombinator?: (this: NonterminalNode, arg0: TerminalNode) => T;
   generalSiblijngCombinator?: (this: NonterminalNode, arg0: TerminalNode) => T;
   childCombinator?: (this: NonterminalNode, arg0: TerminalNode) => T;
   columnCombinator?: (this: NonterminalNode, arg0: TerminalNode) => T;
+  PropertyName?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  collectionKeyword?: (this: NonterminalNode, arg0: TerminalNode, arg1: TerminalNode) => T;
+  PropertyValue?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  PropertyValueFunc?: (this: NonterminalNode, arg0: NonterminalNode, arg1: TerminalNode, arg2: NonterminalNode, arg3: TerminalNode) => T;
+}
+
+export interface SyrmedCssInterfaceSemantics extends Semantics {
+  addOperation<T>(name: string, actionDict: SyrmedCssInterfaceActionDict<T>): this;
+  extendOperation<T>(name: string, actionDict: SyrmedCssInterfaceActionDict<T>): this;
+  addAttribute<T>(name: string, actionDict: SyrmedCssInterfaceActionDict<T>): this;
+  extendAttribute<T>(name: string, actionDict: SyrmedCssInterfaceActionDict<T>): this;
+}
+
+export interface SyrmedCssInterfaceGrammar extends Grammar {
+  createSemantics(): SyrmedCssInterfaceSemantics;
+  extendSemantics(superSemantics: SyrmedCssInterfaceSemantics): SyrmedCssInterfaceSemantics;
+}
+
+export interface DeclarationBlockActionDict<T> extends SyrmedCssInterfaceActionDict<T> {
+  DeclarationBlock?: (this: NonterminalNode, arg0: TerminalNode, arg1: NonterminalNode, arg2: TerminalNode) => T;
+  DeclarationList?: (this: NonterminalNode, arg0: IterationNode) => T;
+  Declaration?: (this: NonterminalNode, arg0: NonterminalNode, arg1: TerminalNode, arg2: IterationNode, arg3: TerminalNode) => T;
+}
+
+export interface DeclarationBlockSemantics extends Semantics {
+  addOperation<T>(name: string, actionDict: DeclarationBlockActionDict<T>): this;
+  extendOperation<T>(name: string, actionDict: DeclarationBlockActionDict<T>): this;
+  addAttribute<T>(name: string, actionDict: DeclarationBlockActionDict<T>): this;
+  extendAttribute<T>(name: string, actionDict: DeclarationBlockActionDict<T>): this;
+}
+
+export interface DeclarationBlockGrammar extends Grammar {
+  createSemantics(): DeclarationBlockSemantics;
+  extendSemantics(superSemantics: DeclarationBlockSemantics): DeclarationBlockSemantics;
+}
+
+export interface RuleSetActionDict<T> extends DeclarationBlockActionDict<T> {
+  RuleSet?: (this: NonterminalNode, arg0: NonterminalNode, arg1: NonterminalNode) => T;
+}
+
+export interface RuleSetSemantics extends Semantics {
+  addOperation<T>(name: string, actionDict: RuleSetActionDict<T>): this;
+  extendOperation<T>(name: string, actionDict: RuleSetActionDict<T>): this;
+  addAttribute<T>(name: string, actionDict: RuleSetActionDict<T>): this;
+  extendAttribute<T>(name: string, actionDict: RuleSetActionDict<T>): this;
+}
+
+export interface RuleSetGrammar extends Grammar {
+  createSemantics(): RuleSetSemantics;
+  extendSemantics(superSemantics: RuleSetSemantics): RuleSetSemantics;
+}
+
+export interface DeclarationStatementActionDict<T> extends RuleSetActionDict<T> {
+  pureAtomic?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  addedAtomic?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  DeclarationStatement_surrounded?: (this: NonterminalNode, arg0: NonterminalNode, arg1: IterationNode, arg2: NonterminalNode) => T;
+  DeclarationStatement_between?: (this: NonterminalNode, arg0: NonterminalNode, arg1: NonterminalNode, arg2: NonterminalNode) => T;
+  DeclarationStatement_prefixed?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  DeclarationStatement_basic?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  DeclarationStatement?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  RuleSetWithPrefix?: (this: NonterminalNode, arg0: NonterminalNode, arg1: NonterminalNode) => T;
+  preAnnotation?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  midAnnotation?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  sufAnnotation?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  truthy?: (this: NonterminalNode, arg0: TerminalNode, arg1: TerminalNode, arg2: TerminalNode, arg3: NonterminalNode, arg4: TerminalNode) => T;
+  falsy?: (this: NonterminalNode, arg0: TerminalNode, arg1: TerminalNode, arg2: TerminalNode, arg3: NonterminalNode, arg4: TerminalNode) => T;
+  exist?: (this: NonterminalNode, arg0: TerminalNode, arg1: TerminalNode, arg2: TerminalNode, arg3: NonterminalNode, arg4: TerminalNode) => T;
+  else?: (this: NonterminalNode, arg0: TerminalNode, arg1: TerminalNode) => T;
+  invert?: (this: NonterminalNode, arg0: TerminalNode, arg1: TerminalNode) => T;
+}
+
+export interface DeclarationStatementSemantics extends Semantics {
+  addOperation<T>(name: string, actionDict: DeclarationStatementActionDict<T>): this;
+  extendOperation<T>(name: string, actionDict: DeclarationStatementActionDict<T>): this;
+  addAttribute<T>(name: string, actionDict: DeclarationStatementActionDict<T>): this;
+  extendAttribute<T>(name: string, actionDict: DeclarationStatementActionDict<T>): this;
+}
+
+export interface DeclarationStatementGrammar extends Grammar {
+  createSemantics(): DeclarationStatementSemantics;
+  extendSemantics(superSemantics: DeclarationStatementSemantics): DeclarationStatementSemantics;
+}
+
+export interface SyrmedCssActionDict<T> extends DeclarationStatementActionDict<T> {
+  SyrmedCss?: (this: NonterminalNode, arg0: IterationNode) => T;
 }
 
 export interface SyrmedCssSemantics extends Semantics {
@@ -99,108 +229,29 @@ export interface SyrmedCssGrammar extends Grammar {
   extendSemantics(superSemantics: SyrmedCssSemantics): SyrmedCssSemantics;
 }
 
-export interface SyrmCascadeActionDict<T> extends SyrmedCssActionDict<T> {
-  Root?: (this: NonterminalNode, arg0: IterationNode) => T;
-  Block_surrounded?: (this: NonterminalNode, arg0: NonterminalNode, arg1: IterationNode, arg2: NonterminalNode) => T;
-  Block_between?: (this: NonterminalNode, arg0: NonterminalNode, arg1: NonterminalNode, arg2: NonterminalNode) => T;
-  Block_prefixed?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  Block_basic?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+export interface RegionsActionDict<T> extends SyrmedCssActionDict<T> {
+  CascadeRegion?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  CollectionRegion?: (this: NonterminalNode, arg0: IterationNode) => T;
+  Namespace?: (this: NonterminalNode, arg0: TerminalNode, arg1: Node, arg2: TerminalNode, arg3: IterationNode, arg4: NonterminalNode, arg5: IterationNode, arg6: TerminalNode, arg7: Node, arg8: TerminalNode) => T;
+}
+
+export interface RegionsSemantics extends Semantics {
+  addOperation<T>(name: string, actionDict: RegionsActionDict<T>): this;
+  extendOperation<T>(name: string, actionDict: RegionsActionDict<T>): this;
+  addAttribute<T>(name: string, actionDict: RegionsActionDict<T>): this;
+  extendAttribute<T>(name: string, actionDict: RegionsActionDict<T>): this;
+}
+
+export interface RegionsGrammar extends Grammar {
+  createSemantics(): RegionsSemantics;
+  extendSemantics(superSemantics: RegionsSemantics): RegionsSemantics;
+}
+
+export interface SyrmActionDict<T> extends RegionsActionDict<T> {
+  Syrm?: (this: NonterminalNode, arg0: IterationNode) => T;
   Block?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  DeclarationsBlockWithPrefix?: (this: NonterminalNode, arg0: NonterminalNode, arg1: NonterminalNode) => T;
-  DeclarationsBlock?: (this: NonterminalNode, arg0: NonterminalNode, arg1: TerminalNode, arg2: NonterminalNode, arg3: TerminalNode) => T;
-  DeclarationList?: (this: NonterminalNode, arg0: IterationNode) => T;
-  Declaration?: (this: NonterminalNode, arg0: NonterminalNode, arg1: TerminalNode, arg2: IterationNode, arg3: TerminalNode) => T;
-  propertyName?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  PropertyValue?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  SelectorList?: (this: NonterminalNode, arg0: NonterminalNode, arg1: IterationNode, arg2: IterationNode) => T;
-  Selector?: (this: NonterminalNode, arg0: NonterminalNode, arg1: IterationNode) => T;
-  SelectorElem_edge?: (this: NonterminalNode, arg0: NonterminalNode, arg1: NonterminalNode) => T;
-  SelectorElem_node?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  SelectorElem?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  AtomicSelector_composite?: (this: NonterminalNode, arg0: NonterminalNode, arg1: NonterminalNode) => T;
-  AtomicSelector_basic?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  AtomicSelector_omission?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  AtomicSelector?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  basicSelector?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  PseudoSelector_atom?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  PseudoSelector_molecule?: (this: NonterminalNode, arg0: NonterminalNode, arg1: IterationNode) => T;
-  PseudoSelector?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  Pseudo?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  PseudoFunc_element?: (this: NonterminalNode, arg0: NonterminalNode, arg1: TerminalNode, arg2: NonterminalNode, arg3: TerminalNode) => T;
-  PseudoFunc_class?: (this: NonterminalNode, arg0: NonterminalNode, arg1: TerminalNode, arg2: NonterminalNode, arg3: TerminalNode) => T;
-  PseudoFunc?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  PseudoElement?: (this: NonterminalNode, arg0: TerminalNode, arg1: NonterminalNode) => T;
-  PseudoClass?: (this: NonterminalNode, arg0: TerminalNode, arg1: NonterminalNode) => T;
-  PseudoArg?: (this: NonterminalNode, arg0: IterationNode | NonterminalNode) => T;
-}
-
-export interface SyrmCascadeSemantics extends Semantics {
-  addOperation<T>(name: string, actionDict: SyrmCascadeActionDict<T>): this;
-  extendOperation<T>(name: string, actionDict: SyrmCascadeActionDict<T>): this;
-  addAttribute<T>(name: string, actionDict: SyrmCascadeActionDict<T>): this;
-  extendAttribute<T>(name: string, actionDict: SyrmCascadeActionDict<T>): this;
-}
-
-export interface SyrmCascadeGrammar extends Grammar {
-  createSemantics(): SyrmCascadeSemantics;
-  extendSemantics(superSemantics: SyrmCascadeSemantics): SyrmCascadeSemantics;
-}
-
-export interface SyrmCollectionActionDict<T> extends SyrmedCssActionDict<T> {
-  Root?: (this: NonterminalNode, arg0: IterationNode) => T;
-  Def?: (this: NonterminalNode, arg0: TerminalNode, arg1: Node, arg2: TerminalNode, arg3: IterationNode, arg4: IterationNode, arg5: IterationNode, arg6: TerminalNode, arg7: Node, arg8: TerminalNode) => T;
-  Block_between?: (this: NonterminalNode, arg0: NonterminalNode, arg1: NonterminalNode, arg2: NonterminalNode) => T;
-  Block_prefixed?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  Block_basic?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  Block?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  DeclarationsBlockWithPrefix?: (this: NonterminalNode, arg0: NonterminalNode, arg1: NonterminalNode) => T;
-  DeclarationsBlock?: (this: NonterminalNode, arg0: NonterminalNode, arg1: TerminalNode, arg2: NonterminalNode, arg3: TerminalNode) => T;
-  DeclarationList?: (this: NonterminalNode, arg0: IterationNode) => T;
-  Declaration?: (this: NonterminalNode, arg0: NonterminalNode, arg1: TerminalNode, arg2: IterationNode, arg3: TerminalNode) => T;
-  propertyName?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  PropertyValue?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  SelectorList?: (this: NonterminalNode, arg0: NonterminalNode, arg1: IterationNode, arg2: IterationNode) => T;
-  Selector?: (this: NonterminalNode, arg0: NonterminalNode, arg1: IterationNode) => T;
-  SelectorElem_edge?: (this: NonterminalNode, arg0: NonterminalNode, arg1: NonterminalNode) => T;
-  SelectorElem_node?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  SelectorElem?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  AtomicSelector_composite?: (this: NonterminalNode, arg0: NonterminalNode, arg1: NonterminalNode) => T;
-  AtomicSelector_basic?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  AtomicSelector_omission?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  AtomicSelector?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  basicSelector?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  PseudoSelector_atom?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  PseudoSelector_molecule?: (this: NonterminalNode, arg0: NonterminalNode, arg1: IterationNode) => T;
-  PseudoSelector?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  Pseudo?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  PseudoFunc_element?: (this: NonterminalNode, arg0: NonterminalNode, arg1: TerminalNode, arg2: NonterminalNode, arg3: TerminalNode) => T;
-  PseudoFunc_class?: (this: NonterminalNode, arg0: NonterminalNode, arg1: TerminalNode, arg2: NonterminalNode, arg3: TerminalNode) => T;
-  PseudoFunc?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  PseudoElement?: (this: NonterminalNode, arg0: TerminalNode, arg1: NonterminalNode) => T;
-  PseudoClass?: (this: NonterminalNode, arg0: TerminalNode, arg1: NonterminalNode) => T;
-  PseudoArg?: (this: NonterminalNode, arg0: IterationNode | NonterminalNode) => T;
-}
-
-export interface SyrmCollectionSemantics extends Semantics {
-  addOperation<T>(name: string, actionDict: SyrmCollectionActionDict<T>): this;
-  extendOperation<T>(name: string, actionDict: SyrmCollectionActionDict<T>): this;
-  addAttribute<T>(name: string, actionDict: SyrmCollectionActionDict<T>): this;
-  extendAttribute<T>(name: string, actionDict: SyrmCollectionActionDict<T>): this;
-}
-
-export interface SyrmCollectionGrammar extends Grammar {
-  createSemantics(): SyrmCollectionSemantics;
-  extendSemantics(superSemantics: SyrmCollectionSemantics): SyrmCollectionSemantics;
-}
-
-export interface SyrmActionDict<T> extends BaseActionDict<T> {
-  Root?: (this: NonterminalNode, arg0: IterationNode) => T;
-  Region?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  Cascade?: (this: NonterminalNode, arg0: TerminalNode, arg1: IterationNode, arg2: IterationNode, arg3: IterationNode, arg4: TerminalNode) => T;
-  CascadeInnerOther?: (this: NonterminalNode, arg0: TerminalNode) => T;
-  Collection?: (this: NonterminalNode, arg0: TerminalNode, arg1: IterationNode, arg2: IterationNode, arg3: IterationNode, arg4: TerminalNode) => T;
-  CollectionInnerOther?: (this: NonterminalNode, arg0: TerminalNode) => T;
-  inner?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  CascadeBlock?: (this: NonterminalNode, arg0: TerminalNode, arg1: IterationNode, arg2: NonterminalNode, arg3: IterationNode, arg4: TerminalNode) => T;
+  CollectionBlock?: (this: NonterminalNode, arg0: TerminalNode, arg1: IterationNode, arg2: NonterminalNode, arg3: IterationNode, arg4: TerminalNode) => T;
 }
 
 export interface SyrmSemantics extends Semantics {
@@ -216,10 +267,15 @@ export interface SyrmGrammar extends Grammar {
 }
 
 declare const ns: {
-  Base: BaseGrammar;
+  SkipToken: SkipTokenGrammar;
+  Atomic: AtomicGrammar;
+  Primitive: PrimitiveGrammar;
+  SyrmedCssInterface: SyrmedCssInterfaceGrammar;
+  DeclarationBlock: DeclarationBlockGrammar;
+  RuleSet: RuleSetGrammar;
+  DeclarationStatement: DeclarationStatementGrammar;
   SyrmedCss: SyrmedCssGrammar;
-  SyrmCascade: SyrmCascadeGrammar;
-  SyrmCollection: SyrmCollectionGrammar;
+  Regions: RegionsGrammar;
   Syrm: SyrmGrammar;
 };
 export default ns;

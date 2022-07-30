@@ -1,12 +1,12 @@
-SelectorList <: SyrmInterface {
-  pureAtomic += combinator | constantSelector
+SyrmedCssInterface <: Primitive {
+  pureAtomic += collectionKeyword | combinator | constantSelector
   addedAtomic += nthConst | tagSelector
   
   /* -------------------------------------------------------------------------- */
   /* selector list                                                              */
   /* -------------------------------------------------------------------------- */
   
-  SelectorList := Selector ("," Selector)*
+  SelectorList = Selector ("," Selector)*
   
   /* -------------------------------------------------------------------------- */
   /* selector                                                                   */
@@ -67,4 +67,18 @@ SelectorList <: SyrmInterface {
   generalSiblijngCombinator = "~"
   childCombinator = ">"
   columnCombinator = "||"
+  
+  /* -------------------------------------------------------------------------- */
+  /* PropertyName                                                               */
+  /* -------------------------------------------------------------------------- */
+  
+  PropertyName = kebabCase | collectionKeyword
+  collectionKeyword = "@" "collection"
+  
+  /* -------------------------------------------------------------------------- */
+  /* PropertyValue                                                              */
+  /* -------------------------------------------------------------------------- */
+  
+  PropertyValue = PropertyValueFunc | Formula | kebabCase | pascalCase
+  PropertyValueFunc = kebabCase "(" ListOf<Formula, ","> ")"
 }

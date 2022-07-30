@@ -7,5 +7,5 @@ Primitive <: Atomic {
     | "(" AtomicFormula ")" -- expression
   AtomicFormula = numeral (operator numeral)+
   numeral = numeralWithUnit | number | props
-  numeralWithUnit = numeral unit
+  numeralWithUnit = generatedNumber unit
 }

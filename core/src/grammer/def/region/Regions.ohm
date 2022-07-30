@@ -1,0 +1,6 @@
+Regions <: SyrmedCss {
+  CascadeRegion = SyrmedCss
+  
+  CollectionRegion = Namespace<pascalCase>*
+  Namespace<TagName> = "<" TagName ">" space* SyrmedCss space* "</" TagName ">"
+}

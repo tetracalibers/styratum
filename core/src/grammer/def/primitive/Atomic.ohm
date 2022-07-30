@@ -5,6 +5,9 @@ Atomic <: SkipToken {
   
   pureAtomic = number | unit | operator | string | jsIdentifier
   addedAtomic = props
+  
+  /* props | number */
+  generatedNumber = props | number
     
   /* props */
   props = "props" "(" jsIdentifier ")"

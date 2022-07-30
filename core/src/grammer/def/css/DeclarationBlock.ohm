@@ -1,5 +1,5 @@
-DeclarationBlock <: SyrmInterface {
-  DeclarationBlock := "{" DeclarationList "}"
+DeclarationBlock <: SyrmedCssInterface {
+  DeclarationBlock = "{" DeclarationList "}"
   
   DeclarationList = Declaration+
   Declaration = PropertyName ":" PropertyValue+ ";"

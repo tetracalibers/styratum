@@ -1,5 +1,5 @@
-Syrm <: SyrmInterface {
-  Syrm := Block*
+Syrm <: Regions {
+  Syrm = Block*
   
   Block = CascadeBlock | CollectionBlock | Block
   

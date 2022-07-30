@@ -1,4 +1,4 @@
-DeclarationStatement <: SyrmInterface {
+DeclarationStatement <: RuleSet {
   pureAtomic += else | invert
   addedAtomic += truthy | falsy | exist
   
@@ -6,12 +6,12 @@ DeclarationStatement <: SyrmInterface {
   /* declaration statement                                                      */
   /* -------------------------------------------------------------------------- */
   
-  DeclarationStatement := 
-    | DeclarationsBlockWithPrefix DeclarationsBlock* syrmSuffixAnnotation -- surrounded
-    | DeclarationsBlockWithPrefix syrmBetweenAnnotation DeclarationsBlock -- between
-    | DeclarationsBlockWithPrefix -- prefixed
-    | DeclarationsBlock -- basic
-  DeclarationsBlockWithPrefix = syrmPrefixAnnotation DeclarationsBlock
+  DeclarationStatement = 
+    | RuleSetWithPrefix RuleSet* sufAnnotation -- surrounded
+    | RuleSetWithPrefix midAnnotation RuleSet -- between
+    | RuleSetWithPrefix -- prefixed
+    | RuleSet -- basic
+  RuleSetWithPrefix = preAnnotation RuleSet
   
   /* -------------------------------------------------------------------------- */
   /* annotation                                                                 */

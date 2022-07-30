@@ -1,7 +1,0 @@
-PropertyName <: SyrmInterface {
-  pureAtomic += collectionKeyword
-  
-  PropertyName := kebabCase | collectionKeyword
-  
-  collectionKeyword = "@" "collection"
-}

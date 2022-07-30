@@ -4,16 +4,12 @@
     "primitive/config/SkipToken",
     "primitive/Atomic",
     "primitive/Primitive",
-    "interface/SyrmInterface",
-    "css/PropertyValue",
-    "css/PropertyName",
-    "css/SelectorList",
+    "css/SyrmedCssInterface",
     "css/DeclarationBlock",
     "css/RuleSet",
     "css/DeclarationStatement",
     "css/SyrmedCss",
-    "region/CascadeRegion",
-    "region/CollectionRegion",
+    "region/Regions",
     "Syrm"
   ]
 }
