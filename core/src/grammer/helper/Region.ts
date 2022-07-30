@@ -8,20 +8,13 @@ export class Region {
   private fullSource: string
   private startIdx: number
   private endIdx: number
-  private startPos: Position | undefined
-  private endPos: Position | undefined
-  private uri: string | undefined
+  private startPos?: Position
+  private endPos?: Position
 
-  constructor(
-    source: string,
-    startIdx: number,
-    endIdx: number,
-    uri?: string | undefined
-  ) {
+  constructor(source: string, startIdx: number, endIdx: number) {
     this.fullSource = source
     this.startIdx = startIdx
     this.endIdx = endIdx
-    this.uri = uri
   }
 
   get offset(): Offset {
@@ -48,7 +41,7 @@ export class Region {
     }
   }
 
-  get source() {
-    return this.fullSource.substring(this.startIdx, this.endIdx)
-  }
+  //get source() {
+  //  return this.fullSource.substring(this.startIdx, this.endIdx)
+  //}
 }

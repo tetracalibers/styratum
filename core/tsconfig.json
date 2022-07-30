@@ -23,6 +23,6 @@
     "outDir": "./dist",
     "resolveJsonModule": true
   },
-  "include": ["./src"],
+  "include": ["./src", "src/grammer/helper/Scope/.ts"],
   "exclude": ["node_modules", "./dist/*"]
 }

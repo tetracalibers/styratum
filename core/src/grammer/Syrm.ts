@@ -1,18 +1,24 @@
 import { NonterminalNode, TerminalNode } from 'ohm-js'
 import { dumpJson } from '../util/json'
 import * as NS from './def/build/Syrm.ohm-bundle'
-import { Offset } from './helper/Offset'
+import { Position } from './helper/Position'
 import { Region } from './helper/Region'
 
-interface Token {
+interface Range {
+  start: Position
+  end: Position
+}
+
+interface Node {
   type: string
-  text: string
-  children: unknown[]
   location: {
     uri: string
-    range: Offset
+    range: Range
   }
+  [K: string]: unknown
 }
+
+type Nodes = Node | Node[]
 
 const BlockToAst = (
   fullcode: string,
@@ -20,20 +26,18 @@ const BlockToAst = (
   inner: NonterminalNode,
   close: TerminalNode,
   type?: string
-) => {
+): Nodes => {
   const startIdx = open.source.endIdx + 1
   const endIdx = close.source.startIdx - 1
   const range = new Region(fullcode, startIdx, endIdx)
-  return [
-    {
-      type: type ? type : inner.ctorName,
-      location: {
-        uri: '',
-        range: range.position,
-      },
-      children: inner.children.map(child => child.ast),
+  return {
+    type: type ? type : inner.ctorName,
+    location: {
+      uri: '',
+      range: range.position as Range,
     },
-  ]
+    children: inner.children.map(child => child.ast),
+  }
 }
 
 export const parseSyrm = (raw_syrm: string) => {
@@ -45,7 +49,6 @@ export const parseSyrm = (raw_syrm: string) => {
   parser.grammar = NS.default.Syrm
   parser.semantics = parser.grammar.createSemantics()
   parser.semantics.addAttribute('ast', {
-    Root: rs => rs.children.map(child => child.ast),
     CascadeBlock: (open, __, inner, ___, close) => {
       return BlockToAst(raw_syrm, open, inner, close)
     },
@@ -58,17 +61,15 @@ export const parseSyrm = (raw_syrm: string) => {
     RuleSet(slist, dblock) {
       const { startIdx, endIdx } = this.source
       const range = new Region(raw_syrm, startIdx, endIdx)
-      return [
-        {
-          type: this.ctorName,
-          selector: slist.ast,
-          declarations: dblock.ast,
-          location: {
-            uri: '',
-            range: range.position,
-          },
+      return {
+        type: this.ctorName,
+        selector: slist.ast,
+        declarations: dblock.ast,
+        location: {
+          uri: '',
+          range: range.position as Range,
         },
-      ]
+      }
     },
     _iter(...children) {
       return children.map(child => child.ast)
