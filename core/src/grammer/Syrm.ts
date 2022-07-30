@@ -31,6 +31,18 @@ export const parseSyrm = (raw_syrm: string) => {
     }
   }
 
+  const ifToAst = (node: NonterminalNode, propVariable: NonterminalNode) => {
+    const { startIdx, endIdx } = node.source
+    return {
+      type: node.ctorName,
+      props: propVariable.source.contents,
+      location: {
+        uri: '',
+        range: getLocation(startIdx, endIdx).range,
+      },
+    }
+  }
+
   const listToAst = (children: NonterminalNode[]): Nodes => {
     return children.map(child => child.ast)
   }
@@ -183,15 +195,10 @@ export const parseSyrm = (raw_syrm: string) => {
       }
     },
     exist(_at, _exist, _, variable, __) {
-      const { startIdx, endIdx } = this.source
-      return {
-        type: this.ctorName,
-        props: variable.source.contents,
-        location: {
-          uri: '',
-          range: getLocation(startIdx, endIdx).range,
-        },
-      }
+      return ifToAst(this, variable)
+    },
+    truthy(_at, _truthy, _, variable, __) {
+      return ifToAst(this, variable)
     },
     number_negative(_, __) {
       return atomToAst(this)
