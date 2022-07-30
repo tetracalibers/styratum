@@ -120,6 +120,9 @@ export const parseSyrm = (raw_syrm: string) => {
         },
       }
     },
+    PseudoClass(_, __) {
+      return atomToAst(this)
+    },
     Formula(first, ope, rest) {
       return listToAst([first, ope, rest])
     },
