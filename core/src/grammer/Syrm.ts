@@ -71,10 +71,10 @@ export const parseSyrm = (raw_syrm: string) => {
     Namespace: (___, _tagName, open, _, inner, __, close, __tagName, ____) => {
       return BlockToAst(open, inner, close)
     },
-    DeclarationStatement_prefixed(pre, rules) {
+    RuleSetStatement_if(pre, rules) {
       const { startIdx, endIdx } = this.source
       return {
-        type: 'RuleSetStatement',
+        type: this.ctorName,
         if: pre.ast,
         ifThen: rules.ast,
         location: {
@@ -83,13 +83,26 @@ export const parseSyrm = (raw_syrm: string) => {
         },
       }
     },
-    DeclarationStatement_between(pre, rule1, _mid, rule2) {
+    RuleSetStatement_if_else(pre, rule1, _mid, rule2) {
       const { startIdx, endIdx } = this.source
       return {
-        type: 'RuleSetStatement',
+        type: this.ctorName,
         if: pre.ast,
         ifThen: rule1.ast,
         elseThen: rule2.ast,
+        location: {
+          uri: '',
+          range: getLocation(startIdx, endIdx).range,
+        },
+      }
+    },
+    RuleSetStatement_invert(pre, rule1, rule2, _suf) {
+      const { startIdx, endIdx } = this.source
+      return {
+        type: this.ctorName,
+        if: pre.ast,
+        rule1: rule1.ast,
+        rule2: rule2.ast,
         location: {
           uri: '',
           range: getLocation(startIdx, endIdx).range,

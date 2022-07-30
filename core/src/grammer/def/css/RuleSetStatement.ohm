@@ -1,23 +1,21 @@
-DeclarationStatement <: RuleSet {
+RuleSetStatement <: RuleSet {
   pureAtomic += else | invert
   addedAtomic += truthy | falsy | exist
   
   /* -------------------------------------------------------------------------- */
-  /* declaration statement                                                      */
+  /* ruleset statement                                                          */
   /* -------------------------------------------------------------------------- */
   
-  DeclarationStatement = 
-    | preAnnotation RuleSet RuleSet* sufAnnotation -- surrounded
-    | preAnnotation RuleSet midAnnotation RuleSet -- between
-    | preAnnotation RuleSet -- prefixed
-    | RuleSet -- basic
+  RuleSetStatement = 
+    | ifAnnotation RuleSet RuleSet invert -- invert
+    | ifAnnotation RuleSet else RuleSet -- if_else
+    | ifAnnotation RuleSet -- if
+    | RuleSet
   
   /* -------------------------------------------------------------------------- */
   /* annotation                                                                 */
   /* -------------------------------------------------------------------------- */
-  preAnnotation = truthy | falsy | exist
-  midAnnotation = else
-  sufAnnotation = invert
+  ifAnnotation = truthy | falsy | exist
     
   truthy = "@" "truthy" "(" jsIdentifier ")"
   falsy = "@" "falsy" "(" jsIdentifier")"

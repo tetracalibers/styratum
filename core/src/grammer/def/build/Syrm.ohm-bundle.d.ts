@@ -176,17 +176,14 @@ export interface RuleSetGrammar extends Grammar {
   extendSemantics(superSemantics: RuleSetSemantics): RuleSetSemantics;
 }
 
-export interface DeclarationStatementActionDict<T> extends RuleSetActionDict<T> {
+export interface RuleSetStatementActionDict<T> extends RuleSetActionDict<T> {
   pureAtomic?: (this: NonterminalNode, arg0: NonterminalNode) => T;
   addedAtomic?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  DeclarationStatement_surrounded?: (this: NonterminalNode, arg0: NonterminalNode, arg1: NonterminalNode, arg2: IterationNode, arg3: NonterminalNode) => T;
-  DeclarationStatement_between?: (this: NonterminalNode, arg0: NonterminalNode, arg1: NonterminalNode, arg2: NonterminalNode, arg3: NonterminalNode) => T;
-  DeclarationStatement_prefixed?: (this: NonterminalNode, arg0: NonterminalNode, arg1: NonterminalNode) => T;
-  DeclarationStatement_basic?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  DeclarationStatement?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  preAnnotation?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  midAnnotation?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  sufAnnotation?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  RuleSetStatement_invert?: (this: NonterminalNode, arg0: NonterminalNode, arg1: NonterminalNode, arg2: NonterminalNode, arg3: NonterminalNode) => T;
+  RuleSetStatement_if_else?: (this: NonterminalNode, arg0: NonterminalNode, arg1: NonterminalNode, arg2: NonterminalNode, arg3: NonterminalNode) => T;
+  RuleSetStatement_if?: (this: NonterminalNode, arg0: NonterminalNode, arg1: NonterminalNode) => T;
+  RuleSetStatement?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  ifAnnotation?: (this: NonterminalNode, arg0: NonterminalNode) => T;
   truthy?: (this: NonterminalNode, arg0: TerminalNode, arg1: TerminalNode, arg2: TerminalNode, arg3: NonterminalNode, arg4: TerminalNode) => T;
   falsy?: (this: NonterminalNode, arg0: TerminalNode, arg1: TerminalNode, arg2: TerminalNode, arg3: NonterminalNode, arg4: TerminalNode) => T;
   exist?: (this: NonterminalNode, arg0: TerminalNode, arg1: TerminalNode, arg2: TerminalNode, arg3: NonterminalNode, arg4: TerminalNode) => T;
@@ -194,19 +191,19 @@ export interface DeclarationStatementActionDict<T> extends RuleSetActionDict<T> 
   invert?: (this: NonterminalNode, arg0: TerminalNode, arg1: TerminalNode) => T;
 }
 
-export interface DeclarationStatementSemantics extends Semantics {
-  addOperation<T>(name: string, actionDict: DeclarationStatementActionDict<T>): this;
-  extendOperation<T>(name: string, actionDict: DeclarationStatementActionDict<T>): this;
-  addAttribute<T>(name: string, actionDict: DeclarationStatementActionDict<T>): this;
-  extendAttribute<T>(name: string, actionDict: DeclarationStatementActionDict<T>): this;
+export interface RuleSetStatementSemantics extends Semantics {
+  addOperation<T>(name: string, actionDict: RuleSetStatementActionDict<T>): this;
+  extendOperation<T>(name: string, actionDict: RuleSetStatementActionDict<T>): this;
+  addAttribute<T>(name: string, actionDict: RuleSetStatementActionDict<T>): this;
+  extendAttribute<T>(name: string, actionDict: RuleSetStatementActionDict<T>): this;
 }
 
-export interface DeclarationStatementGrammar extends Grammar {
-  createSemantics(): DeclarationStatementSemantics;
-  extendSemantics(superSemantics: DeclarationStatementSemantics): DeclarationStatementSemantics;
+export interface RuleSetStatementGrammar extends Grammar {
+  createSemantics(): RuleSetStatementSemantics;
+  extendSemantics(superSemantics: RuleSetStatementSemantics): RuleSetStatementSemantics;
 }
 
-export interface SyrmedCssActionDict<T> extends DeclarationStatementActionDict<T> {
+export interface SyrmedCssActionDict<T> extends RuleSetStatementActionDict<T> {
   SyrmedCss?: (this: NonterminalNode, arg0: IterationNode) => T;
 }
 
@@ -266,7 +263,7 @@ declare const ns: {
   SyrmedCssInterface: SyrmedCssInterfaceGrammar;
   DeclarationBlock: DeclarationBlockGrammar;
   RuleSet: RuleSetGrammar;
-  DeclarationStatement: DeclarationStatementGrammar;
+  RuleSetStatement: RuleSetStatementGrammar;
   SyrmedCss: SyrmedCssGrammar;
   Regions: RegionsGrammar;
   Syrm: SyrmGrammar;

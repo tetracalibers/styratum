@@ -7,7 +7,7 @@
     "css/SyrmedCssInterface",
     "css/DeclarationBlock",
     "css/RuleSet",
-    "css/DeclarationStatement",
+    "css/RuleSetStatement",
     "css/SyrmedCss",
     "region/Regions",
     "Syrm"
