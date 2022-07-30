@@ -116,12 +116,12 @@ export const parseSyrm = (raw_syrm: string) => {
     Selector(first, rest) {
       return listToAst([first, rest])
     },
-    PropertyValueFunc(name, _, args, __) {
+    PropertyValueFunc(name, _, firstArg, __, restArg, ___) {
       const { startIdx, endIdx } = this.source
       return {
         type: this.ctorName,
         name: name.source.contents,
-        args: args.ast,
+        args: listToAst([firstArg, restArg]),
         location: {
           uri: '',
           range: getLocation(startIdx, endIdx).range,
