@@ -63,8 +63,21 @@ export const parseSyrm = (raw_syrm: string) => {
       const { startIdx, endIdx } = this.source
       return {
         type: 'RuleSetStatement',
-        isActive: pre.ast,
-        value: rules.ast,
+        if: pre.ast,
+        ifThen: rules.ast,
+        location: {
+          uri: '',
+          range: getLocation(startIdx, endIdx).range,
+        },
+      }
+    },
+    DeclarationStatement_between(pre, rule1, _mid, rule2) {
+      const { startIdx, endIdx } = this.source
+      return {
+        type: 'RuleSetStatement',
+        if: pre.ast,
+        ifThen: rule1.ast,
+        elseThen: rule2.ast,
         location: {
           uri: '',
           range: getLocation(startIdx, endIdx).range,
