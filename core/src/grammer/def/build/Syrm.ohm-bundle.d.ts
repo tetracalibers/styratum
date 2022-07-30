@@ -13,6 +13,7 @@ import {
 } from 'ohm-js';
 
 export interface SkipTokenActionDict<T> extends ActionDict<T> {
+  Root?: (this: NonterminalNode, arg0: TerminalNode) => T;
   space?: (this: NonterminalNode, arg0: NonterminalNode) => T;
   comment?: (this: NonterminalNode, arg0: NonterminalNode) => T;
   multiLineComment?: (this: NonterminalNode, arg0: TerminalNode, arg1: IterationNode, arg2: TerminalNode) => T;
@@ -248,7 +249,7 @@ export interface RegionsGrammar extends Grammar {
 }
 
 export interface SyrmActionDict<T> extends RegionsActionDict<T> {
-  Syrm?: (this: NonterminalNode, arg0: IterationNode) => T;
+  Root?: (this: NonterminalNode, arg0: IterationNode) => T;
   Block?: (this: NonterminalNode, arg0: NonterminalNode) => T;
   CascadeBlock?: (this: NonterminalNode, arg0: TerminalNode, arg1: IterationNode, arg2: NonterminalNode, arg3: IterationNode, arg4: TerminalNode) => T;
   CollectionBlock?: (this: NonterminalNode, arg0: TerminalNode, arg1: IterationNode, arg2: NonterminalNode, arg3: IterationNode, arg4: TerminalNode) => T;

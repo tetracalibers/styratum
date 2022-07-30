@@ -1,4 +1,6 @@
 SkipToken {  
+  Root = ""
+  
   /* override */
   space := whitespace | lineTerminator | comment
   
@@ -208,7 +210,7 @@ Regions <: SyrmedCss {
 }
 
 Syrm <: Regions {
-  Syrm = Block*
+  Root := Block*
   
   Block = CascadeBlock | CollectionBlock | Block
   

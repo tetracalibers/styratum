@@ -1,4 +1,6 @@
 SkipToken {  
+  Root = ""
+  
   /* override */
   space := whitespace | lineTerminator | comment
   

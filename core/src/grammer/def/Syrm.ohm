@@ -1,5 +1,5 @@
 Syrm <: Regions {
-  Syrm = Block*
+  Root := Block*
   
   Block = CascadeBlock | CollectionBlock | Block
   
