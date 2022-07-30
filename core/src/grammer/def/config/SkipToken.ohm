@@ -1,0 +1,26 @@
+SkipToken {  
+  Root = ""
+  
+  /* override */
+  space := whitespace | lineTerminator | comment
+  
+  /* comment */
+  comment = multiLineComment | singleLineComment
+
+  multiLineComment = "/*" (~"*/" any)* "*/"
+  singleLineComment = "//" (~lineTerminator any)*
+  
+  /* special character */
+  whitespace = "\t"
+             | "\x0B"    -- verticalTab
+             | "\x0C"    -- formFeed
+             | " "
+             | "\u00A0"  -- noBreakSpace
+             | "\uFEFF"  -- byteOrderMark
+             | unicodeSpaceSeparator
+
+  lineTerminator = "\n" | "\r" | "\u2028" | "\u2029"
+  lineTerminatorSequence = "\n" | "\r" ~"\n" | "\u2028" | "\u2029" | "\r\n"
+  
+  unicodeSpaceSeparator = "\u2000".."\u200B" | "\u3000"
+}

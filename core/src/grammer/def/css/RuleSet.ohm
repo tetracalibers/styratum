@@ -1,0 +1,4 @@
+RuleSet <: Primitive {
+  // TODO:
+  RuleSet = SelectorList DeclarationsBlock
+}

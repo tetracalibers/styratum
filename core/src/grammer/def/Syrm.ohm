@@ -1,4 +1,4 @@
-Syrm <: Base {
+Syrm <: SkipToken {
   Root := Region*
   
   Region = Cascade | Collection | Region

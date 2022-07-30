@@ -1,0 +1,8 @@
+Declarations <: Primitive {
+  DeclarationBlock = "{" DeclarationList "}"
+  
+  DeclarationList = Declaration+
+  
+  // TODO: 後で書き換え
+  Declaration = propertyName ":" PropertyValue+ ";"
+}

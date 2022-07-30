@@ -1,0 +1,7 @@
+// Atomic combination
+
+Molecule <: Atomic {
+  molecule = numeralWithUnit
+  
+  numeralWithUnit = numeral unit
+}

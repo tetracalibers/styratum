@@ -1,0 +1,28 @@
+DeclarationStatement <: DeclarationBlock {
+  pureAtomic += else | invert
+  addedAtomic += truthy | falsy | exist
+  
+  /* -------------------------------------------------------------------------- */
+  /* declaration statement                                                      */
+  /* -------------------------------------------------------------------------- */
+  
+  DeclarationStatement = 
+    | DeclarationsBlockWithPrefix DeclarationsBlock* syrmSuffixAnnotation -- surrounded
+    | DeclarationsBlockWithPrefix syrmBetweenAnnotation DeclarationsBlock -- between
+    | DeclarationsBlockWithPrefix -- prefixed
+    | DeclarationsBlock -- basic
+  DeclarationsBlockWithPrefix = syrmPrefixAnnotation DeclarationsBlock
+  
+  /* -------------------------------------------------------------------------- */
+  /* annotation                                                                 */
+  /* -------------------------------------------------------------------------- */
+  preAnnotation = truthy | falsy | exist
+  midAnnotation = else
+  sufAnnotation = invert
+    
+  truthy = "@" "truthy" "(" jsIdentifier ")"
+  falsy = "@" "falsy" "(" jsIdentifier")"
+  exist = "@" "exist" "(" jsIdentifier ")"
+  else = "@" "else"
+  invert = "@" "invert"
+}

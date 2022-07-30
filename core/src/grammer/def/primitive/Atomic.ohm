@@ -1,0 +1,32 @@
+// nondivisible
+
+Atomic <: SkipToken {
+  atomic = addedAtomic | pureAtomic
+  
+  pureAtomic = number | unit | operator | string | jsIdentifier
+  addedAtomic = props
+    
+  /* props */
+  props = "props" "(" jsIdentifier ")"
+  
+  /* numeral */
+  number = 
+    | "-" digit+ -- negative
+    | digit+ -- positive
+  
+  /* unit */
+  unit = lowerCase | "%"
+  
+  /* operator */
+  operator = "-" | "+" | "*" | "**" | "/"
+  
+  /* string */
+  string = lowerCase | kebabCase | pascalCase | camelCase
+  lowerCase = lower+
+  kebabCase = lower ("-" | lower)*
+  pascalCase = (upper (lower | digit)*)+
+  camelCase = lower (letter | digit)*
+  
+  /* jsIdentifier */
+  jsIdentifier = letter (letter | digit | "_")*
+}

@@ -1,0 +1,7 @@
+PropertyName <: Primitive {
+  pureAtomic += collectionKeyword
+  
+  propertyName = kebabCase | collectionKeyword
+  
+  collectionKeyword = "@" "collection"
+}

@@ -1,0 +1,70 @@
+Selectors <: Primitive {
+  pureAtomic += combinator | constantSelector
+  addedAtomic += nthConst | tagSelector
+  
+  /* -------------------------------------------------------------------------- */
+  /* selector list                                                              */
+  /* -------------------------------------------------------------------------- */
+  
+  SelectorList = Selector ("," Selector)*
+  
+  /* -------------------------------------------------------------------------- */
+  /* selector                                                                   */
+  /* -------------------------------------------------------------------------- */
+  
+  /* Selector */
+  Selector = AtomicSelector SelectorElem*
+  SelectorElem = 
+    | combinator ~"&" AtomicSelector -- edge
+    | ~"&" AtomicSelector -- node
+  AtomicSelector = 
+    | basicSelector PseudoSelector -- composite
+    | basicSelector -- basic
+    | PseudoSelector -- omission
+  basicSelector = attributeSelector | htmlTagSelector | constantSelector
+  
+  /* attributeSelector */
+  attributeSelector = "[" kebabCase "=" lowerCase "]"
+  
+  /* tagSelector */
+  tagSelector = htmlTagSelector | jsxTagSelector
+  htmlTagSelector = lower (digit | lower)*
+  jsxTagSelector = pascalCase
+  
+  /* atomic Selector */
+  constantSelector = rootSelector | universalSelector
+  rootSelector = "&"
+  universalSelector = "*"
+  
+  /* -------------------------------------------------------------------------- */
+  /* pseudo                                                                     */
+  /* -------------------------------------------------------------------------- */
+  
+  /* Pseudo Selector */
+  PseudoSelector = 
+    | Pseudo -- atom
+    | ~PseudoFunc Pseudo Pseudo* -- molecule
+  
+  /* Pseudo */
+  Pseudo = PseudoFunc | PseudoElement | PseudoClass
+  PseudoFunc = 
+    | PseudoElement "(" PseudoArg ")" -- element
+    | PseudoClass "(" PseudoArg ")" -- class
+  PseudoElement = "::" kebabCase
+  PseudoClass = ":" kebabCase
+  PseudoArg = nth | propsFunc | Selector | letter+ | digit+ 
+  
+  /* pseudo helper */
+  nth = nthConst | nthInject
+  nthConst = "n" "+" digit+
+  nthInject = "n" "+" propsFunc
+  
+  /* -------------------------------------------------------------------------- */
+  /* combinator                                                                 */
+  /* -------------------------------------------------------------------------- */
+  combinator = adjacentSiblijngCombinator | generalSiblijngCombinator | childCombinator | columnCombinator
+  adjacentSiblijngCombinator = "+"
+  generalSiblijngCombinator = "~"
+  childCombinator = ">"
+  columnCombinator = "||"
+}
