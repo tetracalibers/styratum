@@ -71,17 +71,6 @@ export const parseSyrm = (raw_syrm: string) => {
         },
       }
     },
-    exist(_at, _exist, _, variable, __) {
-      const { startIdx, endIdx } = this.source
-      return {
-        type: this.ctorName,
-        props: variable.source.contents,
-        location: {
-          uri: '',
-          range: getLocation(startIdx, endIdx).range,
-        },
-      }
-    },
     RuleSet(slist, dblock) {
       const { startIdx, endIdx } = this.source
       const range = getLocation(startIdx, endIdx).range
@@ -116,6 +105,9 @@ export const parseSyrm = (raw_syrm: string) => {
     Selector(first, rest) {
       return listToAst([first, rest])
     },
+    SelectorElem_edge(comb, selec) {
+      return listToAst([comb, selec])
+    },
     PropertyValueFunc(name, _, firstArg, __, restArg, ___) {
       const { startIdx, endIdx } = this.source
       return {
@@ -148,6 +140,17 @@ export const parseSyrm = (raw_syrm: string) => {
       return {
         type: this.ctorName,
         value: value.source.contents,
+        location: {
+          uri: '',
+          range: getLocation(startIdx, endIdx).range,
+        },
+      }
+    },
+    exist(_at, _exist, _, variable, __) {
+      const { startIdx, endIdx } = this.source
+      return {
+        type: this.ctorName,
+        props: variable.source.contents,
         location: {
           uri: '',
           range: getLocation(startIdx, endIdx).range,
