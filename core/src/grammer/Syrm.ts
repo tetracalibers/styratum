@@ -59,6 +59,18 @@ export const parseSyrm = (raw_syrm: string) => {
     Namespace: (___, _tagName, open, _, inner, __, close, __tagName, ____) => {
       return BlockToAst(open, inner, close)
     },
+    DeclarationStatement_prefixed(pre, rules) {
+      const { startIdx, endIdx } = this.source
+      return {
+        type: 'RuleSetStatement',
+        isActive: pre.ast,
+        value: rules.ast,
+        location: {
+          uri: '',
+          range: getLocation(startIdx, endIdx).range,
+        },
+      }
+    },
     RuleSet(slist, dblock) {
       const { startIdx, endIdx } = this.source
       const range = getLocation(startIdx, endIdx).range
