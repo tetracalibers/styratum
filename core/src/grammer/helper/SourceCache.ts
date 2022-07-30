@@ -1,5 +1,5 @@
 import { CacheEntry } from './CacheEntry'
-import { Offset } from './Offset'
+import { Offset } from '../types/Offset'
 
 export class SourceCache {
   private cache: Map<string, CacheEntry>

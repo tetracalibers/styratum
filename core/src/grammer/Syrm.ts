@@ -1,73 +1,55 @@
 import { NonterminalNode, TerminalNode } from 'ohm-js'
 import { dumpJson } from '../util/json'
 import * as NS from './def/build/Syrm.ohm-bundle'
-import { Position } from './helper/Position'
-import { Region } from './helper/Region'
+import { locationCalculator } from './helper/locationCalculator'
+import { SyrmParser } from './types/SyrmParser'
+import { Nodes } from './types/Nodes'
+import { SourceRange } from './types/Range'
 
-interface Range {
-  start: Position
-  end: Position
-}
-
-interface Node {
-  type: string
-  location: {
-    uri: string
-    range: Range
-  }
-  [K: string]: unknown
-}
-
-type Nodes = Node | Node[]
-
-const BlockToAst = (
-  fullcode: string,
-  open: TerminalNode,
-  inner: NonterminalNode,
-  close: TerminalNode,
-  type?: string
-): Nodes => {
-  const startIdx = open.source.endIdx + 1
-  const endIdx = close.source.startIdx - 1
-  const range = new Region(fullcode, startIdx, endIdx)
+const BlockToAst = (range: SourceRange, inner: NonterminalNode): Nodes => {
   return {
-    type: type ? type : inner.ctorName,
+    type: inner.ctorName,
     location: {
       uri: '',
-      range: range.position as Range,
+      range: range,
     },
     children: inner.children.map(child => child.ast),
   }
 }
 
 export const parseSyrm = (raw_syrm: string) => {
-  type Parser = {
-    grammar: NS.SyrmGrammar
-    semantics: NS.SyrmSemantics
+  const parser = {} as SyrmParser
+  const getLocation = locationCalculator(raw_syrm)
+
+  const excludingBoundary = (open: TerminalNode, close: TerminalNode) => {
+    const startIdx = open.source.endIdx + 1
+    const endIdx = close.source.startIdx - 1
+    const range = getLocation(startIdx, endIdx).range
+    return range
   }
-  const parser = {} as Parser
+
   parser.grammar = NS.default.Syrm
   parser.semantics = parser.grammar.createSemantics()
   parser.semantics.addAttribute('ast', {
     CascadeBlock: (open, __, inner, ___, close) => {
-      return BlockToAst(raw_syrm, open, inner, close)
+      return BlockToAst(excludingBoundary(open, close), inner)
     },
     CollectionBlock: (open, __, inner, ___, close) => {
-      return BlockToAst(raw_syrm, open, inner, close)
+      return BlockToAst(excludingBoundary(open, close), inner)
     },
     Namespace: (___, _tagName, open, _, inner, __, close, __tagName, ____) => {
-      return BlockToAst(raw_syrm, open, inner, close)
+      return BlockToAst(excludingBoundary(open, close), inner)
     },
     RuleSet(slist, dblock) {
       const { startIdx, endIdx } = this.source
-      const range = new Region(raw_syrm, startIdx, endIdx)
+      const range = getLocation(startIdx, endIdx).range
       return {
         type: this.ctorName,
         selector: slist.ast,
         declarations: dblock.ast,
         location: {
           uri: '',
-          range: range.position as Range,
+          range: range,
         },
       }
     },
