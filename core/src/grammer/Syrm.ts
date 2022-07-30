@@ -222,6 +222,9 @@ export const parseSyrm = (raw_syrm: string) => {
     kebabCase(_, __) {
       return atomToAst(this)
     },
+    collectionKeyword(_, __) {
+      return atomToAst(this)
+    },
     _iter(...children) {
       return listToAst(children)
     },
