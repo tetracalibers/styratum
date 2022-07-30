@@ -18,19 +18,21 @@ const BlockToAst = (
   fullcode: string,
   open: TerminalNode,
   inner: NonterminalNode,
-  close: TerminalNode
+  close: TerminalNode,
+  type?: string
 ) => {
   const startIdx = open.source.endIdx + 1
   const endIdx = close.source.startIdx - 1
   const range = new Region(fullcode, startIdx, endIdx)
   return [
     {
-      type: inner.ctorName,
+      type: type ? type : inner.ctorName,
       text: range.source,
       location: {
         uri: '',
         range: range.position,
       },
+      children: inner.children.map(child => child.ast),
     },
   ]
 }
@@ -50,6 +52,12 @@ export const parseSyrm = (raw_syrm: string) => {
     },
     CollectionBlock: (open, __, inner, ___, close) => {
       return BlockToAst(raw_syrm, open, inner, close)
+    },
+    Namespace: (___, _tagName, open, _, inner, __, close, __tagName, ____) => {
+      return BlockToAst(raw_syrm, open, inner, close)
+    },
+    _iter(...children) {
+      return children.map(child => child.ast)
     },
   })
   const match = parser.grammar.match(raw_syrm)
