@@ -131,6 +131,17 @@ export const parseSyrm = (raw_syrm: string) => {
         },
       }
     },
+    props(_props, _, value, ___) {
+      const { startIdx, endIdx } = this.source
+      return {
+        type: this.ctorName,
+        value: value.source.contents,
+        location: {
+          uri: '',
+          range: getLocation(startIdx, endIdx).range,
+        },
+      }
+    },
     kebabCase(_, __) {
       return atomToAst(this)
     },
