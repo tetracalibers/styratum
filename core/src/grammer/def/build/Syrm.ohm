@@ -155,7 +155,7 @@ SyrmedCssInterface <: Primitive {
   /* -------------------------------------------------------------------------- */
   
   PropertyValue = PropertyValueFunc | Formula | kebabCase | pascalCase
-  PropertyValueFunc = kebabCase "(" ListOf<Formula, ","> ")"
+  PropertyValueFunc = kebabCase "(" Formula ("," Formula)* ")"
 }
 
 DeclarationBlock <: SyrmedCssInterface {

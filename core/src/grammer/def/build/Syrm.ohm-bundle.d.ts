@@ -134,7 +134,7 @@ export interface SyrmedCssInterfaceActionDict<T> extends PrimitiveActionDict<T> 
   PropertyName?: (this: NonterminalNode, arg0: NonterminalNode) => T;
   collectionKeyword?: (this: NonterminalNode, arg0: TerminalNode, arg1: TerminalNode) => T;
   PropertyValue?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  PropertyValueFunc?: (this: NonterminalNode, arg0: NonterminalNode, arg1: TerminalNode, arg2: NonterminalNode, arg3: TerminalNode) => T;
+  PropertyValueFunc?: (this: NonterminalNode, arg0: NonterminalNode, arg1: TerminalNode, arg2: NonterminalNode, arg3: IterationNode, arg4: IterationNode, arg5: TerminalNode) => T;
 }
 
 export interface SyrmedCssInterfaceSemantics extends Semantics {
