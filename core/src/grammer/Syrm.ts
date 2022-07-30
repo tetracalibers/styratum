@@ -96,6 +96,9 @@ export const parseSyrm = (raw_syrm: string) => {
     _iter(...children) {
       return listToAst(children)
     },
+    kebabCase(_, __) {
+      return atomToAst(this)
+    },
     _terminal() {
       return atomToAst(this)
     },
