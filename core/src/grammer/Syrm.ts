@@ -93,6 +93,9 @@ export const parseSyrm = (raw_syrm: string) => {
     Selector(first, rest) {
       return listToAst([first, rest])
     },
+    Formula(first, ope, rest) {
+      return listToAst([first, ope, rest])
+    },
     _iter(...children) {
       return listToAst(children)
     },
