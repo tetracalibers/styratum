@@ -178,11 +178,10 @@ DeclarationStatement <: RuleSet {
   /* -------------------------------------------------------------------------- */
   
   DeclarationStatement = 
-    | RuleSetWithPrefix RuleSet* sufAnnotation -- surrounded
-    | RuleSetWithPrefix midAnnotation RuleSet -- between
-    | RuleSetWithPrefix -- prefixed
+    | preAnnotation RuleSet RuleSet* sufAnnotation -- surrounded
+    | preAnnotation RuleSet midAnnotation RuleSet -- between
+    | preAnnotation RuleSet -- prefixed
     | RuleSet -- basic
-  RuleSetWithPrefix = preAnnotation RuleSet
   
   /* -------------------------------------------------------------------------- */
   /* annotation                                                                 */

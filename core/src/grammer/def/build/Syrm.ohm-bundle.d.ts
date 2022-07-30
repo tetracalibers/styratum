@@ -186,12 +186,11 @@ export interface RuleSetGrammar extends Grammar {
 export interface DeclarationStatementActionDict<T> extends RuleSetActionDict<T> {
   pureAtomic?: (this: NonterminalNode, arg0: NonterminalNode) => T;
   addedAtomic?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  DeclarationStatement_surrounded?: (this: NonterminalNode, arg0: NonterminalNode, arg1: IterationNode, arg2: NonterminalNode) => T;
-  DeclarationStatement_between?: (this: NonterminalNode, arg0: NonterminalNode, arg1: NonterminalNode, arg2: NonterminalNode) => T;
-  DeclarationStatement_prefixed?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  DeclarationStatement_surrounded?: (this: NonterminalNode, arg0: NonterminalNode, arg1: NonterminalNode, arg2: IterationNode, arg3: NonterminalNode) => T;
+  DeclarationStatement_between?: (this: NonterminalNode, arg0: NonterminalNode, arg1: NonterminalNode, arg2: NonterminalNode, arg3: NonterminalNode) => T;
+  DeclarationStatement_prefixed?: (this: NonterminalNode, arg0: NonterminalNode, arg1: NonterminalNode) => T;
   DeclarationStatement_basic?: (this: NonterminalNode, arg0: NonterminalNode) => T;
   DeclarationStatement?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  RuleSetWithPrefix?: (this: NonterminalNode, arg0: NonterminalNode, arg1: NonterminalNode) => T;
   preAnnotation?: (this: NonterminalNode, arg0: NonterminalNode) => T;
   midAnnotation?: (this: NonterminalNode, arg0: NonterminalNode) => T;
   sufAnnotation?: (this: NonterminalNode, arg0: NonterminalNode) => T;
