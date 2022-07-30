@@ -72,6 +72,9 @@ export const parseSyrm = (raw_syrm: string) => {
         },
       }
     },
+    DeclarationBlock: (_, list, __) => {
+      return listToAst(list.children)
+    },
     SelectorList: (first, _, rest) => {
       return listToAst([first, rest])
     },
