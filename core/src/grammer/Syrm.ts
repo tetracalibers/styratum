@@ -31,6 +31,22 @@ export const parseSyrm = (raw_syrm: string) => {
     }
   }
 
+  const listToAst = (children: NonterminalNode[]): Nodes => {
+    return children.map(child => child.ast)
+  }
+
+  const atomToAst = (node: TerminalNode): Nodes => {
+    const { contents, startIdx, endIdx } = node.source
+    return {
+      type: node.ctorName,
+      text: contents,
+      location: {
+        uri: '',
+        range: getLocation(startIdx, endIdx).range,
+      },
+    }
+  }
+
   parser.grammar = NS.default.Syrm
   parser.semantics = parser.grammar.createSemantics()
   parser.semantics.addAttribute('ast', {
@@ -56,12 +72,17 @@ export const parseSyrm = (raw_syrm: string) => {
         },
       }
     },
-    SelectorList(first, _, rest) {
-      const children = [first, rest]
-      return children.map(child => child.ast)
+    SelectorList: (first, _, rest) => {
+      return listToAst([first, rest])
+    },
+    Selector(first, rest) {
+      return listToAst([first, rest])
     },
     _iter(...children) {
-      return children.map(child => child.ast)
+      return listToAst(children)
+    },
+    _terminal() {
+      return atomToAst(this)
     },
   })
   const match = parser.grammar.match(raw_syrm)
