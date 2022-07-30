@@ -71,6 +71,17 @@ export const parseSyrm = (raw_syrm: string) => {
         },
       }
     },
+    exist(_at, _exist, _, variable, __) {
+      const { startIdx, endIdx } = this.source
+      return {
+        type: this.ctorName,
+        props: variable.source.contents,
+        location: {
+          uri: '',
+          range: getLocation(startIdx, endIdx).range,
+        },
+      }
+    },
     RuleSet(slist, dblock) {
       const { startIdx, endIdx } = this.source
       const range = getLocation(startIdx, endIdx).range
