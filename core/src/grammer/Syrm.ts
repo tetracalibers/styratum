@@ -4,18 +4,6 @@ import * as NS from './def/build/Syrm.ohm-bundle'
 import { locationCalculator } from './helper/locationCalculator'
 import { SyrmParser } from './types/SyrmParser'
 import { Nodes } from './types/Nodes'
-import { SourceRange } from './types/Range'
-
-const BlockToAst = (range: SourceRange, inner: NonterminalNode): Nodes => {
-  return {
-    type: inner.ctorName,
-    location: {
-      uri: '',
-      range: range,
-    },
-    children: inner.children.map(child => child.ast),
-  }
-}
 
 export const parseSyrm = (raw_syrm: string) => {
   const parser = {} as SyrmParser
@@ -28,17 +16,32 @@ export const parseSyrm = (raw_syrm: string) => {
     return range
   }
 
+  const BlockToAst = (
+    open: TerminalNode,
+    inner: NonterminalNode,
+    close: TerminalNode
+  ): Nodes => {
+    return {
+      type: inner.ctorName,
+      location: {
+        uri: '',
+        range: excludingBoundary(open, close),
+      },
+      children: inner.children.map(child => child.ast),
+    }
+  }
+
   parser.grammar = NS.default.Syrm
   parser.semantics = parser.grammar.createSemantics()
   parser.semantics.addAttribute('ast', {
     CascadeBlock: (open, __, inner, ___, close) => {
-      return BlockToAst(excludingBoundary(open, close), inner)
+      return BlockToAst(open, inner, close)
     },
     CollectionBlock: (open, __, inner, ___, close) => {
-      return BlockToAst(excludingBoundary(open, close), inner)
+      return BlockToAst(open, inner, close)
     },
     Namespace: (___, _tagName, open, _, inner, __, close, __tagName, ____) => {
-      return BlockToAst(excludingBoundary(open, close), inner)
+      return BlockToAst(open, inner, close)
     },
     RuleSet(slist, dblock) {
       const { startIdx, endIdx } = this.source
