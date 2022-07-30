@@ -1,9 +1,10 @@
 {
   "dir": "core/src/grammer/def",
   "files": [
-    "config/SkipToken",
+    "primitive/config/SkipToken",
     "primitive/Atomic",
     "primitive/Primitive",
+    "interface/SyrmInterface",
     "css/PropertyValue",
     "css/PropertyName",
     "css/SelectorList",

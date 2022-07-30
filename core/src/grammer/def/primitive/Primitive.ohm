@@ -1,11 +1,11 @@
 // Combination of Atomic and Molecule
 
 Primitive <: Atomic {
-  formula = formulaElements (mathOperator formulaElements)*
-  formulaElements = 
+  Formula = FormulaElements (operator FormulaElements)*
+  FormulaElements = 
     | numeral -- number
-    | "(" atomicFormula ")" -- expression
-  atomicFormula = numeral (mathOperator numeral)+
+    | "(" AtomicFormula ")" -- expression
+  AtomicFormula = numeral (operator numeral)+
   numeral = numeralWithUnit | number | props
   numeralWithUnit = numeral unit
 }
