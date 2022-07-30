@@ -75,6 +75,18 @@ export const parseSyrm = (raw_syrm: string) => {
     DeclarationBlock: (_, list, __) => {
       return listToAst(list.children)
     },
+    Declaration(name, _, value, __) {
+      const { startIdx, endIdx } = this.source
+      return {
+        type: this.ctorName,
+        property: name.ast,
+        value: value.ast,
+        location: {
+          uri: '',
+          range: getLocation(startIdx, endIdx).range,
+        },
+      }
+    },
     SelectorList: (first, _, rest) => {
       return listToAst([first, rest])
     },
