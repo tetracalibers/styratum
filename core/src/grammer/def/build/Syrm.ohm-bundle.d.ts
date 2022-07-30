@@ -118,9 +118,7 @@ export interface SyrmedCssInterfaceActionDict<T> extends PrimitiveActionDict<T> 
   Pseudo_class?: (this: NonterminalNode, arg0: TerminalNode, arg1: NonterminalNode, arg2: IterationNode, arg3: IterationNode, arg4: IterationNode) => T;
   Pseudo?: (this: NonterminalNode, arg0: NonterminalNode) => T;
   PseudoArg?: (this: NonterminalNode, arg0: IterationNode | NonterminalNode) => T;
-  nth?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  nthConst?: (this: NonterminalNode, arg0: TerminalNode, arg1: TerminalNode, arg2: IterationNode) => T;
-  nthInject?: (this: NonterminalNode, arg0: TerminalNode, arg1: TerminalNode, arg2: NonterminalNode) => T;
+  nth?: (this: NonterminalNode, arg0: TerminalNode, arg1: TerminalNode, arg2: NonterminalNode) => T;
   combinator?: (this: NonterminalNode, arg0: NonterminalNode) => T;
   adjacentSiblijngCombinator?: (this: NonterminalNode, arg0: TerminalNode) => T;
   generalSiblijngCombinator?: (this: NonterminalNode, arg0: TerminalNode) => T;

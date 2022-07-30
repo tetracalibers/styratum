@@ -132,6 +132,17 @@ export const parseSyrm = (raw_syrm: string) => {
         },
       }
     },
+    nth(_n, _plus, val) {
+      const { startIdx, endIdx } = this.source
+      return {
+        type: this.ctorName,
+        nPlus: val.ast,
+        location: {
+          uri: '',
+          range: getLocation(startIdx, endIdx).range,
+        },
+      }
+    },
     Formula(first, ope, rest) {
       return listToAst([first, ope, rest])
     },

@@ -69,13 +69,13 @@ Primitive <: Atomic {
     | numeral -- number
     | "(" AtomicFormula ")" -- expression
   AtomicFormula = numeral (operator numeral)+
-  numeral = numeralWithUnit | number | props
+  numeral = numeralWithUnit | generatedNumber
   numeralWithUnit = generatedNumber unit
 }
 
 SyrmedCssInterface <: Primitive {
   pureAtomic += collectionKeyword | combinator | constantSelector
-  addedAtomic += nthConst | tagSelector
+  addedAtomic += tagSelector
   
   /* -------------------------------------------------------------------------- */
   /* selector list                                                              */
@@ -125,9 +125,7 @@ SyrmedCssInterface <: Primitive {
   PseudoArg = nth | props | Selector | letter+ | digit+ 
   
   /* pseudo helper */
-  nth = nthConst | nthInject
-  nthConst = "n" "+" digit+
-  nthInject = "n" "+" props
+  nth = "n" "+" generatedNumber
   
   /* -------------------------------------------------------------------------- */
   /* combinator                                                                 */
