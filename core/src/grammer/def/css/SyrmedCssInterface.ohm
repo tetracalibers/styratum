@@ -41,17 +41,12 @@ SyrmedCssInterface <: Primitive {
   /* -------------------------------------------------------------------------- */
   
   /* Pseudo Selector */
-  PseudoSelector = 
-    | Pseudo -- atom
-    | ~PseudoFunc Pseudo Pseudo* -- molecule
+  PseudoSelector = Pseudo+
   
   /* Pseudo */
-  Pseudo = PseudoFunc | PseudoElement | PseudoClass
-  PseudoFunc = 
-    | PseudoElement "(" PseudoArg ")" -- element
-    | PseudoClass "(" PseudoArg ")" -- class
-  PseudoElement = "::" kebabCase
-  PseudoClass = ":" kebabCase
+  Pseudo = 
+    | "::" kebabCase ("(" PseudoArg ")")* -- element
+    | ":" kebabCase ("(" PseudoArg ")")* -- class
   PseudoArg = nth | props | Selector | letter+ | digit+ 
   
   /* pseudo helper */
