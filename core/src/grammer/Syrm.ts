@@ -223,13 +223,11 @@ export const parseSyrm = (raw_syrm: string) => {
         expr: this.children.map(ch => ch.ast),
       })(startIdx, endIdx)
     },
-    AtomicFormula_expression(left, ope, right) {
+    AtomicFormula_expression(_left, _ope, _right) {
       const { startIdx, endIdx } = this.source
       return astNodeWithLocation({
         type: this.ctorName,
-        ope: ope.ast,
-        left: left.ast,
-        rights: right.ast,
+        expr: this.children.map(ch => ch.ast),
       })(startIdx, endIdx)
     },
     numeralWithUnit(num, unit) {
