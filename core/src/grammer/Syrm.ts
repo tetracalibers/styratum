@@ -87,7 +87,7 @@ export const parseSyrm = (raw_syrm: string) => {
       }
       return [...prev, ast]
     }
-    const nodes = right.children.reduce(iterationUnit, [left.ast, ope.ast])
+    const nodes = [left, ope, ...right.children].reduce(iterationUnit, [])
     return nodes
   }
 
