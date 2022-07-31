@@ -129,20 +129,20 @@ export const parseSyrm = (raw_syrm: string) => {
     SelectorList: (first, _, rest) => {
       return listToAst([first, ...rest.children])
     },
-    Selector_composite(first, rest) {
+    Selector_composite(selec, combine) {
       const { startIdx, endIdx } = this.source
       return astNodeWithLocation({
         type: this.ctorName,
-        selector: first.ast,
-        relation: rest.ast,
+        left: selec.ast,
+        right: combine.ast,
       })(startIdx, endIdx)
     },
-    RelationalSelector_specified(comb, selec) {
+    Combine_specified(comb, selec) {
       const { startIdx, endIdx } = this.source
       return astNodeWithLocation({
         type: this.ctorName,
-        combinator: comb.ast,
-        to: selec.ast,
+        left: comb.ast,
+        right: selec.ast,
       })(startIdx, endIdx)
     },
     AtomicSelector(selec) {

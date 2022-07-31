@@ -100,9 +100,9 @@ export interface SyrmedCssInterfaceActionDict<T> extends PrimitiveActionDict<T> 
   SelectorList?: (this: NonterminalNode, arg0: NonterminalNode, arg1: IterationNode, arg2: IterationNode) => T;
   Selector_composite?: (this: NonterminalNode, arg0: NonterminalNode, arg1: IterationNode) => T;
   Selector?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  RelationalSelector_specified?: (this: NonterminalNode, arg0: NonterminalNode, arg1: NonterminalNode) => T;
-  RelationalSelector_implicated?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  RelationalSelector?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  Combine_specified?: (this: NonterminalNode, arg0: NonterminalNode, arg1: NonterminalNode) => T;
+  Combine_implicated?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  Combine?: (this: NonterminalNode, arg0: NonterminalNode) => T;
   AtomicSelector_composite?: (this: NonterminalNode, arg0: NonterminalNode, arg1: NonterminalNode) => T;
   AtomicSelector?: (this: NonterminalNode, arg0: NonterminalNode) => T;
   basicSelector?: (this: NonterminalNode, arg0: NonterminalNode) => T;

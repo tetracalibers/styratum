@@ -92,9 +92,9 @@ SyrmedCssInterface <: Primitive {
   
   /* Selector */
   Selector =
-    | AtomicSelector RelationalSelector+ -- composite
+    | AtomicSelector Combine+ -- composite
     | AtomicSelector
-  RelationalSelector = 
+  Combine = 
     | combinator ~"&" AtomicSelector -- specified
     | ~"&" AtomicSelector -- implicated
   AtomicSelector = 
