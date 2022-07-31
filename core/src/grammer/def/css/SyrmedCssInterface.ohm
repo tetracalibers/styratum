@@ -13,14 +13,16 @@ SyrmedCssInterface <: Primitive {
   /* -------------------------------------------------------------------------- */
   
   /* Selector */
-  Selector = AtomicSelector SelectorElem*
-  SelectorElem = 
-    | combinator ~"&" AtomicSelector -- edge
-    | ~"&" AtomicSelector -- node
+  Selector =
+    | AtomicSelector RelationalSelector+ -- composite
+    | AtomicSelector
+  RelationalSelector = 
+    | combinator ~"&" AtomicSelector -- specified
+    | ~"&" AtomicSelector -- implicated
   AtomicSelector = 
     | basicSelector PseudoSelector -- composite
-    | basicSelector -- basic
-    | PseudoSelector -- omission
+    | basicSelector
+    | PseudoSelector
   basicSelector = attributeSelector | htmlTagSelector | constantSelector
   
   /* attributeSelector */

@@ -150,11 +150,48 @@ export const parseSyrm = (raw_syrm: string) => {
     SelectorList: (first, _, rest) => {
       return listToAst([first, ...rest.children])
     },
-    Selector(first, rest) {
-      return listToAst([first, rest])
+    Selector_composite(first, rest) {
+      const { startIdx, endIdx } = this.source
+      return {
+        type: this.ctorName,
+        selector: first.ast,
+        relation: rest.ast,
+        location: {
+          uri: '',
+          range: getLocation(startIdx, endIdx).range,
+        },
+      }
     },
-    SelectorElem_edge(comb, selec) {
-      return listToAst([comb, selec])
+    RelationalSelector_specified(comb, selec) {
+      const { startIdx, endIdx } = this.source
+      return {
+        type: this.ctorName,
+        combinator: comb.ast,
+        to: selec.ast,
+        location: {
+          uri: '',
+          range: getLocation(startIdx, endIdx).range,
+        },
+      }
+    },
+    AtomicSelector(selec) {
+      const { startIdx, endIdx } = this.source
+      const kind = selec.ctorName
+      const selector = (selec: NonterminalNode) => {
+        if (kind === 'basicSelector') {
+          return selec.source.contents
+        } else {
+          return selec.ast
+        }
+      }
+      return {
+        type: kind,
+        selector: selector(selec),
+        location: {
+          uri: '',
+          range: getLocation(startIdx, endIdx).range,
+        },
+      }
     },
     PropertyValueFunc(name, _, firstArg, __, restArg, ___) {
       const { startIdx, endIdx } = this.source
