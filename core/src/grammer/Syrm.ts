@@ -68,8 +68,16 @@ export const parseSyrm = (raw_syrm: string) => {
     CollectionBlock: (open, __, inner, ___, close) => {
       return BlockToAst(open, inner, close)
     },
-    Namespace: (___, _tagName, open, _, inner, __, close, __tagName, ____) => {
-      return BlockToAst(open, inner, close)
+    Namespace(___, tagName, open, _, inner, __, close, __tagName, ____) {
+      return {
+        type: this.ctorName,
+        name: tagName.source.contents,
+        location: {
+          uri: '',
+          range: excludingBoundary(open, close),
+        },
+        children: inner.children.map(child => child.ast),
+      }
     },
     RuleSetStatement_if(pre, rules) {
       const { startIdx, endIdx } = this.source
