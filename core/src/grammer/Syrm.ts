@@ -232,6 +232,9 @@ export const parseSyrm = (raw_syrm: string) => {
     number_negative(_, __) {
       return atomToAst(this)
     },
+    operator(_ope) {
+      return atomToAst(this)
+    },
     kebabCase(_, __) {
       return atomToAst(this)
     },
