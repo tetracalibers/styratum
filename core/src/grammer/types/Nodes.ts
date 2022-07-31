@@ -1,3 +1,3 @@
-import { Node } from './Node'
+import { AstNode } from './AstNode'
 
-export type Nodes = Node | Node[]
+export type AstSubTree = AstNode | AstNode[]

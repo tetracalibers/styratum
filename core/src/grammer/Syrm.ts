@@ -3,18 +3,32 @@ import { dumpJson } from '../util/json'
 import * as NS from './def/build/Syrm.ohm-bundle'
 import { locationCalculator } from './helper/locationCalculator'
 import { SyrmParser } from './types/SyrmParser'
-import { Nodes } from './types/Nodes'
+import { AstSubTree } from './types/Nodes'
+import { AstNode } from './types/AstNode'
 
 console.time('parseSyrm')
 export const parseSyrm = (raw_syrm: string) => {
   const parser = {} as SyrmParser
   const getLocation = locationCalculator(raw_syrm)
 
+  const SHOW_LOCATION = false
+
+  const astNodeWithLocation = (node: AstNode) => {
+    return (startIdx: number, endIdx: number): AstSubTree => {
+      if (SHOW_LOCATION) {
+        node.location = {
+          uri: '',
+          range: getLocation(startIdx, endIdx).range,
+        }
+      }
+      return node as AstSubTree
+    }
+  }
+
   const excludingBoundary = (open: TerminalNode, close: TerminalNode) => {
     const startIdx = open.source.endIdx + 1
     const endIdx = close.source.startIdx - 1
-    const range = getLocation(startIdx, endIdx).range
-    return range
+    return [startIdx, endIdx]
   }
 
   const BlockToAst = (
@@ -22,43 +36,32 @@ export const parseSyrm = (raw_syrm: string) => {
     open: TerminalNode,
     inner: NonterminalNode,
     close: TerminalNode
-  ): Nodes => {
-    return {
+  ): AstSubTree => {
+    const [startIdx, endIdx] = excludingBoundary(open, close)
+    return astNodeWithLocation({
       type: block.ctorName,
-      location: {
-        uri: '',
-        range: excludingBoundary(open, close),
-      },
       children: inner.children.map(child => child.ast),
-    }
+    })(startIdx, endIdx)
   }
 
   const ifToAst = (node: NonterminalNode, propVariable: NonterminalNode) => {
     const { startIdx, endIdx } = node.source
-    return {
+    return astNodeWithLocation({
       type: node.ctorName,
       props: propVariable.source.contents,
-      location: {
-        uri: '',
-        range: getLocation(startIdx, endIdx).range,
-      },
-    }
+    })(startIdx, endIdx)
   }
 
-  const listToAst = (children: NonterminalNode[]): Nodes => {
+  const listToAst = (children: NonterminalNode[]): AstSubTree => {
     return children.map(child => child.ast)
   }
 
-  const atomToAst = (node: TerminalNode): Nodes => {
+  const atomToAst = (node: TerminalNode): AstSubTree => {
     const { contents, startIdx, endIdx } = node.source
-    return {
+    return astNodeWithLocation({
       type: node.ctorName,
       text: contents,
-      location: {
-        uri: '',
-        range: getLocation(startIdx, endIdx).range,
-      },
-    }
+    })(startIdx, endIdx)
   }
 
   parser.grammar = NS.default.Syrm
@@ -71,108 +74,76 @@ export const parseSyrm = (raw_syrm: string) => {
       return BlockToAst(this, open, inner, close)
     },
     Namespace(___, tagName, open, _, inner, __, close, __tagName, ____) {
-      return {
+      const [startIdx, endIdx] = excludingBoundary(open, close)
+      return astNodeWithLocation({
         type: this.ctorName,
         name: tagName.source.contents,
-        location: {
-          uri: '',
-          range: excludingBoundary(open, close),
-        },
         children: inner.children.map(child => child.ast),
-      }
+      })(startIdx, endIdx)
     },
     RuleSetStatement_if(pre, rules) {
       const { startIdx, endIdx } = this.source
-      return {
+      return astNodeWithLocation({
         type: this.ctorName,
         if: pre.ast,
         ifThen: rules.ast,
-        location: {
-          uri: '',
-          range: getLocation(startIdx, endIdx).range,
-        },
-      }
+      })(startIdx, endIdx)
     },
     RuleSetStatement_if_else(pre, rule1, _mid, rule2) {
       const { startIdx, endIdx } = this.source
-      return {
+      return astNodeWithLocation({
         type: this.ctorName,
         if: pre.ast,
         ifThen: rule1.ast,
         elseThen: rule2.ast,
-        location: {
-          uri: '',
-          range: getLocation(startIdx, endIdx).range,
-        },
-      }
+      })(startIdx, endIdx)
     },
     RuleSetStatement_invert(pre, rule1, rule2, _suf) {
       const { startIdx, endIdx } = this.source
-      return {
+      return astNodeWithLocation({
         type: this.ctorName,
         if: pre.ast,
         rule1: rule1.ast,
         rule2: rule2.ast,
-        location: {
-          uri: '',
-          range: getLocation(startIdx, endIdx).range,
-        },
-      }
+      })(startIdx, endIdx)
     },
     RuleSet(slist, dblock) {
       const { startIdx, endIdx } = this.source
-      const range = getLocation(startIdx, endIdx).range
-      return {
+      return astNodeWithLocation({
         type: this.ctorName,
         selector: slist.ast,
         declarations: dblock.ast,
-        location: {
-          uri: '',
-          range: range,
-        },
-      }
+      })(startIdx, endIdx)
     },
     DeclarationBlock: (_, list, __) => {
       return listToAst(list.children)
     },
     Declaration(name, _, value, __) {
       const { startIdx, endIdx } = this.source
-      return {
+      return astNodeWithLocation({
         type: this.ctorName,
         property: name.ast,
         value: value.ast,
-        location: {
-          uri: '',
-          range: getLocation(startIdx, endIdx).range,
-        },
-      }
+      })(startIdx, endIdx)
     },
     SelectorList: (first, _, rest) => {
       return listToAst([first, ...rest.children])
     },
     Selector_composite(first, rest) {
       const { startIdx, endIdx } = this.source
-      return {
+      return astNodeWithLocation({
         type: this.ctorName,
         selector: first.ast,
         relation: rest.ast,
-        location: {
-          uri: '',
-          range: getLocation(startIdx, endIdx).range,
-        },
-      }
+      })(startIdx, endIdx)
     },
     RelationalSelector_specified(comb, selec) {
       const { startIdx, endIdx } = this.source
-      return {
+      return astNodeWithLocation({
         type: this.ctorName,
         combinator: comb.ast,
         to: selec.ast,
-        location: {
-          uri: '',
-          range: getLocation(startIdx, endIdx).range,
-        },
-      }
+      })(startIdx, endIdx)
     },
     AtomicSelector(selec) {
       const { startIdx, endIdx } = this.source
@@ -184,96 +155,64 @@ export const parseSyrm = (raw_syrm: string) => {
           return selec.ast
         }
       }
-      return {
+      return astNodeWithLocation({
         type: kind,
         selector: selector(selec),
-        location: {
-          uri: '',
-          range: getLocation(startIdx, endIdx).range,
-        },
-      }
+      })(startIdx, endIdx)
     },
     PropertyValue(val) {
       const { startIdx, endIdx } = this.source
-      return {
+      return astNodeWithLocation({
         type: val.type,
         parts: val.children.map(child => child.ast),
-        location: {
-          uri: '',
-          range: getLocation(startIdx, endIdx).range,
-        },
-      }
+      })(startIdx, endIdx)
     },
     PropertyValueFunc(name, _, firstArg, __, restArg, ___) {
       const { startIdx, endIdx } = this.source
-      return {
+      return astNodeWithLocation({
         type: this.ctorName,
         name: name.source.contents,
         args: listToAst([firstArg, restArg]),
-        location: {
-          uri: '',
-          range: getLocation(startIdx, endIdx).range,
-        },
-      }
+      })(startIdx, endIdx)
     },
     Pseudo_class(_, pseudo, __, arg, ___) {
       const { startIdx, endIdx } = this.source
-      return {
+      return astNodeWithLocation({
         type: pseudo.ctorName,
         name: pseudo.source.contents,
         args: arg.ast,
-        location: {
-          uri: '',
-          range: getLocation(startIdx, endIdx).range,
-        },
-      }
+      })(startIdx, endIdx)
     },
     nth(_n, _plus, val) {
       const { startIdx, endIdx } = this.source
-      return {
+      return astNodeWithLocation({
         type: this.ctorName,
         nPlus: val.ast,
-        location: {
-          uri: '',
-          range: getLocation(startIdx, endIdx).range,
-        },
-      }
+      })(startIdx, endIdx)
     },
     Formula_expression(term, apply) {
       const { startIdx, endIdx } = this.source
-      return {
+      return astNodeWithLocation({
         type: this.ctorName,
         left: term.ast,
         right: apply.ast,
-        location: {
-          uri: '',
-          range: getLocation(startIdx, endIdx).range,
-        },
-      }
+      })(startIdx, endIdx)
     },
     Apply(ope, term) {
       const { startIdx, endIdx } = this.source
-      return {
+      return astNodeWithLocation({
         type: this.ctorName,
         left: ope.ast,
         right: term.ast,
-        location: {
-          uri: '',
-          range: getLocation(startIdx, endIdx).range,
-        },
-      }
+      })(startIdx, endIdx)
     },
     numeralWithUnit(num, unit) {
       const { startIdx, endIdx } = this.source
-      return {
+      return astNodeWithLocation({
         type: this.ctorName,
         number: num.ast,
         unit: unit.source.contents,
-        location: {
-          uri: '',
-          range: getLocation(startIdx, endIdx).range,
-        },
-      }
+      })(startIdx, endIdx)
     },
     generatedNumber(num) {
       return num.ast
@@ -283,14 +222,10 @@ export const parseSyrm = (raw_syrm: string) => {
     },
     props(_props, _, value, ___) {
       const { startIdx, endIdx } = this.source
-      return {
+      return astNodeWithLocation({
         type: this.ctorName,
         value: value.source.contents,
-        location: {
-          uri: '',
-          range: getLocation(startIdx, endIdx).range,
-        },
-      }
+      })(startIdx, endIdx)
     },
     exist(_at, _exist, _, variable, __) {
       return ifToAst(this, variable)

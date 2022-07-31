@@ -1,8 +1,8 @@
 import { SourceRange } from './Range'
 
-export interface Node {
+export interface AstNode {
   type: string
-  location: {
+  location?: {
     uri: string
     range: SourceRange
   }
