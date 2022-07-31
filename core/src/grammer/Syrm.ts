@@ -254,6 +254,12 @@ export const parseSyrm = (raw_syrm: string) => {
         },
       }
     },
+    generatedNumber(num) {
+      return num.ast
+    },
+    number(num) {
+      return num.source.contents
+    },
     props(_props, _, value, ___) {
       const { startIdx, endIdx } = this.source
       return {
