@@ -145,6 +145,14 @@ export const parseSyrm = (raw_syrm: string) => {
         right: selec.ast,
       })(startIdx, endIdx)
     },
+    AtomicSelector_composite(selec, pseudo) {
+      const { startIdx, endIdx } = this.source
+      return astNodeWithLocation({
+        type: this.ctorName,
+        left: selec.ast,
+        right: pseudo.ast,
+      })(startIdx, endIdx)
+    },
     AtomicSelector(selec) {
       const { startIdx, endIdx } = this.source
       const kind = selec.ctorName
@@ -184,11 +192,18 @@ export const parseSyrm = (raw_syrm: string) => {
         args: arg.ast,
       })(startIdx, endIdx)
     },
-    nth(_n, _plus, val) {
+    nth(chars) {
       const { startIdx, endIdx } = this.source
       return astNodeWithLocation({
         type: this.ctorName,
-        nPlus: val.ast,
+        expr: chars.children.map(ch => ch.ast),
+      })(startIdx, endIdx)
+    },
+    nthTerm(_num, _n) {
+      const { startIdx, endIdx, contents } = this.source
+      return astNodeWithLocation({
+        type: this.ctorName,
+        expr: contents,
       })(startIdx, endIdx)
     },
     Formula_expression(term, apply) {

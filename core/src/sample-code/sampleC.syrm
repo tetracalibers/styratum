@@ -52,6 +52,20 @@
     flex-basis: 100%;
   }
   
+  span:nth-child(2n+1),
+  span:nth-child(2n+1),
+  span:nth-of-type(2n+1) {
+    background-color: lime;
+  }
+  
+  li:nth-child(2) {
+    color: lime;
+  }
+  
+  :nth-child(4n) {
+    color: lime;
+  }
+  
   @truthy(recursive)
   & * + * {
     margin-top: props(space);

@@ -72,7 +72,9 @@ Primitive <: Atomic {
     | "(" AtomicFormula ")" -- expression
     | numeral
   AtomicFormula = numeral (operator numeral)+
-  numeral = numeralWithUnit | generatedNumber
+  numeral = 
+    | numeralWithUnit 
+    | generatedNumber
   numeralWithUnit = generatedNumber unit
 }
 
@@ -98,7 +100,7 @@ SyrmedCssInterface <: Primitive {
     | combinator ~"&" AtomicSelector -- specified
     | ~"&" AtomicSelector -- implicated
   AtomicSelector = 
-    | basicSelector PseudoSelector -- composite
+    | AtomicSelector PseudoSelector -- composite
     | basicSelector
     | PseudoSelector
   basicSelector = attributeSelector | htmlTagSelector | constantSelector
@@ -129,8 +131,9 @@ SyrmedCssInterface <: Primitive {
     | ":" kebabCase ("(" PseudoArg ")")* -- class
   PseudoArg = nth | props | Selector | letter+ | digit+ 
   
-  /* pseudo helper */
-  nth = "n" "+" generatedNumber
+  /* nth */
+  nth = (nthTerm | generatedNumber | operator)+
+  nthTerm = number* "n"
   
   /* -------------------------------------------------------------------------- */
   /* combinator                                                                 */
