@@ -1,0 +1,3 @@
+Namespace <: RuleSetStatement {
+  Namespace<TagName> = "<" TagName ">" space* RuleSetStatement* space* "</" TagName ">"
+}

@@ -8,8 +8,7 @@
     "css/DeclarationBlock",
     "css/RuleSet",
     "css/RuleSetStatement",
-    "css/SyrmedCss",
-    "region/Regions",
+    "Namespace",
     "Syrm"
   ]
 }

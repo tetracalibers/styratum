@@ -1,3 +1,0 @@
-SyrmedCss <: RuleSetStatement {
-  SyrmedCss = RuleSetStatement*
-}

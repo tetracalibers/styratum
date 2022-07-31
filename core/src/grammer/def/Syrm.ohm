@@ -1,8 +1,8 @@
-Syrm <: Regions {
+Syrm <: Namespace {
   Root := Block*
   
   Block = CascadeBlock | CollectionBlock | Block
   
-  CascadeBlock = "<Cascade>" space* CascadeRegion space* "</Cascade>"
-  CollectionBlock = "<Collection>" space* CollectionRegion space* "</Collection>"
+  CascadeBlock = "<Cascade>" space* RuleSetStatement* space* "</Cascade>"
+  CollectionBlock = "<Collection>" space* Namespace<pascalCase>* space* "</Collection>"
 }

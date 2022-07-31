@@ -17,12 +17,13 @@ export const parseSyrm = (raw_syrm: string) => {
   }
 
   const BlockToAst = (
+    block: NonterminalNode,
     open: TerminalNode,
     inner: NonterminalNode,
     close: TerminalNode
   ): Nodes => {
     return {
-      type: inner.ctorName,
+      type: block.ctorName,
       location: {
         uri: '',
         range: excludingBoundary(open, close),
@@ -62,11 +63,11 @@ export const parseSyrm = (raw_syrm: string) => {
   parser.grammar = NS.default.Syrm
   parser.semantics = parser.grammar.createSemantics()
   parser.semantics.addAttribute('ast', {
-    CascadeBlock: (open, __, inner, ___, close) => {
-      return BlockToAst(open, inner, close)
+    CascadeBlock(open, __, inner, ___, close) {
+      return BlockToAst(this, open, inner, close)
     },
-    CollectionBlock: (open, __, inner, ___, close) => {
-      return BlockToAst(open, inner, close)
+    CollectionBlock(open, __, inner, ___, close) {
+      return BlockToAst(this, open, inner, close)
     },
     Namespace(___, tagName, open, _, inner, __, close, __tagName, ____) {
       return {

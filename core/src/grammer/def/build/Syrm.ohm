@@ -188,22 +188,15 @@ RuleSetStatement <: RuleSet {
   invert = "@" "invert"
 }
 
-SyrmedCss <: RuleSetStatement {
-  SyrmedCss = RuleSetStatement*
+Namespace <: RuleSetStatement {
+  Namespace<TagName> = "<" TagName ">" space* RuleSetStatement* space* "</" TagName ">"
 }
 
-Regions <: SyrmedCss {
-  CascadeRegion = SyrmedCss
-  
-  CollectionRegion = Namespace<pascalCase>*
-  Namespace<TagName> = "<" TagName ">" space* SyrmedCss space* "</" TagName ">"
-}
-
-Syrm <: Regions {
+Syrm <: Namespace {
   Root := Block*
   
   Block = CascadeBlock | CollectionBlock | Block
   
-  CascadeBlock = "<Cascade>" space* CascadeRegion space* "</Cascade>"
-  CollectionBlock = "<Collection>" space* CollectionRegion space* "</Collection>"
+  CascadeBlock = "<Cascade>" space* RuleSetStatement* space* "</Cascade>"
+  CollectionBlock = "<Collection>" space* Namespace<pascalCase>* space* "</Collection>"
 }

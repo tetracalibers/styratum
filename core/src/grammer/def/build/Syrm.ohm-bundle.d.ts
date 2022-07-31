@@ -203,45 +203,27 @@ export interface RuleSetStatementGrammar extends Grammar {
   extendSemantics(superSemantics: RuleSetStatementSemantics): RuleSetStatementSemantics;
 }
 
-export interface SyrmedCssActionDict<T> extends RuleSetStatementActionDict<T> {
-  SyrmedCss?: (this: NonterminalNode, arg0: IterationNode) => T;
+export interface NamespaceActionDict<T> extends RuleSetStatementActionDict<T> {
+  Namespace?: (this: NonterminalNode, arg0: TerminalNode, arg1: Node, arg2: TerminalNode, arg3: IterationNode, arg4: IterationNode, arg5: IterationNode, arg6: TerminalNode, arg7: Node, arg8: TerminalNode) => T;
 }
 
-export interface SyrmedCssSemantics extends Semantics {
-  addOperation<T>(name: string, actionDict: SyrmedCssActionDict<T>): this;
-  extendOperation<T>(name: string, actionDict: SyrmedCssActionDict<T>): this;
-  addAttribute<T>(name: string, actionDict: SyrmedCssActionDict<T>): this;
-  extendAttribute<T>(name: string, actionDict: SyrmedCssActionDict<T>): this;
+export interface NamespaceSemantics extends Semantics {
+  addOperation<T>(name: string, actionDict: NamespaceActionDict<T>): this;
+  extendOperation<T>(name: string, actionDict: NamespaceActionDict<T>): this;
+  addAttribute<T>(name: string, actionDict: NamespaceActionDict<T>): this;
+  extendAttribute<T>(name: string, actionDict: NamespaceActionDict<T>): this;
 }
 
-export interface SyrmedCssGrammar extends Grammar {
-  createSemantics(): SyrmedCssSemantics;
-  extendSemantics(superSemantics: SyrmedCssSemantics): SyrmedCssSemantics;
+export interface NamespaceGrammar extends Grammar {
+  createSemantics(): NamespaceSemantics;
+  extendSemantics(superSemantics: NamespaceSemantics): NamespaceSemantics;
 }
 
-export interface RegionsActionDict<T> extends SyrmedCssActionDict<T> {
-  CascadeRegion?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  CollectionRegion?: (this: NonterminalNode, arg0: IterationNode) => T;
-  Namespace?: (this: NonterminalNode, arg0: TerminalNode, arg1: Node, arg2: TerminalNode, arg3: IterationNode, arg4: NonterminalNode, arg5: IterationNode, arg6: TerminalNode, arg7: Node, arg8: TerminalNode) => T;
-}
-
-export interface RegionsSemantics extends Semantics {
-  addOperation<T>(name: string, actionDict: RegionsActionDict<T>): this;
-  extendOperation<T>(name: string, actionDict: RegionsActionDict<T>): this;
-  addAttribute<T>(name: string, actionDict: RegionsActionDict<T>): this;
-  extendAttribute<T>(name: string, actionDict: RegionsActionDict<T>): this;
-}
-
-export interface RegionsGrammar extends Grammar {
-  createSemantics(): RegionsSemantics;
-  extendSemantics(superSemantics: RegionsSemantics): RegionsSemantics;
-}
-
-export interface SyrmActionDict<T> extends RegionsActionDict<T> {
+export interface SyrmActionDict<T> extends NamespaceActionDict<T> {
   Root?: (this: NonterminalNode, arg0: IterationNode) => T;
   Block?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  CascadeBlock?: (this: NonterminalNode, arg0: TerminalNode, arg1: IterationNode, arg2: NonterminalNode, arg3: IterationNode, arg4: TerminalNode) => T;
-  CollectionBlock?: (this: NonterminalNode, arg0: TerminalNode, arg1: IterationNode, arg2: NonterminalNode, arg3: IterationNode, arg4: TerminalNode) => T;
+  CascadeBlock?: (this: NonterminalNode, arg0: TerminalNode, arg1: IterationNode, arg2: IterationNode, arg3: IterationNode, arg4: TerminalNode) => T;
+  CollectionBlock?: (this: NonterminalNode, arg0: TerminalNode, arg1: IterationNode, arg2: IterationNode, arg3: IterationNode, arg4: TerminalNode) => T;
 }
 
 export interface SyrmSemantics extends Semantics {
@@ -264,8 +246,7 @@ declare const ns: {
   DeclarationBlock: DeclarationBlockGrammar;
   RuleSet: RuleSetGrammar;
   RuleSetStatement: RuleSetStatementGrammar;
-  SyrmedCss: SyrmedCssGrammar;
-  Regions: RegionsGrammar;
+  Namespace: NamespaceGrammar;
   Syrm: SyrmGrammar;
 };
 export default ns;
