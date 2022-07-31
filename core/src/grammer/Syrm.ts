@@ -147,7 +147,7 @@ export const parseSyrm = (raw_syrm: string) => {
       }
     },
     SelectorList: (first, _, rest) => {
-      return listToAst([first, rest])
+      return listToAst([first, ...rest.children])
     },
     Selector(first, rest) {
       return listToAst([first, rest])
