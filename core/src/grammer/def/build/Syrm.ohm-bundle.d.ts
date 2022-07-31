@@ -102,9 +102,8 @@ export interface SyrmedCssInterfaceActionDict<T> extends PrimitiveActionDict<T> 
   pureAtomic?: (this: NonterminalNode, arg0: NonterminalNode) => T;
   addedAtomic?: (this: NonterminalNode, arg0: NonterminalNode) => T;
   SelectorList?: (this: NonterminalNode, arg0: NonterminalNode, arg1: IterationNode, arg2: IterationNode) => T;
+  Selector_composite?: (this: NonterminalNode, arg0: NonterminalNode, arg1: NonterminalNode, arg2: NonterminalNode) => T;
   Selector?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  CombinationSelector?: (this: NonterminalNode, arg0: NonterminalNode, arg1: IterationNode) => T;
-  Combine?: (this: NonterminalNode, arg0: NonterminalNode, arg1: NonterminalNode) => T;
   EnumSelector_predicate?: (this: NonterminalNode, arg0: IterationNode, arg1: NonterminalNode) => T;
   EnumSelector?: (this: NonterminalNode, arg0: IterationNode | NonterminalNode) => T;
   PredicateSelector?: (this: NonterminalNode, arg0: NonterminalNode) => T;

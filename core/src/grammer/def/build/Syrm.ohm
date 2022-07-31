@@ -101,9 +101,9 @@ SyrmedCssInterface <: Primitive {
   /* -------------------------------------------------------------------------- */
   
   /* Selector */
-  Selector = CombinationSelector | EnumSelector
-  CombinationSelector = EnumSelector Combine+
-  Combine = combinator ~"&" EnumSelector
+  Selector = 
+    | EnumSelector combinator Selector -- composite
+    | EnumSelector
   EnumSelector = 
     | basicSelector* PredicateSelector -- predicate
     | basicSelector+

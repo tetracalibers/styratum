@@ -137,20 +137,11 @@ export const parseSyrm = (raw_syrm: string) => {
     SelectorList: (first, _, rest) => {
       return listToAst([first, ...rest.children])
     },
-    CombinationSelector(selec, combine) {
+    Selector_composite(_selec, _comb, _rest) {
       const { startIdx, endIdx } = this.source
       return astNodeWithLocation({
         type: this.ctorName,
-        selector: selectorFormat(selec),
-        combine: combine.ast,
-      })(startIdx, endIdx)
-    },
-    Combine(comb, selec) {
-      const { startIdx, endIdx } = this.source
-      return astNodeWithLocation({
-        type: this.ctorName,
-        combinator: comb.ast,
-        selector: selectorFormat(selec),
+        terms: this.children.map(child => child.ast),
       })(startIdx, endIdx)
     },
     EnumSelector_predicate(basic, predi) {
