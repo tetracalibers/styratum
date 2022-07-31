@@ -152,9 +152,8 @@ SyrmedCssInterface <: Primitive {
 }
 
 DeclarationBlock <: SyrmedCssInterface {
-  DeclarationBlock = "{" DeclarationList "}"
+  DeclarationBlock = "{" Declaration+ "}"
   
-  DeclarationList = Declaration+
   Declaration = PropertyName ":" PropertyValue+ ";"
 }
 
