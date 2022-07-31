@@ -193,6 +193,17 @@ export const parseSyrm = (raw_syrm: string) => {
         },
       }
     },
+    PropertyValue(val) {
+      const { startIdx, endIdx } = this.source
+      return {
+        type: val.type,
+        parts: val.children.map(child => child.ast),
+        location: {
+          uri: '',
+          range: getLocation(startIdx, endIdx).range,
+        },
+      }
+    },
     PropertyValueFunc(name, _, firstArg, __, restArg, ___) {
       const { startIdx, endIdx } = this.source
       return {
