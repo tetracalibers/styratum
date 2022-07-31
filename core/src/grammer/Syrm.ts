@@ -168,11 +168,19 @@ export const parseSyrm = (raw_syrm: string) => {
         args: listToAst([firstArg, ...restArg.children]),
       })(startIdx, endIdx)
     },
-    Pseudo_class(_, pseudo, __, arg, ___) {
+    Pseudo_class(colon, pseudo, __, arg, ___) {
       const { startIdx, endIdx } = this.source
       return astNodeWithLocation({
-        type: pseudo.ctorName,
-        name: pseudo.source.contents,
+        type: this.ctorName,
+        name: colon.source.contents + pseudo.source.contents,
+        args: arg.ast,
+      })(startIdx, endIdx)
+    },
+    Pseudo_element(colon, pseudo, __, arg, ___) {
+      const { startIdx, endIdx } = this.source
+      return astNodeWithLocation({
+        type: this.ctorName,
+        name: colon.source.contents + pseudo.source.contents,
         args: arg.ast,
       })(startIdx, endIdx)
     },
