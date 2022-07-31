@@ -235,6 +235,9 @@ export const parseSyrm = (raw_syrm: string) => {
     operator(_ope) {
       return atomToAst(this)
     },
+    combinator(_) {
+      return atomToAst(this)
+    },
     kebabCase(_, __) {
       return atomToAst(this)
     },
