@@ -165,7 +165,7 @@ export const parseSyrm = (raw_syrm: string) => {
       return astNodeWithLocation({
         type: this.ctorName,
         name: name.source.contents,
-        args: listToAst([firstArg, restArg]),
+        args: listToAst([firstArg, ...restArg.children]),
       })(startIdx, endIdx)
     },
     Pseudo_class(_, pseudo, __, arg, ___) {
