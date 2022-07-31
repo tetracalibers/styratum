@@ -1,10 +1,11 @@
-import { NonterminalNode, TerminalNode } from 'ohm-js'
+import ohm, { NonterminalNode, TerminalNode } from 'ohm-js'
 import { dumpJson } from '../util/json'
 import * as NS from './def/build/Syrm.ohm-bundle'
 import { locationCalculator } from './helper/locationCalculator'
 import { SyrmParser } from './types/SyrmParser'
 import { AstSubTree } from './types/Nodes'
 import { AstNode } from './types/AstNode'
+import _ from 'lodash'
 
 console.time('parseSyrm')
 export const parseSyrm = (raw_syrm: string) => {
@@ -52,7 +53,7 @@ export const parseSyrm = (raw_syrm: string) => {
     })(startIdx, endIdx)
   }
 
-  const listToAst = (children: NonterminalNode[]): AstSubTree => {
+  const listToAst = (children: NonterminalNode[]): AstNode[] => {
     return children.map(child => child.ast)
   }
 
@@ -64,12 +65,30 @@ export const parseSyrm = (raw_syrm: string) => {
     })(startIdx, endIdx)
   }
 
-  const selectorFormat = (selec: NonterminalNode) => {
-    if (selec.ctorName === 'constantSelector') {
-      return selec.source.contents
-    } else {
-      return selec.ast
+  const expressionToNodeList = (
+    left: NonterminalNode,
+    ope: NonterminalNode,
+    right: NonterminalNode
+  ) => {
+    const iterationUnit = (
+      prev: AstSubTree[],
+      child: ohm.Node
+    ): AstSubTree[] => {
+      const childType = child.ctorName
+      if (childType === '_terminal') {
+        return prev
+      }
+      if (childType === 'Formula_expression') {
+        return [...prev, ...listToAst(child.children)]
+      }
+      const ast = child.ast
+      if (_.isArray(ast)) {
+        return [...prev, ...ast]
+      }
+      return [...prev, ast]
     }
+    const nodes = right.children.reduce(iterationUnit, [left.ast, ope.ast])
+    return nodes
   }
 
   parser.grammar = NS.default.Syrm
@@ -135,20 +154,21 @@ export const parseSyrm = (raw_syrm: string) => {
       })(startIdx, endIdx)
     },
     SelectorList: (first, _, rest) => {
-      return listToAst([first, ...rest.children])
+      return rest.numChildren === 0
+        ? first.ast
+        : listToAst([...first.children, ...rest.children])
     },
-    Selector_composite(_selec, _comb, _rest) {
-      const { startIdx, endIdx } = this.source
-      return astNodeWithLocation({
-        type: this.ctorName,
-        terms: this.children.map(child => child.ast),
-      })(startIdx, endIdx)
+    Selector(inner) {
+      return inner.ast
+    },
+    Selector_composite(selec, comb, rest) {
+      return expressionToNodeList(selec, comb, rest)
     },
     EnumSelector_predicate(basic, predi) {
       const { startIdx, endIdx } = this.source
       return astNodeWithLocation({
         type: this.ctorName,
-        selector: selectorFormat(basic),
+        selector: basic.ast,
         filter: predi.ast,
       })(startIdx, endIdx)
     },
@@ -165,8 +185,8 @@ export const parseSyrm = (raw_syrm: string) => {
       return astNodeWithLocation({
         type: this.ctorName,
         attr: attr.source.contents,
-        value: value.ast,
         similarity: equal.source.contents,
+        value: value.ast,
       })(startIdx, endIdx)
     },
     attributePredicate_has(_, attr, __) {
@@ -209,26 +229,27 @@ export const parseSyrm = (raw_syrm: string) => {
     htmlTagSelector(_, __) {
       return atomToAst(this)
     },
-    Formula_expression(_left, _ope, _right) {
+    Formula(inner) {
+      return inner.ast
+    },
+    Formula_expression(left, ope, right) {
       const { startIdx, endIdx } = this.source
       return astNodeWithLocation({
         type: this.ctorName,
-        expr: this.children.map(ch => ch.ast),
+        expr: expressionToNodeList(left, ope, right),
       })(startIdx, endIdx)
     },
-    WrapTerm_expression(_begin, _formula, _end) {
-      const { startIdx, endIdx } = this.source
-      return astNodeWithLocation({
-        type: this.ctorName,
-        expr: this.children.map(ch => ch.ast),
-      })(startIdx, endIdx)
+    WrapTerm(inner) {
+      return inner.ast
     },
-    AtomicFormula_expression(_left, _ope, _right) {
-      const { startIdx, endIdx } = this.source
-      return astNodeWithLocation({
-        type: this.ctorName,
-        expr: this.children.map(ch => ch.ast),
-      })(startIdx, endIdx)
+    WrapTerm_expression(begin, formula, end) {
+      return [atomToAst(begin), ...formula.ast, atomToAst(end)]
+    },
+    AtomicFormula(inner) {
+      return inner.ast
+    },
+    AtomicFormula_expression(left, ope, right) {
+      return expressionToNodeList(left, ope, right)
     },
     numeralWithUnit(num, unit) {
       const { startIdx, endIdx } = this.source
@@ -285,6 +306,15 @@ export const parseSyrm = (raw_syrm: string) => {
       return atomToAst(this)
     },
     universalSelector(_) {
+      return atomToAst(this)
+    },
+    childCombinator(_) {
+      return atomToAst(this)
+    },
+    generalSiblijngCombinator(_) {
+      return atomToAst(this)
+    },
+    adjacentSiblijngCombinator(_) {
       return atomToAst(this)
     },
     bparen(_) {
