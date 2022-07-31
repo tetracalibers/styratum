@@ -211,7 +211,7 @@ export const parseSyrm = (raw_syrm: string) => {
       return num.ast
     },
     number(num) {
-      return num.source.contents
+      return atomToAst(num)
     },
     props(_props, _, value, ___) {
       const { startIdx, endIdx } = this.source
