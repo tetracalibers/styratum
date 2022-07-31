@@ -123,7 +123,7 @@ export const parseSyrm = (raw_syrm: string) => {
       return astNodeWithLocation({
         type: this.ctorName,
         property: name.ast,
-        value: value.ast,
+        values: value.children.map(child => child.ast),
       })(startIdx, endIdx)
     },
     SelectorList: (first, _, rest) => {
@@ -158,13 +158,6 @@ export const parseSyrm = (raw_syrm: string) => {
       return astNodeWithLocation({
         type: kind,
         selector: selector(selec),
-      })(startIdx, endIdx)
-    },
-    PropertyValue(val) {
-      const { startIdx, endIdx } = this.source
-      return astNodeWithLocation({
-        type: val.type,
-        parts: val.children.map(child => child.ast),
       })(startIdx, endIdx)
     },
     PropertyValueFunc(name, _, firstArg, __, restArg, ___) {
