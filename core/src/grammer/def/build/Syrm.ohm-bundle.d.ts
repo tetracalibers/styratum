@@ -72,10 +72,11 @@ export interface AtomicGrammar extends Grammar {
 }
 
 export interface PrimitiveActionDict<T> extends AtomicActionDict<T> {
-  Formula?: (this: NonterminalNode, arg0: NonterminalNode, arg1: IterationNode, arg2: IterationNode) => T;
-  FormulaElements_number?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  FormulaElements_expression?: (this: NonterminalNode, arg0: TerminalNode, arg1: NonterminalNode, arg2: TerminalNode) => T;
-  FormulaElements?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  Formula_expression?: (this: NonterminalNode, arg0: NonterminalNode, arg1: IterationNode) => T;
+  Formula?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  Apply?: (this: NonterminalNode, arg0: NonterminalNode, arg1: NonterminalNode) => T;
+  WrapTerm_expression?: (this: NonterminalNode, arg0: TerminalNode, arg1: NonterminalNode, arg2: TerminalNode) => T;
+  WrapTerm?: (this: NonterminalNode, arg0: NonterminalNode) => T;
   AtomicFormula?: (this: NonterminalNode, arg0: NonterminalNode, arg1: IterationNode, arg2: IterationNode) => T;
   numeral?: (this: NonterminalNode, arg0: NonterminalNode) => T;
   numeralWithUnit?: (this: NonterminalNode, arg0: NonterminalNode, arg1: NonterminalNode) => T;

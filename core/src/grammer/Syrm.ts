@@ -239,8 +239,29 @@ export const parseSyrm = (raw_syrm: string) => {
         },
       }
     },
-    Formula(first, ope, rest) {
-      return listToAst([first, ope, rest])
+    Formula_expression(term, apply) {
+      const { startIdx, endIdx } = this.source
+      return {
+        type: this.ctorName,
+        left: term.ast,
+        right: apply.ast,
+        location: {
+          uri: '',
+          range: getLocation(startIdx, endIdx).range,
+        },
+      }
+    },
+    Apply(ope, term) {
+      const { startIdx, endIdx } = this.source
+      return {
+        type: this.ctorName,
+        left: ope.ast,
+        right: term.ast,
+        location: {
+          uri: '',
+          range: getLocation(startIdx, endIdx).range,
+        },
+      }
     },
     numeralWithUnit(num, unit) {
       const { startIdx, endIdx } = this.source

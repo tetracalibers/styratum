@@ -64,10 +64,13 @@ Atomic <: SkipToken {
 // Combination of Atomic and Molecule
 
 Primitive <: Atomic {
-  Formula = FormulaElements (operator FormulaElements)*
-  FormulaElements = 
-    | numeral -- number
+  Formula = 
+    | WrapTerm Apply+ -- expression
+    | numeral
+  Apply = operator WrapTerm
+  WrapTerm = 
     | "(" AtomicFormula ")" -- expression
+    | numeral
   AtomicFormula = numeral (operator numeral)+
   numeral = numeralWithUnit | generatedNumber
   numeralWithUnit = generatedNumber unit
