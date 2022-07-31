@@ -5,6 +5,7 @@ import { locationCalculator } from './helper/locationCalculator'
 import { SyrmParser } from './types/SyrmParser'
 import { Nodes } from './types/Nodes'
 
+console.time('parseSyrm')
 export const parseSyrm = (raw_syrm: string) => {
   const parser = {} as SyrmParser
   const getLocation = locationCalculator(raw_syrm)
@@ -247,3 +248,4 @@ export const parseSyrm = (raw_syrm: string) => {
   const match = parser.grammar.match(raw_syrm)
   return parser.semantics(match).ast
 }
+console.timeEnd('parseSyrm')
