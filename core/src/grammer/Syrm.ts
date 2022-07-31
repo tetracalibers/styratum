@@ -91,6 +91,20 @@ export const parseSyrm = (raw_syrm: string) => {
     return nodes
   }
 
+  const pseudoToAst = (
+    full: NonterminalNode,
+    colon: TerminalNode,
+    pseudo: NonterminalNode,
+    arg: ohm.IterationNode
+  ) => {
+    const { startIdx, endIdx } = full.source
+    return astNodeWithLocation({
+      type: full.ctorName,
+      name: colon.source.contents + pseudo.source.contents,
+      args: arg.ast,
+    })(startIdx, endIdx)
+  }
+
   parser.grammar = NS.default.Syrm
   parser.semantics = parser.grammar.createSemantics()
   parser.semantics.addAttribute('ast', {
@@ -164,6 +178,12 @@ export const parseSyrm = (raw_syrm: string) => {
     Selector_composite(selec, comb, rest) {
       return expressionToNodeList(selec, comb, rest)
     },
+    EnumSelector(inner) {
+      if (inner.numChildren === 1) {
+        return inner.child(0).ast
+      }
+      return inner.ast
+    },
     EnumSelector_predicate(basic, predi) {
       const { startIdx, endIdx } = this.source
       return astNodeWithLocation({
@@ -197,20 +217,10 @@ export const parseSyrm = (raw_syrm: string) => {
       })(startIdx, endIdx)
     },
     Pseudo_class(colon, pseudo, __, arg, ___) {
-      const { startIdx, endIdx } = this.source
-      return astNodeWithLocation({
-        type: this.ctorName,
-        name: colon.source.contents + pseudo.source.contents,
-        args: arg.ast,
-      })(startIdx, endIdx)
+      return pseudoToAst(this, colon, pseudo, arg)
     },
     Pseudo_element(colon, pseudo, __, arg, ___) {
-      const { startIdx, endIdx } = this.source
-      return astNodeWithLocation({
-        type: this.ctorName,
-        name: colon.source.contents + pseudo.source.contents,
-        args: arg.ast,
-      })(startIdx, endIdx)
+      return pseudoToAst(this, colon, pseudo, arg)
     },
     nth(chars) {
       const { startIdx, endIdx } = this.source
