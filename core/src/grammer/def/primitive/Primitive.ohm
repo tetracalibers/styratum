@@ -2,13 +2,14 @@
 
 Primitive <: Atomic {
   Formula = 
-    | WrapTerm Apply+ -- expression
+    | WrapTerm operator Formula -- expression
+    | WrapTerm
+  WrapTerm =
+    | bparen AtomicFormula eparen -- expression
     | numeral
-  Apply = operator WrapTerm
-  WrapTerm = 
-    | "(" AtomicFormula ")" -- expression
+  AtomicFormula = 
+    | numeral operator AtomicFormula -- expression
     | numeral
-  AtomicFormula = numeral (operator numeral)+
   numeral = 
     | numeralWithUnit 
     | generatedNumber

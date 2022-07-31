@@ -12,6 +12,10 @@ Atomic <: SkipToken {
   /* props */
   props = "props" "(" jsIdentifier ")"
   
+  /* paren */
+  bparen = "("
+  eparen = ")"
+  
   /* numeral */
   number = 
     | "-" digit+ -- negative

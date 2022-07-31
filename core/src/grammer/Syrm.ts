@@ -218,20 +218,27 @@ export const parseSyrm = (raw_syrm: string) => {
     htmlTagSelector(_, __) {
       return atomToAst(this)
     },
-    Formula_expression(term, apply) {
+    Formula_expression(_left, _ope, _right) {
       const { startIdx, endIdx } = this.source
       return astNodeWithLocation({
         type: this.ctorName,
-        term: term.ast,
-        apply: apply.ast,
+        expr: this.children.map(ch => ch.ast),
       })(startIdx, endIdx)
     },
-    Apply(ope, term) {
+    WrapTerm_expression(_begin, _formula, _end) {
       const { startIdx, endIdx } = this.source
       return astNodeWithLocation({
         type: this.ctorName,
-        oper: ope.ast,
-        term: term.ast,
+        expr: this.children.map(ch => ch.ast),
+      })(startIdx, endIdx)
+    },
+    AtomicFormula_expression(left, ope, right) {
+      const { startIdx, endIdx } = this.source
+      return astNodeWithLocation({
+        type: this.ctorName,
+        ope: ope.ast,
+        left: left.ast,
+        rights: right.ast,
       })(startIdx, endIdx)
     },
     numeralWithUnit(num, unit) {
@@ -285,11 +292,20 @@ export const parseSyrm = (raw_syrm: string) => {
     collectionKeyword(_, __) {
       return atomToAst(this)
     },
+    rootSelector(_root) {
+      return atomToAst(this)
+    },
+    universalSelector(_) {
+      return atomToAst(this)
+    },
+    bparen(_) {
+      return atomToAst(this)
+    },
+    eparen(_) {
+      return atomToAst(this)
+    },
     _iter(...children) {
       return listToAst(children)
-    },
-    _terminal() {
-      return atomToAst(this)
     },
   })
   const match = parser.grammar.match(raw_syrm)

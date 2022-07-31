@@ -27,7 +27,8 @@
     padding: props(padding);
     border: props(borderWidth) solid;
     outline: props(borderWidth) solid transparent;
-    outline-offset: calc(-1 * props(borderWidth));
+    outline-offset: calc(-1 * (props(borderWidth) + 100px));
+    outline-offset: calc(-1 * props(borderWidth) + 100px);
   }
   
   // inline comment
