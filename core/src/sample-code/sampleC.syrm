@@ -40,7 +40,7 @@
   /*
     block comment
   */
-  & > :first-child:not(ToPlaceCenter) {
+  & > :first-child:not(h1) {
     /*
       block comment
     */
