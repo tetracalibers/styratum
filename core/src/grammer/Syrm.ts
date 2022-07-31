@@ -64,6 +64,14 @@ export const parseSyrm = (raw_syrm: string) => {
     })(startIdx, endIdx)
   }
 
+  const selectorFormat = (selec: NonterminalNode) => {
+    if (selec.ctorName === 'constantSelector') {
+      return selec.source.contents
+    } else {
+      return selec.ast
+    }
+  }
+
   parser.grammar = NS.default.Syrm
   parser.semantics = parser.grammar.createSemantics()
   parser.semantics.addAttribute('ast', {
@@ -129,43 +137,28 @@ export const parseSyrm = (raw_syrm: string) => {
     SelectorList: (first, _, rest) => {
       return listToAst([first, ...rest.children])
     },
-    Selector_composite(selec, combine) {
+    CombinationSelector(selec, combine) {
       const { startIdx, endIdx } = this.source
       return astNodeWithLocation({
         type: this.ctorName,
-        left: selec.ast,
-        right: combine.ast,
+        selector: selectorFormat(selec),
+        combine: combine.ast,
       })(startIdx, endIdx)
     },
-    Combine_specified(comb, selec) {
+    Combine(comb, selec) {
       const { startIdx, endIdx } = this.source
       return astNodeWithLocation({
         type: this.ctorName,
-        left: comb.ast,
-        right: selec.ast,
+        combinator: comb.ast,
+        selector: selectorFormat(selec),
       })(startIdx, endIdx)
     },
-    AtomicSelector_composite(selec, pseudo) {
+    EnumSelector_predicate(basic, predi) {
       const { startIdx, endIdx } = this.source
       return astNodeWithLocation({
         type: this.ctorName,
-        left: selec.ast,
-        right: pseudo.ast,
-      })(startIdx, endIdx)
-    },
-    AtomicSelector(selec) {
-      const { startIdx, endIdx } = this.source
-      const kind = selec.ctorName
-      const selector = (selec: NonterminalNode) => {
-        if (kind === 'basicSelector') {
-          return selec.source.contents
-        } else {
-          return selec.ast
-        }
-      }
-      return astNodeWithLocation({
-        type: kind,
-        selector: selector(selec),
+        selector: selectorFormat(basic),
+        filter: predi.ast,
       })(startIdx, endIdx)
     },
     PropertyValueFunc(name, _, firstArg, __, restArg, ___) {
@@ -174,6 +167,22 @@ export const parseSyrm = (raw_syrm: string) => {
         type: this.ctorName,
         name: name.source.contents,
         args: listToAst([firstArg, ...restArg.children]),
+      })(startIdx, endIdx)
+    },
+    attributePredicate_value(_, attr, equal, value, __) {
+      const { startIdx, endIdx } = this.source
+      return astNodeWithLocation({
+        type: this.ctorName,
+        attr: attr.source.contents,
+        value: value.ast,
+        similarity: equal.source.contents,
+      })(startIdx, endIdx)
+    },
+    attributePredicate_has(_, attr, __) {
+      const { startIdx, endIdx } = this.source
+      return astNodeWithLocation({
+        type: this.ctorName,
+        attr: attr.source.contents,
       })(startIdx, endIdx)
     },
     Pseudo_class(colon, pseudo, __, arg, ___) {
@@ -206,20 +215,23 @@ export const parseSyrm = (raw_syrm: string) => {
         expr: contents,
       })(startIdx, endIdx)
     },
+    htmlTagSelector(_, __) {
+      return atomToAst(this)
+    },
     Formula_expression(term, apply) {
       const { startIdx, endIdx } = this.source
       return astNodeWithLocation({
         type: this.ctorName,
-        left: term.ast,
-        right: apply.ast,
+        term: term.ast,
+        apply: apply.ast,
       })(startIdx, endIdx)
     },
     Apply(ope, term) {
       const { startIdx, endIdx } = this.source
       return astNodeWithLocation({
         type: this.ctorName,
-        left: ope.ast,
-        right: term.ast,
+        oper: ope.ast,
+        term: term.ast,
       })(startIdx, endIdx)
     },
     numeralWithUnit(num, unit) {
@@ -259,6 +271,9 @@ export const parseSyrm = (raw_syrm: string) => {
       return atomToAst(this)
     },
     combinator(_) {
+      return atomToAst(this)
+    },
+    literal(_, _str, __) {
       return atomToAst(this)
     },
     kebabCase(_, __) {

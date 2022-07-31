@@ -80,6 +80,8 @@ export interface PrimitiveActionDict<T> extends AtomicActionDict<T> {
   AtomicFormula?: (this: NonterminalNode, arg0: NonterminalNode, arg1: IterationNode, arg2: IterationNode) => T;
   numeral?: (this: NonterminalNode, arg0: NonterminalNode) => T;
   numeralWithUnit?: (this: NonterminalNode, arg0: NonterminalNode, arg1: NonterminalNode) => T;
+  generatedLiteral?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  literal?: (this: NonterminalNode, arg0: TerminalNode, arg1: IterationNode, arg2: TerminalNode) => T;
 }
 
 export interface PrimitiveSemantics extends Semantics {
@@ -98,21 +100,24 @@ export interface SyrmedCssInterfaceActionDict<T> extends PrimitiveActionDict<T> 
   pureAtomic?: (this: NonterminalNode, arg0: NonterminalNode) => T;
   addedAtomic?: (this: NonterminalNode, arg0: NonterminalNode) => T;
   SelectorList?: (this: NonterminalNode, arg0: NonterminalNode, arg1: IterationNode, arg2: IterationNode) => T;
-  Selector_composite?: (this: NonterminalNode, arg0: NonterminalNode, arg1: IterationNode) => T;
   Selector?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  Combine_specified?: (this: NonterminalNode, arg0: NonterminalNode, arg1: NonterminalNode) => T;
-  Combine_implicated?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  Combine?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  AtomicSelector_composite?: (this: NonterminalNode, arg0: NonterminalNode, arg1: NonterminalNode) => T;
-  AtomicSelector?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  CombinationSelector?: (this: NonterminalNode, arg0: NonterminalNode, arg1: IterationNode) => T;
+  Combine?: (this: NonterminalNode, arg0: NonterminalNode, arg1: NonterminalNode) => T;
+  EnumSelector_predicate?: (this: NonterminalNode, arg0: IterationNode, arg1: NonterminalNode) => T;
+  EnumSelector?: (this: NonterminalNode, arg0: IterationNode | NonterminalNode) => T;
+  PredicateSelector?: (this: NonterminalNode, arg0: NonterminalNode) => T;
   basicSelector?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  attributeSelector?: (this: NonterminalNode, arg0: TerminalNode, arg1: NonterminalNode, arg2: TerminalNode, arg3: NonterminalNode, arg4: TerminalNode) => T;
   tagSelector?: (this: NonterminalNode, arg0: NonterminalNode) => T;
   htmlTagSelector?: (this: NonterminalNode, arg0: NonterminalNode, arg1: IterationNode) => T;
   jsxTagSelector?: (this: NonterminalNode, arg0: NonterminalNode) => T;
   constantSelector?: (this: NonterminalNode, arg0: NonterminalNode) => T;
   rootSelector?: (this: NonterminalNode, arg0: TerminalNode) => T;
   universalSelector?: (this: NonterminalNode, arg0: TerminalNode) => T;
+  attributeSelector?: (this: NonterminalNode, arg0: IterationNode) => T;
+  attributePredicate_value?: (this: NonterminalNode, arg0: TerminalNode, arg1: NonterminalNode, arg2: NonterminalNode, arg3: NonterminalNode, arg4: TerminalNode) => T;
+  attributePredicate_has?: (this: NonterminalNode, arg0: TerminalNode, arg1: NonterminalNode, arg2: TerminalNode) => T;
+  attributePredicate?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  equal?: (this: NonterminalNode, arg0: TerminalNode) => T;
   PseudoSelector?: (this: NonterminalNode, arg0: IterationNode) => T;
   Pseudo_element?: (this: NonterminalNode, arg0: TerminalNode, arg1: NonterminalNode, arg2: IterationNode, arg3: IterationNode, arg4: IterationNode) => T;
   Pseudo_class?: (this: NonterminalNode, arg0: TerminalNode, arg1: NonterminalNode, arg2: IterationNode, arg3: IterationNode, arg4: IterationNode) => T;

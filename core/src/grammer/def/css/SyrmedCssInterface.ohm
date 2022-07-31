@@ -13,20 +13,14 @@ SyrmedCssInterface <: Primitive {
   /* -------------------------------------------------------------------------- */
   
   /* Selector */
-  Selector =
-    | AtomicSelector Combine+ -- composite
-    | AtomicSelector
-  Combine = 
-    | combinator ~"&" AtomicSelector -- specified
-    | ~"&" AtomicSelector -- implicated
-  AtomicSelector = 
-    | AtomicSelector PseudoSelector -- composite
-    | basicSelector
-    | PseudoSelector
-  basicSelector = attributeSelector | htmlTagSelector | constantSelector
-  
-  /* attributeSelector */
-  attributeSelector = "[" kebabCase "=" lowerCase "]"
+  Selector = CombinationSelector | EnumSelector
+  CombinationSelector = EnumSelector Combine+
+  Combine = combinator ~"&" EnumSelector
+  EnumSelector = 
+    | basicSelector* PredicateSelector -- predicate
+    | basicSelector+
+  PredicateSelector = PseudoSelector | attributeSelector
+  basicSelector = tagSelector | constantSelector
   
   /* tagSelector */
   tagSelector = htmlTagSelector | jsxTagSelector
@@ -37,6 +31,19 @@ SyrmedCssInterface <: Primitive {
   constantSelector = rootSelector | universalSelector
   rootSelector = "&"
   universalSelector = "*"
+  
+  /* -------------------------------------------------------------------------- */
+  /* attribute                                                                  */
+  /* -------------------------------------------------------------------------- */
+  
+  /* attributeSelector */
+  attributeSelector = attributePredicate+
+  
+  attributePredicate = 
+    | "[" kebabCase equal generatedLiteral "]" -- value
+    | "[" kebabCase "]" -- has
+    
+  equal = "=" | "*=" | "$=" | "~="
   
   /* -------------------------------------------------------------------------- */
   /* pseudo                                                                     */

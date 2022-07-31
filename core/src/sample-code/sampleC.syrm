@@ -66,6 +66,32 @@
     color: lime;
   }
   
+  /* title 属性を持つ <a> 要素 */
+  a[title] {
+    color: purple;
+  }
+  
+  /* href が "https://example.org" と一致する <a> 要素 */
+  a[href="https://example.org"] {
+    color: green;
+  }
+  
+  /* href に "example" を含む <a> 要素 */
+  a[href*="example"] {
+    font-size: 2em;
+  }
+  
+  /* href が "org" で終わる <a> 要素 */
+  a[href$=".org"] {
+    font-style: italic;
+  }
+  
+  /* <a> 要素の class 属性に "logo" という語が含まれているもの */
+  a[class~="logo"] {
+    padding: 2px;
+  }
+
+  
   @truthy(recursive)
   & * + * {
     margin-top: props(space);

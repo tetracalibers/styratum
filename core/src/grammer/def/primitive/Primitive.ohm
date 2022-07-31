@@ -13,4 +13,7 @@ Primitive <: Atomic {
     | numeralWithUnit 
     | generatedNumber
   numeralWithUnit = generatedNumber unit
+  
+  generatedLiteral = props | literal
+  literal = "\"" (~"\"" any)* "\""
 }
