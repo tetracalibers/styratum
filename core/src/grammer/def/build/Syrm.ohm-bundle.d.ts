@@ -147,7 +147,7 @@ export interface SyrmedCssInterfaceGrammar extends Grammar {
 }
 
 export interface DeclarationBlockActionDict<T> extends SyrmedCssInterfaceActionDict<T> {
-  AriaDeclarationBlock?: (this: NonterminalNode, arg0: TerminalNode, arg1: NonterminalNode, arg2: TerminalNode) => T;
+  AriaDeclarationBlock?: (this: NonterminalNode, arg0: TerminalNode, arg1: IterationNode, arg2: TerminalNode) => T;
   AriaDeclaration?: (this: NonterminalNode, arg0: NonterminalNode, arg1: TerminalNode, arg2: NonterminalNode, arg3: TerminalNode) => T;
   DeclarationBlock?: (this: NonterminalNode, arg0: TerminalNode, arg1: IterationNode, arg2: TerminalNode) => T;
   Declaration?: (this: NonterminalNode, arg0: NonterminalNode, arg1: TerminalNode, arg2: IterationNode, arg3: TerminalNode) => T;

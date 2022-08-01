@@ -180,7 +180,7 @@ DeclarationBlock <: SyrmedCssInterface {
   /* WAI-ARIA                                                                   */
   /* -------------------------------------------------------------------------- */
   
-  AriaDeclarationBlock = "{" AriaDeclaration "}"
+  AriaDeclarationBlock = "{" AriaDeclaration+ "}"
   AriaDeclaration = ariaLabel ":" ariaValue ";"
   
   /* -------------------------------------------------------------------------- */

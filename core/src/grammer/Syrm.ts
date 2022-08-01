@@ -105,6 +105,19 @@ export const parseSyrm = (raw_syrm: string) => {
     })(startIdx, endIdx)
   }
 
+  const rulesetToAst = (
+    full: NonterminalNode,
+    slist: NonterminalNode,
+    dblock: NonterminalNode
+  ) => {
+    const { startIdx, endIdx } = full.source
+    return astNodeWithLocation({
+      type: full.ctorName,
+      selector: slist.ast,
+      declarations: dblock.ast,
+    })(startIdx, endIdx)
+  }
+
   parser.grammar = NS.default.Syrm
   parser.semantics = parser.grammar.createSemantics()
   parser.semantics.addAttribute('ast', {
@@ -112,6 +125,9 @@ export const parseSyrm = (raw_syrm: string) => {
       return BlockToAst(this, open, inner, close)
     },
     CollectionBlock(open, __, inner, ___, close) {
+      return BlockToAst(this, open, inner, close)
+    },
+    WaiariaBlock(open, __, inner, ___, close) {
       return BlockToAst(this, open, inner, close)
     },
     Namespace(___, tagName, open, _, inner, __, close, __tagName, ____) {
@@ -148,15 +164,24 @@ export const parseSyrm = (raw_syrm: string) => {
         rule2: rule2.ast,
       })(startIdx, endIdx)
     },
-    RuleSet(slist, dblock) {
+    AriaRuleSetStatement_if_block(pre, rules, _end) {
       const { startIdx, endIdx } = this.source
       return astNodeWithLocation({
         type: this.ctorName,
-        selector: slist.ast,
-        declarations: dblock.ast,
+        if: pre.ast,
+        rules: listToAst(rules.children),
       })(startIdx, endIdx)
     },
+    RuleSet(slist, dblock) {
+      return rulesetToAst(this, slist, dblock)
+    },
+    AriaRuleSet(slist, dblock) {
+      return rulesetToAst(this, slist, dblock)
+    },
     DeclarationBlock: (_, list, __) => {
+      return listToAst(list.children)
+    },
+    AriaDeclarationBlock(_, list, __) {
       return listToAst(list.children)
     },
     Declaration(name, _, value, __) {
@@ -165,6 +190,14 @@ export const parseSyrm = (raw_syrm: string) => {
         type: this.ctorName,
         property: name.ast,
         values: value.children.map(child => child.ast),
+      })(startIdx, endIdx)
+    },
+    AriaDeclaration(label, _, value, __) {
+      const { startIdx, endIdx } = this.source
+      return astNodeWithLocation({
+        type: this.ctorName,
+        label: label.ast,
+        value: value.ast,
       })(startIdx, endIdx)
     },
     SelectorList: (first, _, rest) => {
