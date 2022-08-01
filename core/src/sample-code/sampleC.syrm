@@ -117,3 +117,14 @@
   & > :last-child { @collection: Main; }
   @invert
 </Cascade>
+
+<WAIARIA>
+  @truthy(isList)
+  & {
+    role: "list";
+  }
+  & > * {
+    role: "listItem";
+  }
+  @end
+</WAIARIA>

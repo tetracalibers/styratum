@@ -1,5 +1,16 @@
 DeclarationBlock <: SyrmedCssInterface {
-  DeclarationBlock = "{" Declaration+ "}"
   
+  /* -------------------------------------------------------------------------- */
+  /* WAI-ARIA                                                                   */
+  /* -------------------------------------------------------------------------- */
+  
+  AriaDeclarationBlock = "{" AriaDeclaration "}"
+  AriaDeclaration = ariaLabel ":" ariaValue ";"
+  
+  /* -------------------------------------------------------------------------- */
+  /* CSS                                                                        */
+  /* -------------------------------------------------------------------------- */
+  
+  DeclarationBlock = "{" Declaration+ "}"
   Declaration = PropertyName ":" PropertyValue+ ";"
 }

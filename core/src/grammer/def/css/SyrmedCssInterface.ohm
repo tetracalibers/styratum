@@ -1,6 +1,11 @@
 SyrmedCssInterface <: Primitive {
-  pureAtomic += collectionKeyword | combinator | constantSelector
-  addedAtomic += tagSelector
+  
+  /* -------------------------------------------------------------------------- */
+  /* WAI-ARIA                                                                   */
+  /* -------------------------------------------------------------------------- */
+    
+  ariaLabel = kebabCase
+  ariaValue = literal
   
   /* -------------------------------------------------------------------------- */
   /* selector list                                                              */

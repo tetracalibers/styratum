@@ -41,9 +41,6 @@ export interface SkipTokenGrammar extends Grammar {
 }
 
 export interface AtomicActionDict<T> extends SkipTokenActionDict<T> {
-  atomic?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  pureAtomic?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  addedAtomic?: (this: NonterminalNode, arg0: NonterminalNode) => T;
   generatedNumber?: (this: NonterminalNode, arg0: NonterminalNode) => T;
   props?: (this: NonterminalNode, arg0: TerminalNode, arg1: TerminalNode, arg2: NonterminalNode, arg3: TerminalNode) => T;
   bparen?: (this: NonterminalNode, arg0: TerminalNode) => T;
@@ -99,8 +96,8 @@ export interface PrimitiveGrammar extends Grammar {
 }
 
 export interface SyrmedCssInterfaceActionDict<T> extends PrimitiveActionDict<T> {
-  pureAtomic?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  addedAtomic?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  ariaLabel?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  ariaValue?: (this: NonterminalNode, arg0: NonterminalNode) => T;
   SelectorList?: (this: NonterminalNode, arg0: NonterminalNode, arg1: IterationNode, arg2: IterationNode) => T;
   Selector_composite?: (this: NonterminalNode, arg0: NonterminalNode, arg1: NonterminalNode, arg2: NonterminalNode) => T;
   Selector?: (this: NonterminalNode, arg0: NonterminalNode) => T;
@@ -150,6 +147,8 @@ export interface SyrmedCssInterfaceGrammar extends Grammar {
 }
 
 export interface DeclarationBlockActionDict<T> extends SyrmedCssInterfaceActionDict<T> {
+  AriaDeclarationBlock?: (this: NonterminalNode, arg0: TerminalNode, arg1: NonterminalNode, arg2: TerminalNode) => T;
+  AriaDeclaration?: (this: NonterminalNode, arg0: NonterminalNode, arg1: TerminalNode, arg2: NonterminalNode, arg3: TerminalNode) => T;
   DeclarationBlock?: (this: NonterminalNode, arg0: TerminalNode, arg1: IterationNode, arg2: TerminalNode) => T;
   Declaration?: (this: NonterminalNode, arg0: NonterminalNode, arg1: TerminalNode, arg2: IterationNode, arg3: TerminalNode) => T;
 }
@@ -167,6 +166,7 @@ export interface DeclarationBlockGrammar extends Grammar {
 }
 
 export interface RuleSetActionDict<T> extends DeclarationBlockActionDict<T> {
+  AriaRuleSet?: (this: NonterminalNode, arg0: NonterminalNode, arg1: NonterminalNode) => T;
   RuleSet?: (this: NonterminalNode, arg0: NonterminalNode, arg1: NonterminalNode) => T;
 }
 
@@ -183,9 +183,13 @@ export interface RuleSetGrammar extends Grammar {
 }
 
 export interface RuleSetStatementActionDict<T> extends RuleSetActionDict<T> {
-  pureAtomic?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  addedAtomic?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  AriaRuleSetStatement_invert?: (this: NonterminalNode, arg0: NonterminalNode, arg1: NonterminalNode, arg2: NonterminalNode, arg3: NonterminalNode) => T;
+  AriaRuleSetStatement_if_block?: (this: NonterminalNode, arg0: NonterminalNode, arg1: IterationNode, arg2: NonterminalNode) => T;
+  AriaRuleSetStatement_if_else?: (this: NonterminalNode, arg0: NonterminalNode, arg1: NonterminalNode, arg2: NonterminalNode, arg3: NonterminalNode) => T;
+  AriaRuleSetStatement_if?: (this: NonterminalNode, arg0: NonterminalNode, arg1: NonterminalNode) => T;
+  AriaRuleSetStatement?: (this: NonterminalNode, arg0: NonterminalNode) => T;
   RuleSetStatement_invert?: (this: NonterminalNode, arg0: NonterminalNode, arg1: NonterminalNode, arg2: NonterminalNode, arg3: NonterminalNode) => T;
+  RuleSetStatement_if_block?: (this: NonterminalNode, arg0: NonterminalNode, arg1: IterationNode, arg2: NonterminalNode) => T;
   RuleSetStatement_if_else?: (this: NonterminalNode, arg0: NonterminalNode, arg1: NonterminalNode, arg2: NonterminalNode, arg3: NonterminalNode) => T;
   RuleSetStatement_if?: (this: NonterminalNode, arg0: NonterminalNode, arg1: NonterminalNode) => T;
   RuleSetStatement?: (this: NonterminalNode, arg0: NonterminalNode) => T;
@@ -195,6 +199,7 @@ export interface RuleSetStatementActionDict<T> extends RuleSetActionDict<T> {
   exist?: (this: NonterminalNode, arg0: TerminalNode, arg1: TerminalNode, arg2: TerminalNode, arg3: NonterminalNode, arg4: TerminalNode) => T;
   else?: (this: NonterminalNode, arg0: TerminalNode, arg1: TerminalNode) => T;
   invert?: (this: NonterminalNode, arg0: TerminalNode, arg1: TerminalNode) => T;
+  blockend?: (this: NonterminalNode, arg0: TerminalNode, arg1: TerminalNode) => T;
 }
 
 export interface RuleSetStatementSemantics extends Semantics {
@@ -228,6 +233,7 @@ export interface NamespaceGrammar extends Grammar {
 export interface SyrmActionDict<T> extends NamespaceActionDict<T> {
   Root?: (this: NonterminalNode, arg0: IterationNode) => T;
   Block?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  WaiariaBlock?: (this: NonterminalNode, arg0: TerminalNode, arg1: IterationNode, arg2: IterationNode, arg3: IterationNode, arg4: TerminalNode) => T;
   CascadeBlock?: (this: NonterminalNode, arg0: TerminalNode, arg1: IterationNode, arg2: IterationNode, arg3: IterationNode, arg4: TerminalNode) => T;
   CollectionBlock?: (this: NonterminalNode, arg0: TerminalNode, arg1: IterationNode, arg2: IterationNode, arg3: IterationNode, arg4: TerminalNode) => T;
 }

@@ -1,13 +1,23 @@
 RuleSetStatement <: RuleSet {
-  pureAtomic += else | invert
-  addedAtomic += truthy | falsy | exist
+
+  /* -------------------------------------------------------------------------- */
+  /* WAI-ARIA                                                                   */
+  /* -------------------------------------------------------------------------- */
+  
+  AriaRuleSetStatement =
+    | ifAnnotation AriaRuleSet AriaRuleSet invert -- invert
+    | ifAnnotation AriaRuleSet+ blockend -- if_block
+    | ifAnnotation AriaRuleSet else AriaRuleSet -- if_else
+    | ifAnnotation AriaRuleSet -- if
+    | AriaRuleSet
   
   /* -------------------------------------------------------------------------- */
-  /* ruleset statement                                                          */
+  /* CSS                                                                        */
   /* -------------------------------------------------------------------------- */
   
   RuleSetStatement = 
     | ifAnnotation RuleSet RuleSet invert -- invert
+    | ifAnnotation RuleSet+ blockend -- if_block
     | ifAnnotation RuleSet else RuleSet -- if_else
     | ifAnnotation RuleSet -- if
     | RuleSet
@@ -20,6 +30,9 @@ RuleSetStatement <: RuleSet {
   truthy = "@" "truthy" "(" jsIdentifier ")"
   falsy = "@" "falsy" "(" jsIdentifier")"
   exist = "@" "exist" "(" jsIdentifier ")"
+  
   else = "@" "else"
+  
   invert = "@" "invert"
+  blockend = "@" "end"
 }

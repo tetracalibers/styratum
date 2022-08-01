@@ -27,10 +27,10 @@
 <WAIARIA>
   @truthy(isList)
   & {
-    role: "list"
+    role: "list";
   }
   & > * {
-    role: "listItem"
+    role: "listItem";
   }
   @end
 </WAIARIA>

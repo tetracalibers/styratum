@@ -1,8 +1,9 @@
 Syrm <: Namespace {
   Root := Block*
   
-  Block = CascadeBlock | CollectionBlock | Block
+  Block = WaiariaBlock | CascadeBlock | CollectionBlock | Block
   
+  WaiariaBlock = "<WAIARIA>" space* AriaRuleSetStatement* space* "</WAIARIA>"
   CascadeBlock = "<Cascade>" space* RuleSetStatement* space* "</Cascade>"
   CollectionBlock = "<Collection>" space* Namespace<pascalCase>* space* "</Collection>"
 }

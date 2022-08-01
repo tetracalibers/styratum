@@ -28,11 +28,6 @@ SkipToken {
 // nondivisible
 
 Atomic <: SkipToken {
-  atomic = addedAtomic | pureAtomic
-  
-  pureAtomic = number | unit | operator | string | jsIdentifier
-  addedAtomic = props
-  
   /* props | number */
   generatedNumber = props | number
     
@@ -87,8 +82,13 @@ Primitive <: Atomic {
 }
 
 SyrmedCssInterface <: Primitive {
-  pureAtomic += collectionKeyword | combinator | constantSelector
-  addedAtomic += tagSelector
+  
+  /* -------------------------------------------------------------------------- */
+  /* WAI-ARIA                                                                   */
+  /* -------------------------------------------------------------------------- */
+    
+  ariaLabel = kebabCase
+  ariaValue = literal
   
   /* -------------------------------------------------------------------------- */
   /* selector list                                                              */
@@ -175,25 +175,57 @@ SyrmedCssInterface <: Primitive {
 }
 
 DeclarationBlock <: SyrmedCssInterface {
-  DeclarationBlock = "{" Declaration+ "}"
   
+  /* -------------------------------------------------------------------------- */
+  /* WAI-ARIA                                                                   */
+  /* -------------------------------------------------------------------------- */
+  
+  AriaDeclarationBlock = "{" AriaDeclaration "}"
+  AriaDeclaration = ariaLabel ":" ariaValue ";"
+  
+  /* -------------------------------------------------------------------------- */
+  /* CSS                                                                        */
+  /* -------------------------------------------------------------------------- */
+  
+  DeclarationBlock = "{" Declaration+ "}"
   Declaration = PropertyName ":" PropertyValue+ ";"
 }
 
 RuleSet <: DeclarationBlock {
+  
+  /* -------------------------------------------------------------------------- */
+  /* WAI-ARIA                                                                   */
+  /* -------------------------------------------------------------------------- */
+  
+  AriaRuleSet = SelectorList AriaDeclarationBlock
+  
+  /* -------------------------------------------------------------------------- */
+  /* CSS                                                                        */
+  /* -------------------------------------------------------------------------- */
+  
   RuleSet = SelectorList DeclarationBlock
 }
 
 RuleSetStatement <: RuleSet {
-  pureAtomic += else | invert
-  addedAtomic += truthy | falsy | exist
+
+  /* -------------------------------------------------------------------------- */
+  /* WAI-ARIA                                                                   */
+  /* -------------------------------------------------------------------------- */
+  
+  AriaRuleSetStatement =
+    | ifAnnotation AriaRuleSet AriaRuleSet invert -- invert
+    | ifAnnotation AriaRuleSet+ blockend -- if_block
+    | ifAnnotation AriaRuleSet else AriaRuleSet -- if_else
+    | ifAnnotation AriaRuleSet -- if
+    | AriaRuleSet
   
   /* -------------------------------------------------------------------------- */
-  /* ruleset statement                                                          */
+  /* CSS                                                                        */
   /* -------------------------------------------------------------------------- */
   
   RuleSetStatement = 
     | ifAnnotation RuleSet RuleSet invert -- invert
+    | ifAnnotation RuleSet+ blockend -- if_block
     | ifAnnotation RuleSet else RuleSet -- if_else
     | ifAnnotation RuleSet -- if
     | RuleSet
@@ -206,8 +238,11 @@ RuleSetStatement <: RuleSet {
   truthy = "@" "truthy" "(" jsIdentifier ")"
   falsy = "@" "falsy" "(" jsIdentifier")"
   exist = "@" "exist" "(" jsIdentifier ")"
+  
   else = "@" "else"
+  
   invert = "@" "invert"
+  blockend = "@" "end"
 }
 
 Namespace <: RuleSetStatement {
@@ -217,8 +252,9 @@ Namespace <: RuleSetStatement {
 Syrm <: Namespace {
   Root := Block*
   
-  Block = CascadeBlock | CollectionBlock | Block
+  Block = WaiariaBlock | CascadeBlock | CollectionBlock | Block
   
+  WaiariaBlock = "<WAIARIA>" space* AriaRuleSetStatement* space* "</WAIARIA>"
   CascadeBlock = "<Cascade>" space* RuleSetStatement* space* "</Cascade>"
   CollectionBlock = "<Collection>" space* Namespace<pascalCase>* space* "</Collection>"
 }

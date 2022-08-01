@@ -1,11 +1,6 @@
 // nondivisible
 
 Atomic <: SkipToken {
-  atomic = addedAtomic | pureAtomic
-  
-  pureAtomic = number | unit | operator | string | jsIdentifier
-  addedAtomic = props
-  
   /* props | number */
   generatedNumber = props | number
     
