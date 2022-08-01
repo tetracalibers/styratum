@@ -17,7 +17,6 @@
   },
   "main": "src/index.ts",
   "type": "module",
-  "private": true,
   "exports": {
     "import": "./dist/bundle.es.js",
     "require": "./dist/bundle.cjs",

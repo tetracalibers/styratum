@@ -3,6 +3,7 @@
     "vscode-extension/client",
     "vscode-extension/server",
     "core",
+    "react",
     "helper/*"
   ],
   "useNx": true,
