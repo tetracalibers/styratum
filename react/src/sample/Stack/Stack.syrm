@@ -1,0 +1,36 @@
+<Cascade>
+  & {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  & > * {
+    margin-top: 0
+    margin-bottom: 0;
+  }
+  
+  @truthy(recursive)
+  & * + * {
+    margin-top: props(space);
+  }
+  @else
+  & > * + * {
+    margin-top: props(space);
+  }
+  
+  @exist(separateFrom)
+  & > :nth-child(props(separateFrom)) {
+    margin-bottom: auto;
+  }
+</Cascade>
+
+<WAIARIA>
+  @truthy(isList)
+  & {
+    role: "list"
+  }
+  & > * {
+    role: "listItem"
+  }
+  @end
+</WAIARIA>
