@@ -30,6 +30,9 @@
   "bugs": {
     "url": "https://github.com/tetracalibers/styratum/issues"
   },
+  "dependencies": {
+    "@syrm/core": "*"
+  },
   "devDependencies": {
     "@babel/core": "^7.18.5",
     "@rollup/plugin-commonjs": "^22.0.1",
