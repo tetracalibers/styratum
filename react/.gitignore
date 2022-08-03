@@ -1,2 +1,3 @@
 *.styp
 lib
+!tmp
