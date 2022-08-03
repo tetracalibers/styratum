@@ -17,6 +17,7 @@
   },
   "main": "src/index.ts",
   "type": "module",
+  "types": "dist/@types",
   "exports": {
     "import": "./dist/bundle.es.js",
     "require": "./dist/bundle.cjs",
@@ -27,7 +28,7 @@
     "test": "echo \"Error: run tests from root\" && exit 1",
     "type:check": "tsc --noEmit",
     "prebuild": "yarn type:check && rimraf dist",
-    "build": "rollup -c --watch",
+    "build": "rollup -c",
     "start": "yarn build && node dist/bundle.es.js"
   },
   "dependencies": {
@@ -41,7 +42,6 @@
     "@types/shelljs": "^0.8.11",
     "case": "^1.6.3",
     "esbuild": "^0.14.48",
-    "json-format": "^1.0.1",
     "rimraf": "^3.0.2",
     "rollup": "^2.75.7",
     "rollup-plugin-esbuild": "^4.9.1",

@@ -1,5 +1,6 @@
 import shell from 'shelljs'
 import babelParser from '@babel/parser'
+import { dumpJson } from '@syrm-dev/json-helper'
 
 const { cat } = shell
 
@@ -9,4 +10,4 @@ const result = babelParser.parse(code, {
   plugins: ['jsx', 'typescript'],
   sourceType: 'module',
 })
-console.log('🚀 ~ file: index.ts ~ line 12 ~ result', result)
+dumpJson(result)('tmp/babel-parse.json')
