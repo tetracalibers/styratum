@@ -1,13 +1,33 @@
 import shell from 'shelljs'
-import babelParser from '@babel/parser'
+import { parse } from '@babel/parser'
+import { CodeGenerator } from '@babel/generator'
+import { transformFileSync, transformSync } from '@babel/core'
 import { dumpJson } from '@syrm-dev/json-helper'
+import { dump } from './util/dump'
 
-const { cat } = shell
+const { cat, ShellString } = shell
 
-const code = cat('src/sample/Stack/Stack.tsx').toString()
+const tsxcode = cat('src/sample/Stack/Stack.tsx').toString()
 
-const result = babelParser.parse(code, {
-  plugins: ['jsx', 'typescript'],
-  sourceType: 'module',
+const js = transformFileSync('src/sample/Stack/Stack.tsx', {
+  presets: [
+    ['@babel/preset-react', { development: true }],
+    '@babel/preset-typescript',
+  ],
+  ast: true,
+  sourceMaps: true,
 })
-dumpJson(result)('tmp/babel-parse.json')
+
+const jscode = js?.code
+const jsast = js?.ast
+const jsmap = js?.map
+
+//const ast = parse(jscode, {
+//  sourceType: 'module',
+//})
+//
+//const output = new CodeGenerator(ast, {}, jscode).generate().code
+
+dump(jscode as string)('tmp/jscode.js')
+dumpJson(jsast as object)('tmp/jsast.json')
+dumpJson(jsmap as object)('tmp/jsmap.json')
