@@ -1,0 +1,51 @@
+{
+  "name": "@syrm-dev/json",
+  "version": "0.0.0",
+  "description": "json helper for syrm processing system",
+  "author": {
+    "name": "tomixy",
+    "url": "https://tetracalibers.notion.site/tetracalibers/tomixy-TetraCalibers-30b94fb9fc054d4da667539ef35f42c6"
+  },
+  "homepage": "https://github.com/tetracalibers/styratum#readme",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tetracalibers/styratum"
+  },
+  "bugs": {
+    "url": "https://github.com/tetracalibers/styratum/issues"
+  },
+  "main": "src/index.ts",
+  "type": "module",
+  "exports": {
+    "import": "./dist/bundle.es.js",
+    "require": "./dist/bundle.cjs",
+    "node": "./dist/bundle.es.js",
+    "default": "./dist/bundle.cjs"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1",
+    "type:check": "tsc --noEmit",
+    "prebuild": "yarn type:check && rimraf dist",
+    "build": "rollup -c --watch",
+    "start": "yarn build && node dist/bundle.es.js"
+  },
+  "dependencies": {
+    "json-format": "^1.0.1"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^22.0.1",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^13.3.0",
+    "@rollup/plugin-typescript": "^8.3.3",
+    "@types/shelljs": "^0.8.11",
+    "case": "^1.6.3",
+    "esbuild": "^0.14.48",
+    "json-format": "^1.0.1",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.75.7",
+    "rollup-plugin-esbuild": "^4.9.1",
+    "shelljs": "^0.8.5",
+    "typescript": "^4.7.4"
+  }
+}
