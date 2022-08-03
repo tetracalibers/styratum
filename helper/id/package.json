@@ -1,5 +1,5 @@
 {
-  "name": "@syrm-dev/id",
+  "name": "@syrm-dev/id-generator",
   "version": "0.0.0",
   "description": "generate id helper for syrm processing system",
   "author": {

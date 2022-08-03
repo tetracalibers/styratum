@@ -1,5 +1,5 @@
 {
-  "name": "@syrm-dev/json",
+  "name": "@syrm-dev/json-helper",
   "version": "0.0.0",
   "description": "json helper for syrm processing system",
   "author": {

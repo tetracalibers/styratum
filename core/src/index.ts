@@ -1,6 +1,6 @@
 import shell from 'shelljs'
 import { parseSyrm } from './grammer/Syrm'
-import { dumpJson } from './util/json'
+import { dumpJson } from '@syrm-dev/json-helper'
 
 const { cat } = shell
 

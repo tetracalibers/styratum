@@ -1,5 +1,4 @@
 import ohm, { NonterminalNode, TerminalNode } from 'ohm-js'
-import { dumpJson } from '../util/json'
 import * as NS from './def/build/Syrm.ohm-bundle'
 import { locationCalculator } from './helper/locationCalculator'
 import { SyrmParser } from './types/SyrmParser'
