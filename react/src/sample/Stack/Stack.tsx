@@ -11,7 +11,7 @@ type Props = {
   isList: boolean
 } & DivProps
 
-const Balloon: FC<Props> = ({
+const Stack: FC<Props> = ({
   children,
   space = '1.7rem',
   recursive = false,
@@ -26,4 +26,4 @@ const Balloon: FC<Props> = ({
   )
 }
 
-export default Balloon
+export default Stack

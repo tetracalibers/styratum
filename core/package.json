@@ -40,6 +40,7 @@
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^13.3.0",
     "@rollup/plugin-typescript": "^8.3.3",
+    "@types/babylon": "^6.16.6",
     "@types/lodash": "^4.14.182",
     "@types/nanoid-dictionary": "^4.2.0",
     "@types/shelljs": "^0.8.11",
