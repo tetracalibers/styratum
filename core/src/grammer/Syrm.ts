@@ -7,11 +7,11 @@ import { AstNode } from './types/AstNode'
 import _ from 'lodash'
 
 console.time('parseSyrm')
-export const parseSyrm = (raw_syrm: string) => {
+export const parseSyrm = (mode: 'build' | 'server') => (raw_syrm: string) => {
   const parser = {} as SyrmParser
   const getLocation = locationCalculator(raw_syrm)
 
-  const SHOW_LOCATION = false
+  const SHOW_LOCATION = mode === 'server'
 
   const astNodeWithLocation = (node: AstNode) => {
     return (startIdx: number, endIdx: number): AstSubTree => {
