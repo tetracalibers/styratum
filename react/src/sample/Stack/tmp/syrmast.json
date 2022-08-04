@@ -1,0 +1,303 @@
+[
+  {
+    "type": "CascadeBlock",
+    "children": [
+      {
+        "type": "RuleSet",
+        "selector": {
+          "type": "rootSelector",
+          "text": "&"
+        },
+        "declarations": [
+          {
+            "type": "Declaration",
+            "property": {
+              "type": "kebabCase",
+              "text": "display"
+            },
+            "values": [
+              {
+                "type": "kebabCase",
+                "text": "flex"
+              }
+            ]
+          },
+          {
+            "type": "Declaration",
+            "property": {
+              "type": "kebabCase",
+              "text": "flex-direction"
+            },
+            "values": [
+              {
+                "type": "kebabCase",
+                "text": "column"
+              }
+            ]
+          },
+          {
+            "type": "Declaration",
+            "property": {
+              "type": "kebabCase",
+              "text": "justify-content"
+            },
+            "values": [
+              {
+                "type": "kebabCase",
+                "text": "flex-start"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "RuleSet",
+        "selector": [
+          {
+            "type": "rootSelector",
+            "text": "&"
+          },
+          {
+            "type": "combinator",
+            "text": ">"
+          },
+          {
+            "type": "universalSelector",
+            "text": "*"
+          }
+        ],
+        "declarations": [
+          {
+            "type": "Declaration",
+            "property": {
+              "type": "kebabCase",
+              "text": "margin-top"
+            },
+            "values": [
+              {
+                "type": "number_positive",
+                "text": "0"
+              }
+            ]
+          },
+          {
+            "type": "Declaration",
+            "property": {
+              "type": "kebabCase",
+              "text": "margin-bottom"
+            },
+            "values": [
+              {
+                "type": "number_positive",
+                "text": "0"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "RuleSetStatement_if_else",
+        "if": {
+          "type": "truthy",
+          "props": "recursive"
+        },
+        "ifThen": {
+          "type": "RuleSet",
+          "selector": [
+            {
+              "type": "rootSelector",
+              "text": "&"
+            },
+            {
+              "type": "universalSelector",
+              "text": "*"
+            },
+            {
+              "type": "combinator",
+              "text": "+"
+            },
+            {
+              "type": "universalSelector",
+              "text": "*"
+            }
+          ],
+          "declarations": [
+            {
+              "type": "Declaration",
+              "property": {
+                "type": "kebabCase",
+                "text": "margin-top"
+              },
+              "values": [
+                {
+                  "type": "props",
+                  "value": "space"
+                }
+              ]
+            }
+          ]
+        },
+        "elseThen": {
+          "type": "RuleSet",
+          "selector": [
+            {
+              "type": "rootSelector",
+              "text": "&"
+            },
+            {
+              "type": "combinator",
+              "text": ">"
+            },
+            {
+              "type": "universalSelector",
+              "text": "*"
+            },
+            {
+              "type": "combinator",
+              "text": "+"
+            },
+            {
+              "type": "universalSelector",
+              "text": "*"
+            }
+          ],
+          "declarations": [
+            {
+              "type": "Declaration",
+              "property": {
+                "type": "kebabCase",
+                "text": "margin-top"
+              },
+              "values": [
+                {
+                  "type": "props",
+                  "value": "space"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "type": "RuleSetStatement_if",
+        "if": {
+          "type": "exist",
+          "props": "separateFrom"
+        },
+        "ifThen": {
+          "type": "RuleSet",
+          "selector": [
+            {
+              "type": "rootSelector",
+              "text": "&"
+            },
+            {
+              "type": "combinator",
+              "text": ">"
+            },
+            {
+              "type": "EnumSelector_predicate",
+              "selector": [],
+              "filter": [
+                {
+                  "type": "Pseudo_class",
+                  "name": ":nth-child",
+                  "args": [
+                    {
+                      "type": "nth",
+                      "expr": [
+                        {
+                          "type": "props",
+                          "value": "separateFrom"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "declarations": [
+            {
+              "type": "Declaration",
+              "property": {
+                "type": "kebabCase",
+                "text": "margin-bottom"
+              },
+              "values": [
+                {
+                  "type": "kebabCase",
+                  "text": "auto"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "type": "WaiariaBlock",
+    "children": [
+      {
+        "type": "AriaRuleSetStatement_if_block",
+        "if": {
+          "type": "truthy",
+          "props": "isList"
+        },
+        "rules": [
+          {
+            "type": "AriaRuleSet",
+            "selector": {
+              "type": "rootSelector",
+              "text": "&"
+            },
+            "declarations": [
+              {
+                "type": "AriaDeclaration",
+                "label": {
+                  "type": "kebabCase",
+                  "text": "role"
+                },
+                "value": {
+                  "type": "literal",
+                  "text": "\"list\""
+                }
+              }
+            ]
+          },
+          {
+            "type": "AriaRuleSet",
+            "selector": [
+              {
+                "type": "rootSelector",
+                "text": "&"
+              },
+              {
+                "type": "combinator",
+                "text": ">"
+              },
+              {
+                "type": "universalSelector",
+                "text": "*"
+              }
+            ],
+            "declarations": [
+              {
+                "type": "AriaDeclaration",
+                "label": {
+                  "type": "kebabCase",
+                  "text": "role"
+                },
+                "value": {
+                  "type": "literal",
+                  "text": "\"listItem\""
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]
