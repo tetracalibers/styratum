@@ -6,5 +6,6 @@ export interface AstNode {
     uri: string
     range: SourceRange
   }
+  children?: AstNode[]
   [K: string]: unknown
 }
