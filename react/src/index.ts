@@ -16,7 +16,7 @@ const syrmast = parseSyrm('build')(syrmcode)
 
 const js = transformFileSync('src/sample/Stack/Stack.tsx', {
   presets: [
-    ['@babel/preset-react', { development: true }],
+    ['@babel/preset-react', { development: true, runtime: 'automatic' }],
     '@babel/preset-typescript',
   ],
   ast: true,
@@ -33,10 +33,10 @@ const jsmap = js?.map
 //
 //const output = new CodeGenerator(ast, {}, jscode).generate().code
 
-//dumpJson(syrmast)('src/sample/Stack/tmp/syrmast.json')
-//dump(jscode as string)('src/sample/Stack/tmp/jscode.js')
-//dumpJson(jsast as object)('src/sample/Stack/tmp/jsast.json')
-//dumpJson(jsmap as object)('src/sample/Stack/tmp/jsmap.json')
+dumpJson(syrmast)('src/sample/Stack/tmp/syrmast.json')
+dump(jscode as string)('src/sample/Stack/tmp/jscode.js')
+dumpJson(jsast as object)('src/sample/Stack/tmp/jsast.json')
+dumpJson(jsmap as object)('src/sample/Stack/tmp/jsmap.json')
 
 import { get } from 'spectacles-ts'
 
