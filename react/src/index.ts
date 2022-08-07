@@ -8,6 +8,7 @@ import { dumpJson } from '@syrm-dev/json-helper'
 import { parseSyrm, AstNode } from '@syrm/core'
 import { dump } from './util/dump'
 import { match } from 'ts-pattern'
+import _ from 'lodash'
 
 const { cat, ShellString } = shell
 
@@ -35,26 +36,38 @@ const jsmap = js?.map
 const traverser = _traverser as typeof _traverser & { default: unknown }
 const traverse = traverser.default as typeof _traverser
 
-traverse(jsast, {
-  enter(path) {
-    if (
-      t.callExpression(
-        {
-          type: 'Identifier',
+const getJsxTagNames = (ast: t.Node) => {
+  let jsxTagNames: string[] = []
+  traverse(ast, {
+    enter(path) {
+      if (
+        t.isIdentifier(path.node, {
           name: '_jsxDEV',
-        },
-        [
-          {
-            type: 'Identifier',
-            name: 'Syrm',
-          },
-        ]
-      )
-    ) {
-      console.log(path.node)
-    }
-  },
-})
+        })
+      ) {
+        const func = path.parentPath?.node as t.CallExpression
+        const args = func.arguments
+        const tagNameArg = _.first(args)
+        if (t.isIdentifier(tagNameArg)) {
+          jsxTagNames = [...jsxTagNames, tagNameArg.name]
+        }
+        if (t.isStringLiteral(tagNameArg)) {
+          jsxTagNames = [...jsxTagNames, tagNameArg.value]
+        }
+      }
+    },
+  })
+  return jsxTagNames
+}
+
+const getRootTagName = (jsxTagNames: string[]) => {
+  const [first, second] = jsxTagNames
+  return first === 'Syrm' ? second : first
+}
+
+const jsxTagNames = getJsxTagNames(jsast)
+const rootTagName = getRootTagName(jsxTagNames)
+console.log('🚀 ~ file: index.ts ~ line 70 ~ rootTagName', rootTagName)
 
 //const ast = parse(jscode, {
 //  sourceType: 'module',
@@ -68,7 +81,6 @@ dumpJson(jsast as object)('src/sample/Stack/tmp/jsast.json')
 dumpJson(jsmap as object)('src/sample/Stack/tmp/jsmap.json')
 
 import { get } from 'spectacles-ts'
-import { Traverse } from 'fp-ts/lib/Traversable'
 
 interface SyrmBlockStorage {
   cascade: AstNode[]
@@ -91,8 +103,4 @@ const syrmBlockStorage = syrmast.reduce(
       })
   },
   {} as SyrmBlockStorage
-)
-console.log(
-  '🚀 ~ file: index.ts ~ line 62 ~ syrmBlockStorage ~ syrmBlockStorage',
-  syrmBlockStorage
 )
