@@ -46,7 +46,7 @@
             },
             "init": {
               "type": "StringLiteral",
-              "value": "/Users/tomixy/.vscode/extensions/vscode-syrm-support/react/src/sample/Stack/Stack.tsx"
+              "value": "/Users/tomixy/MyNpmPackage/styratum/react/src/sample/Stack/Stack.tsx"
             }
           }
         ],

@@ -1,4 +1,4 @@
-var _jsxFileName = "/Users/tomixy/.vscode/extensions/vscode-syrm-support/react/src/sample/Stack/Stack.tsx";
+var _jsxFileName = "/Users/tomixy/MyNpmPackage/styratum/react/src/sample/Stack/Stack.tsx";
 import Syrm from '../../components/Syrm';
 import { jsxDEV as _jsxDEV } from "react/jsx-dev-runtime";
 

@@ -36,8 +36,26 @@ const jsmap = js?.map
 const traverser = _traverser as typeof _traverser & { default: unknown }
 const traverse = traverser.default as typeof _traverser
 
-const getJsxTagNames = (ast: t.Node) => {
+type SyrmOptionKey = 'place' | 'props'
+type SyrmOptionValue<K extends SyrmOptionKey> = K extends 'place'
+  ? string
+  : K extends 'props'
+  ? string[]
+  : never
+type SyrmOptionRecord = {
+  [K in SyrmOptionKey]: SyrmOptionValue<K>
+}
+
+const getRootTagName = (jsxTagNames: string[]) => {
+  return _.first(jsxTagNames)
+}
+
+const getSyrmOptions = (ast: t.Node) => {
   let jsxTagNames: string[] = []
+  let syrmOptions: SyrmOptionRecord = {
+    place: '',
+    props: [],
+  }
   traverse(ast, {
     enter(path) {
       if (
@@ -45,10 +63,44 @@ const getJsxTagNames = (ast: t.Node) => {
           name: '_jsxDEV',
         })
       ) {
-        const func = path.parentPath?.node as t.CallExpression
-        const args = func.arguments
-        const tagNameArg = _.first(args)
-        if (t.isIdentifier(tagNameArg)) {
+        const parentNode = path.parentPath?.node
+        if (!t.isCallExpression(parentNode)) {
+          return
+        }
+        const args = parentNode.arguments
+        const [tagNameArg, propsArg] = args
+
+        // Syrmタグのpropsとして指定された情報取得
+        if (t.isIdentifier(tagNameArg, { name: 'Syrm' })) {
+          const syrmOptionArg = propsArg as t.ObjectExpression
+          syrmOptions = syrmOptionArg.properties.reduce((prev, _property) => {
+            const property = _property as t.ObjectProperty
+            const keyNode = property.key as t.Identifier
+            const key = keyNode.name
+            return match(key)
+              .with('place', () => {
+                const valueNode = property.value as t.StringLiteral
+                const value = valueNode.value
+                prev.place = value
+                return prev
+              })
+              .with('props', () => {
+                const valueNode = property.value as t.ArrayExpression
+                const value = valueNode.elements.map(_elemNode => {
+                  const elemNode = _elemNode as t.Identifier
+                  return elemNode.name
+                })
+                prev.props = value
+                return prev
+              })
+              .otherwise(() => {
+                return prev
+              })
+          }, syrmOptions)
+        }
+
+        // JSXタグ名の一覧取得
+        if (t.isIdentifier(tagNameArg) && tagNameArg.name !== 'Syrm') {
           jsxTagNames = [...jsxTagNames, tagNameArg.name]
         }
         if (t.isStringLiteral(tagNameArg)) {
@@ -57,17 +109,14 @@ const getJsxTagNames = (ast: t.Node) => {
       }
     },
   })
-  return jsxTagNames
+  return {
+    ...syrmOptions,
+    root: getRootTagName(jsxTagNames),
+  }
 }
 
-const getRootTagName = (jsxTagNames: string[]) => {
-  const [first, second] = jsxTagNames
-  return first === 'Syrm' ? second : first
-}
-
-const jsxTagNames = getJsxTagNames(jsast)
-const rootTagName = getRootTagName(jsxTagNames)
-console.log('🚀 ~ file: index.ts ~ line 70 ~ rootTagName', rootTagName)
+const options = getSyrmOptions(jsast)
+console.log('🚀 ~ file: index.ts ~ line 113 ~ options', options)
 
 //const ast = parse(jscode, {
 //  sourceType: 'module',
