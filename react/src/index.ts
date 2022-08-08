@@ -52,6 +52,7 @@ const getRootTagName = (jsxTagNames: string[]) => {
 
 const getSyrmOptions = (ast: t.Node) => {
   let jsxTagNames: string[] = []
+  let jsxFilePath = ''
   let syrmOptions: SyrmOptionRecord = {
     place: '',
     props: [],
@@ -62,11 +63,7 @@ const getSyrmOptions = (ast: t.Node) => {
         const parentNode = path.parentPath?.node
         if (t.isVariableDeclarator(parentNode)) {
           const init = parentNode.init as t.StringLiteral
-          const jsxFilePath = init.value
-          console.log(
-            '🚀 ~ file: index.ts ~ line 66 ~ enter ~ jsxFilePath',
-            jsxFilePath
-          )
+          jsxFilePath = init.value
         }
       }
 
@@ -124,10 +121,14 @@ const getSyrmOptions = (ast: t.Node) => {
   return {
     ...syrmOptions,
     root: getRootTagName(jsxTagNames),
+    path: {
+      jsx: jsxFilePath,
+    },
   }
 }
 
 const options = getSyrmOptions(jsast)
+console.log('🚀 ~ file: index.ts ~ line 131 ~ options', options)
 
 //const ast = parse(jscode, {
 //  sourceType: 'module',
