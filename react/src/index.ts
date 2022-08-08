@@ -58,6 +58,18 @@ const getSyrmOptions = (ast: t.Node) => {
   }
   traverse(ast, {
     enter(path) {
+      if (t.isIdentifier(path.node, { name: '_jsxFileName' })) {
+        const parentNode = path.parentPath?.node
+        if (t.isVariableDeclarator(parentNode)) {
+          const init = parentNode.init as t.StringLiteral
+          const jsxFilePath = init.value
+          console.log(
+            '🚀 ~ file: index.ts ~ line 66 ~ enter ~ jsxFilePath',
+            jsxFilePath
+          )
+        }
+      }
+
       if (
         t.isIdentifier(path.node, {
           name: '_jsxDEV',
@@ -116,7 +128,6 @@ const getSyrmOptions = (ast: t.Node) => {
 }
 
 const options = getSyrmOptions(jsast)
-console.log('🚀 ~ file: index.ts ~ line 113 ~ options', options)
 
 //const ast = parse(jscode, {
 //  sourceType: 'module',
