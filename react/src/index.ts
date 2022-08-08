@@ -4,6 +4,7 @@ import { CodeGenerator } from '@babel/generator'
 import { transformFileSync } from '@babel/core'
 import _traverser from '@babel/traverse'
 import * as t from '@babel/types'
+import type { Statement } from '@babel/types'
 import { dumpJson } from '@syrm-dev/json-helper'
 import { parseSyrm, AstNode } from '@syrm/core'
 import { dump } from './util/dump'
@@ -13,6 +14,12 @@ import * as platformPath from 'path'
 
 const { dirname } = platformPath
 const { cat, ShellString } = shell
+
+/**
+  @see https://github.com/babel/babel/issues/13855
+ */
+const traverser = _traverser as typeof _traverser & { default: unknown }
+const traverse = traverser.default as typeof _traverser
 
 const syrmcode = cat('src/sample/Stack/Stack.syrm').toString()
 const syrmast = parseSyrm('build')(syrmcode)
@@ -24,8 +31,40 @@ const jsreact = transformFileSync(tsxpath, {
   ast: true,
 })
 
-const jsreactcode = jsreact?.code
-const jsreactast = jsreact?.ast
+const jsreactcode = jsreact?.code as string
+const jsreactast = jsreact?.ast as t.File
+
+type JSXChildren = t.JSXElement['children']
+
+const getJsxCode = (jsreactAst: t.File) => {
+  let isCloseTag = false
+  const close = () => (isCloseTag = true)
+
+  let jsxNodes: JSXChildren = []
+  traverse(jsreactAst, {
+    enter(path) {
+      if (t.isJSXIdentifier(path.node, { name: 'Syrm' })) {
+        if (isCloseTag) {
+          return
+        }
+        const jsxElemNode = path.parentPath?.parent as t.JSXElement
+        jsxNodes = jsxElemNode.children.filter(child => {
+          if (t.isJSXText(child)) {
+            const text = child.value
+            return text.trim().length > 0
+          }
+          return true
+        })
+        close()
+      }
+    },
+  })
+
+  return jsxNodes.map(node => new CodeGenerator(node).generate().code).join('')
+}
+
+const jsxCode = getJsxCode(jsreactast)
+console.log('🚀 ~ file: index.ts ~ line 47 ~ jsxCode', jsxCode)
 
 const js = transformFileSync(tsxpath, {
   presets: [
@@ -37,28 +76,22 @@ const js = transformFileSync(tsxpath, {
 })
 
 const jscode = js?.code
-const jsast = js?.ast as t.Node
+const jsast = js?.ast as t.File
 const jsmap = js?.map
-
-/**
-  @see https://github.com/babel/babel/issues/13855
- */
-const traverser = _traverser as typeof _traverser & { default: unknown }
-const traverse = traverser.default as typeof _traverser
 
 const getRootTagName = (jsxTagNames: string[]) => {
   return _.first(jsxTagNames)
 }
 
-const getSyrmOptions = (ast: t.Node) => {
+const getSyrmOptions = (jsAst: t.File) => {
   let jsxTagNames: string[] = []
   let jsxFilePath = ''
   let syrmFilePath = ''
   let props: string[] = []
-  traverse(ast, {
+  traverse(jsAst, {
     enter(path) {
       if (t.isIdentifier(path.node, { name: '_jsxFileName' })) {
-        const parentNode = path.parentPath?.node
+        const parentNode = path.parent
         if (t.isVariableDeclarator(parentNode)) {
           const init = parentNode.init as t.StringLiteral
           jsxFilePath = init.value
@@ -70,7 +103,7 @@ const getSyrmOptions = (ast: t.Node) => {
           name: '_jsxDEV',
         })
       ) {
-        const parentNode = path.parentPath?.node
+        const parentNode = path.parent
         if (!t.isCallExpression(parentNode)) {
           return
         }
@@ -128,12 +161,7 @@ const getSyrmOptions = (ast: t.Node) => {
 }
 
 const options = getSyrmOptions(jsast)
-console.log('🚀 ~ file: index.ts ~ line 131 ~ options', options)
 
-//const ast = parse(jscode, {
-//  sourceType: 'module',
-//})
-//
 //const output = new CodeGenerator(ast, {}, jscode).generate().code
 
 dumpJson(syrmast)('src/sample/Stack/tmp/syrmast.json')
