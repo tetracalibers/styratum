@@ -9,7 +9,9 @@ import { parseSyrm, AstNode } from '@syrm/core'
 import { dump } from './util/dump'
 import { match } from 'ts-pattern'
 import _ from 'lodash'
+import * as platformPath from 'path'
 
+const { dirname } = platformPath
 const { cat, ShellString } = shell
 
 const syrmcode = cat('src/sample/Stack/Stack.syrm').toString()
@@ -36,16 +38,6 @@ const jsmap = js?.map
 const traverser = _traverser as typeof _traverser & { default: unknown }
 const traverse = traverser.default as typeof _traverser
 
-type SyrmOptionKey = 'place' | 'props'
-type SyrmOptionValue<K extends SyrmOptionKey> = K extends 'place'
-  ? string
-  : K extends 'props'
-  ? string[]
-  : never
-type SyrmOptionRecord = {
-  [K in SyrmOptionKey]: SyrmOptionValue<K>
-}
-
 const getRootTagName = (jsxTagNames: string[]) => {
   return _.first(jsxTagNames)
 }
@@ -53,10 +45,8 @@ const getRootTagName = (jsxTagNames: string[]) => {
 const getSyrmOptions = (ast: t.Node) => {
   let jsxTagNames: string[] = []
   let jsxFilePath = ''
-  let syrmOptions: SyrmOptionRecord = {
-    place: '',
-    props: [],
-  }
+  let syrmFilePath = ''
+  let props: string[] = []
   traverse(ast, {
     enter(path) {
       if (t.isIdentifier(path.node, { name: '_jsxFileName' })) {
@@ -82,16 +72,18 @@ const getSyrmOptions = (ast: t.Node) => {
         // Syrmタグのpropsとして指定された情報取得
         if (t.isIdentifier(tagNameArg, { name: 'Syrm' })) {
           const syrmOptionArg = propsArg as t.ObjectExpression
-          syrmOptions = syrmOptionArg.properties.reduce((prev, _property) => {
+          syrmOptionArg.properties.forEach(_property => {
             const property = _property as t.ObjectProperty
             const keyNode = property.key as t.Identifier
             const key = keyNode.name
-            return match(key)
+            match(key)
               .with('place', () => {
                 const valueNode = property.value as t.StringLiteral
-                const value = valueNode.value
-                prev.place = value
-                return prev
+                const relativePath = valueNode.value
+                syrmFilePath = platformPath.resolve(
+                  dirname(jsxFilePath),
+                  relativePath
+                )
               })
               .with('props', () => {
                 const valueNode = property.value as t.ArrayExpression
@@ -99,13 +91,12 @@ const getSyrmOptions = (ast: t.Node) => {
                   const elemNode = _elemNode as t.Identifier
                   return elemNode.name
                 })
-                prev.props = value
-                return prev
+                props = value
               })
               .otherwise(() => {
-                return prev
+                return
               })
-          }, syrmOptions)
+          })
         }
 
         // JSXタグ名の一覧取得
@@ -119,10 +110,11 @@ const getSyrmOptions = (ast: t.Node) => {
     },
   })
   return {
-    ...syrmOptions,
+    props,
     root: getRootTagName(jsxTagNames),
     path: {
       jsx: jsxFilePath,
+      syrm: syrmFilePath,
     },
   }
 }
