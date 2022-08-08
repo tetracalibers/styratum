@@ -15,11 +15,19 @@ const { dirname } = platformPath
 const { cat, ShellString } = shell
 
 const syrmcode = cat('src/sample/Stack/Stack.syrm').toString()
-const tsxcode = cat('src/sample/Stack/Stack.tsx').toString()
-
 const syrmast = parseSyrm('build')(syrmcode)
 
-const js = transformFileSync('src/sample/Stack/Stack.tsx', {
+const tsxpath = 'src/sample/Stack/Stack.tsx'
+
+const jsreact = transformFileSync(tsxpath, {
+  presets: ['@babel/preset-typescript'],
+  ast: true,
+})
+
+const jsreactcode = jsreact?.code
+const jsreactast = jsreact?.ast
+
+const js = transformFileSync(tsxpath, {
   presets: [
     ['@babel/preset-react', { development: true, runtime: 'automatic' }],
     '@babel/preset-typescript',
@@ -129,6 +137,10 @@ console.log('🚀 ~ file: index.ts ~ line 131 ~ options', options)
 //const output = new CodeGenerator(ast, {}, jscode).generate().code
 
 dumpJson(syrmast)('src/sample/Stack/tmp/syrmast.json')
+
+dump(jsreactcode as string)('src/sample/Stack/tmp/jsreactcode.js')
+dumpJson(jsreactast as object)('src/sample/Stack/tmp/jsreactast.json')
+
 dump(jscode as string)('src/sample/Stack/tmp/jscode.js')
 dumpJson(jsast as object)('src/sample/Stack/tmp/jsast.json')
 dumpJson(jsmap as object)('src/sample/Stack/tmp/jsmap.json')
