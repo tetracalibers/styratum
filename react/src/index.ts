@@ -172,25 +172,30 @@ dumpJson(jsmap as object)('src/sample/Stack/tmp/jsmap.json')
 
 import { get } from 'spectacles-ts'
 
-interface SyrmBlockStorage {
-  cascade: AstNode[]
-  waiaria: AstNode[]
+type SyrmBlockNodeType = 'CascadeBlock' | 'WaiariaBlock'
+
+type SyrmBlockRecordKey<T extends SyrmBlockNodeType> =
+  T extends `${infer K}Block` ? Lowercase<K> : never
+
+type SyrmBlockRecord = {
+  [K in SyrmBlockNodeType as SyrmBlockRecordKey<K>]: AstNode[]
 }
 
-const syrmBlockStorage = syrmast.reduce(
-  (prev: SyrmBlockStorage, curr: AstNode) => {
-    return match(curr.type)
+const syrmBlockRecord = syrmast.reduce(
+  (prev: SyrmBlockRecord, curr: AstNode) => {
+    const nodeType = curr.type as SyrmBlockNodeType
+    return match(nodeType)
       .with('CascadeBlock', () => {
-        prev['cascade'] = curr.children as AstNode[]
+        prev.cascade = curr.children as AstNode[]
         return prev
       })
       .with('WaiariaBlock', () => {
-        prev['waiaria'] = curr.children as AstNode[]
+        prev.waiaria = curr.children as AstNode[]
         return prev
       })
       .otherwise(() => {
         return prev
       })
   },
-  {} as SyrmBlockStorage
+  {} as SyrmBlockRecord
 )
