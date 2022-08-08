@@ -4,7 +4,6 @@ import { CodeGenerator } from '@babel/generator'
 import { transformFileSync } from '@babel/core'
 import _traverser from '@babel/traverse'
 import * as t from '@babel/types'
-import type { Statement } from '@babel/types'
 import { dumpJson } from '@syrm-dev/json-helper'
 import { parseSyrm, AstNode } from '@syrm/core'
 import { dump } from './util/dump'
@@ -13,7 +12,7 @@ import _ from 'lodash'
 import * as platformPath from 'path'
 
 const { dirname } = platformPath
-const { cat, ShellString } = shell
+const { cat } = shell
 
 /**
   @see https://github.com/babel/babel/issues/13855
@@ -161,8 +160,6 @@ const getSyrmOptions = (jsAst: t.File) => {
 }
 
 const options = getSyrmOptions(jsast)
-
-//const output = new CodeGenerator(ast, {}, jscode).generate().code
 
 dumpJson(syrmast)('src/sample/Stack/tmp/syrmast.json')
 
