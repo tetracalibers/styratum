@@ -48,6 +48,7 @@
     "@syrm-dev/json-helper": "*",
     "@types/babel__core": "^7.1.19",
     "@types/babel__generator": "^7.6.4",
+    "@types/babel__traverse": "^7.18.0",
     "@types/react": "^18.0.14",
     "@types/react-dom": "^18.0.5",
     "@types/shelljs": "^0.8.11",

@@ -1,7 +1,7 @@
 import shell from 'shelljs'
 import { parse } from '@babel/parser'
 import { CodeGenerator } from '@babel/generator'
-import { transformFileSync, transformSync } from '@babel/core'
+import { transformFileSync } from '@babel/core'
 import _traverser from '@babel/traverse'
 import * as t from '@babel/types'
 import { dumpJson } from '@syrm-dev/json-helper'
@@ -31,7 +31,7 @@ const jsast = js?.ast as t.Node
 const jsmap = js?.map
 
 /**
-  @bug https://github.com/babel/babel/issues/13855
+  @see https://github.com/babel/babel/issues/13855
  */
 const traverser = _traverser as typeof _traverser & { default: unknown }
 const traverse = traverser.default as typeof _traverser
